@@ -87,6 +87,21 @@ function renderInspector(){
   $('stat-range').innerHTML=u.range+' <small>кл.</small>';$('stat-damage').textContent=u.damage;$('stat-position').textContent=String(u.x).padStart(2,'0')+' : '+String(u.y).padStart(2,'0');
   $('decision-state').textContent=!u.hp?'ВЫВЕДЕН ИЗ БОЯ':({move:'ДВИЖЕНИЕ',attack:'АТАКА',hold:'КОНТРОЛЬ',retreat:'ОТСТУПЛЕНИЕ'}[d?.type]||'ОЖИДАНИЕ');
   $('decision-title').textContent=d?.label||'Юнит потерян';$('decision-reason').textContent=d?.reason||'Урон за бой: '+u.damageDone+'. Уничтожено противников: '+u.kills+'.';
+  const cf=d?.counterfactual;
+  $('decision-comparison').hidden=!cf;
+  if(cf){
+    const formatChoice=(label,step)=>label+(step?' → '+step.x+' : '+step.y:'');
+    $('baseline-action').textContent=formatChoice(cf.label,cf.firstStep);
+    $('actual-action').textContent=formatChoice(d.label,d.route?.[0]);
+    $('decision-impact').textContent=cf.changed?'Рефлекс изменил первое действие':d.neuralOverride?'Рефлекс выбрал тот же первый шаг':'Тактическое действие сохранено';
+    $('decision-impact').classList.toggle('changed',cf.changed);
+    const safety=d.routeSafety;
+    $('route-safety').hidden=!safety;
+    if(safety){
+      for(const [id,value] of [['risk-now',safety.currentRisk],['risk-first',safety.firstRisk],['risk-end',safety.destinationRisk]])$(id).textContent=Number(value.toFixed(1));
+      $('route-budget').textContent='Маршрут: '+safety.steps+' кл. · доступно '+safety.budget+'. На каждом шаге оценка угрозы не растёт.';
+    }
+  }
   const options=d?.alternatives||[],max=Math.max(1,...options.map(a=>a.score));
   $('candidates').innerHTML=options.map(a=>'<div class="candidate"><i style="width:'+clamp(a.score/max)*100+'%"></i><span>'+escape(a.label)+'</span><strong>'+a.score.toFixed(1)+'</strong></div>').join('');
   $('decision-caption').textContent=d?(d.evaluatedAt===0?'Расчёт перед первым тактом':'Последний расчёт: такт '+d.evaluatedAt):'Действия больше не выполняются';
@@ -108,7 +123,7 @@ function renderBrain(u){
   const gate=u.reflex;
   for(const el of document.querySelectorAll('[data-reflex-phase]'))el.classList.toggle('active',mode!=='utility'&&el.dataset.reflexPhase===gate.phase);
   $('reflex-meta').textContent='Эпизодов: '+gate.episodes+' · нейронных отходов: '+u.neuralEscapes+(gate.phase==='cooldown'?' · восстановление: '+gate.remaining:'');
-  $('brain-status').textContent=u.hp<=0?'Юнит выведен из боя; сеть остановлена.':mode==='utility'?'Активен обычный тактический выбор.':u.decision?.neuralOverride?'Короткий нейронный отход: до 2 действий за эпизод.':gate.phase==='cooldown'?'Рефлекс восстанавливается. Тактические решения доступны.':gate.phase==='waiting'?'Ожидание ослабления сигнала. Тактические решения доступны.':n.triggered&&!gate.active?'Порог превышен; реакция проверится на следующем такте.':gate.active?'Рефлекс активен; безопасный отход сейчас недоступен.':'Сигнал ниже порога; действует тактический план.';
+  $('brain-status').textContent=u.hp<=0?'Юнит выведен из боя; сеть остановлена.':mode==='utility'?'Активен обычный тактический выбор.':u.decision?.neuralOverride?'Короткий нейронный отход: до 2 действий за эпизод.':gate.phase==='cooldown'?'Рефлекс восстанавливается. Тактические решения доступны.':gate.phase==='waiting'?'Ожидание ослабления сигнала. Тактические решения доступны.':n.triggered&&!gate.active?'Порог превышен; реакция проверится на следующем такте.':u.decision?.neural?.blockedReason?u.decision.neural.blockedReason:gate.active?'Рефлекс активен; снижение угрозы сейчас недоступно.':'Сигнал ниже порога; действует тактический план.';
   if(neuralHover!==null){const node=CONNECTOME.neurons[neuralHover];$('neuron-detail').textContent=node.type+' '+node.side+' · body '+node.bodyId+' · '+b.activity[neuralHover].toFixed(4)+(node.kind==='output'?' · выход':' · вход');}
   const c=$('neural-canvas'),g=c.getContext('2d'),cols=29,cell=20;g.clearRect(0,0,c.width,c.height);
   for(let i=0;i<CONNECTOME.neurons.length;i++){

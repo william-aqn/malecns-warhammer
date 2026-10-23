@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createReflex,stepReflex,validateReflex,REFLEX_COOLDOWN,REFLEX_BURST} from '../dist/reflex.mjs';
-import {createSimulation,stepSimulation,exportScene,importScene,decideUnit,updateDecisions} from '../dist/engine.mjs';
+import {createSimulation,stepSimulation,exportScene,importScene,decideUnit,updateDecisions,VERSION} from '../dist/engine.mjs';
 import {createBrain,stepBrain,neuralReadout} from '../dist/neural.mjs';
 import {runContactComparison,contactConfig} from '../dist/experiments.mjs';
 const signal=drive=>({drive,threshold:.1,triggered:drive>.1});
@@ -65,7 +65,7 @@ test('v2 migration retains brain activity and explicitly reports changed control
   const a=createSimulation();for(let i=0;i<10;i++)stepSimulation(a);
   const raw=JSON.parse(exportScene(a));raw.version=2;raw.state.version=2;delete raw.state.config.scenario;
   for(const u of raw.state.units)delete u.reflex;
-  const b=importScene(JSON.stringify(raw));assert.equal(b.version,3);assert.ok(b.importNote.includes('v2'));
+  const b=importScene(JSON.stringify(raw));assert.equal(b.version,VERSION);assert.ok(b.importNote.includes('v2'));
   assert.deepEqual(b.units.map(u=>u.brain),a.units.map(u=>u.brain));assert.ok(b.units.every(u=>u.reflex.phase==='ready'));
 });
 

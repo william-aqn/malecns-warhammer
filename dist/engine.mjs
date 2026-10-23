@@ -1,7 +1,7 @@
-import {createReflex,stepReflex,reflexAllows,validateReflex,copyReflex} from './reflex.mjs';
+import {REFLEX_BURST,createReflex,stepReflex,reflexAllows,validateReflex,copyReflex} from './reflex.mjs';
 import {CONTROLLERS,createBrain,stepBrain,neuralReadout,validateBrain,copyBrain} from './neural.mjs';
 // Pure deterministic simulation: no browser, clock or network dependencies.
-export const VERSION=3, W=32, H=22, MAX_TICKS=180, WIN_SCORE=65;
+export const VERSION=4, W=32, H=22, MAX_TICKS=180, WIN_SCORE=65;
 export const TERRAIN={FLOOR:0,WALL:1,COVER:2};
 export const FACTIONS={
   marines:{name:'Space Marines',short:'Astartes',description:'Согласованное продвижение и контроль позиций.',aggression:.62,caution:.67,objective:.85,hp:30,damage:6,range:6},
@@ -96,7 +96,42 @@ function pathsFrom(s,u){
 }
 function pathTo(nodes,pos){let n=nodes.get(key(pos.x,pos.y));if(!n)return [];const route=[];while(n.parent!==null){route.unshift({x:n.x,y:n.y});n=nodes.get(n.parent);}return route;}
 function closestNode(nodes,p){let best=null,cost=Infinity;for(const n of nodes.values()){const c=distance(n,p)*5+n.d;if(c<cost){best=n;cost=c;}}return best;}
-export function threatAt(s,pos,team){let danger=0;for(const e of aliveUnits(s).filter(e=>e.team!==team))if(distance(pos,e)<=e.range&&hasLineOfSight(s,e,pos))danger+=e.damage*(covered(s,pos)?.60:1);return danger;}
+export function threatAt(s,pos,team){
+  let danger=0;
+  for(const e of aliveUnits(s))if(e.team!==team){
+    const d=distance(pos,e);
+    if(d<=e.range&&hasLineOfSight(s,e,pos))danger+=e.damage*(d>1&&covered(s,pos)?.60:1);
+  }
+  return danger;
+}
+// Enumerate every short path, including alternative routes to the same cell.
+// Risk is a static estimate on the board at decision time, not future damage.
+export function planReflexRetreat(s,u,side,budget=REFLEX_BURST){
+  const steps=Math.min(REFLEX_BURST,Math.max(0,Math.floor(budget))),currentRisk=threatAt(s,u,u.team),epsilon=1e-9;
+  if(u.hp<=0||!Number.isFinite(steps)||steps===0||currentRisk<=epsilon)return null;
+  const occupied=new Set(aliveUnits(s).filter(v=>v.id!==u.id).map(v=>key(v.x,v.y)));
+  const seen=new Set([key(u.x,u.y)]);let best=null,bestSide=-Infinity;
+  const search=(pos,route,risks)=>{
+    if(route.length>=steps)return;
+    for(const [dx,dy] of DIRS){
+      const next={x:pos.x+dx,y:pos.y+dy},k=key(next.x,next.y);
+      if(!inside(next.x,next.y)||tileAt(s,next.x,next.y)===1||occupied.has(k)||seen.has(k))continue;
+      const risk=threatAt(s,next,u.team),previousRisk=risks.at(-1)??currentRisk;
+      if(risk>previousRisk+epsilon)continue;
+      const path=[...route,next],pathRisks=[...risks,risk],lateral=(next.y-u.y)*(u.team?-1:1)*(side==='L'?1:-1);
+      const equalRisk=best&&Math.abs(risk-best.safety.destinationRisk)<=epsilon;
+      const better=!best||risk<best.safety.destinationRisk-epsilon||
+        (equalRisk&&(path.length<best.route.length||(path.length===best.route.length&&lateral>bestSide)));
+      if(risk<currentRisk-epsilon&&better){
+        best={destination:{...next},route:path,safety:{currentRisk,firstRisk:pathRisks[0],destinationRisk:risk,maxRisk:Math.max(...pathRisks),steps:path.length,budget:steps}};
+        bestSide=lateral;
+      }
+      seen.add(k);search(next,path,pathRisks);seen.delete(k);
+    }
+  };
+  search(u,[],[]);return best;
+}
+function actionKey(d){return d.type==='attack'?'attack:'+d.target:d.route?.length?'move:'+key(d.route[0].x,d.route[0].y):'hold';}
 export function controllerFor(s,u){return u.team?s.config.controllerB:s.config.controllerA;}
 // Threat encoding is engineered: visible enemy proximity enters looming cells.
 // Left/right are relative to deployment direction (A east, B west).
@@ -118,8 +153,8 @@ export function decideUnit(s,u){
   for(const e of enemies){
     const d=distance(u,e);
     if(d<=u.range&&hasLineOfSight(s,u,e)){
-      const lethal=e.hp<=u.damage*(covered(s,e)?.6:1),close=d===1;
-      add('attack',(close?'Ближняя атака':'Огонь')+' · '+e.id,38+40*p.aggression+(lethal?24:0)+(1-e.hp/e.maxHp)*12-(covered(s,e)?8:0),e.id+' в зоне '+(close?'контакта. ':'огня. ')+(lethal?'Есть шанс уничтожить цель.':covered(s,e)?'Цель в укрытии: урон будет ниже.':'Открытая цель; учитывается агрессивность профиля.'),{target:e.id,destination:{x:e.x,y:e.y},route:[]});
+      const close=d===1,inCover=!close&&covered(s,e),lethal=e.hp<=u.damage*(inCover?.6:1);
+      add('attack',(close?'Ближняя атака':'Огонь')+' · '+e.id,38+40*p.aggression+(lethal?24:0)+(1-e.hp/e.maxHp)*12-(inCover?8:0),e.id+' в зоне '+(close?'контакта. ':'огня. ')+(lethal?'Есть шанс уничтожить цель.':inCover?'Цель в укрытии: урон будет ниже.':'Открытая цель; учитывается агрессивность профиля.'),{target:e.id,destination:{x:e.x,y:e.y},route:[]});
     }
   }
   for(const o of s.objectives){
@@ -138,17 +173,32 @@ export function decideUnit(s,u){
     }
     if(attackNode&&attackNode.d>0)add('move',u.role==='assault'?'Сблизиться с целью':'Занять огневую позицию',21+48*p.aggression-Math.min(attackNode.d,30)*1.2+(u.role==='assault'?9:0),'Выбор позиции для атаки '+target.id+'. Маршрут учитывает стены и занятые клетки.',{target:target.id,destination:{x:attackNode.x,y:attackNode.y},route:pathTo(nodes,attackNode)});
   }
-  if(currentDanger>0||hpRatio<.65||neural.active){
+  // The ordinary tactical choice is independent of neural state.
+  if(currentDanger>0||hpRatio<.65){
     let safe=null,best=-Infinity;
-    for(const n of nodes.values())if(n.d>0&&n.d<=7){const risk=threatAt(s,n,u.team),value=(currentDanger-risk)*2+(covered(s,n)?7:0)-n.d*1.1+(neural.active?(n.y-u.y)*(u.team?-1:1)*(neural.side==='L'?1:-1)*.4:0);if(value>best){best=value;safe=n;}}
-    if(safe&&best>0){add('retreat','Снизить угрозу',10+70*p.caution*(1-hpRatio)+Math.min(30,currentDanger*1.7)*p.caution+(covered(s,safe)?8:0),'Здоровье '+Math.round(hpRatio*100)+'%. Угроза сейчас '+Math.round(currentDanger)+'; в выбранной позиции '+Math.round(threatAt(s,safe,u.team))+'.',{destination:{x:safe.x,y:safe.y},route:pathTo(nodes,safe)});
-      if(neural.active)add('retreat','Рефлекс MaleCNS · отход',Math.max(...candidates.map(c=>c.score))+10+neural.drive*100,
-        'LC4/LPLC2 → DN: сигнал '+neural.drive.toFixed(3)+' (порог '+neural.threshold.toFixed(3)+')'+'. Короткая реакция на угрозу '+(neural.side==='L'?'слева':'справа')+' относительно направления группы. Отход прерывает тактический план.',
-        {destination:{x:safe.x,y:safe.y},route:pathTo(nodes,safe),neuralOverride:true});
+    for(const n of nodes.values())if(n.d>0&&n.d<=7){
+      const risk=threatAt(s,n,u.team),value=(currentDanger-risk)*2+(covered(s,n)?7:0)-n.d*1.1;
+      if(value>best){best=value;safe=n;}
     }
+    if(safe&&best>0)add('retreat','Снизить угрозу',10+70*p.caution*(1-hpRatio)+Math.min(30,currentDanger*1.7)*p.caution+(covered(s,safe)?8:0),
+      'Здоровье '+Math.round(hpRatio*100)+'%. Угроза сейчас '+Math.round(currentDanger)+'; в выбранной позиции '+Math.round(threatAt(s,safe,u.team))+'.',
+      {destination:{x:safe.x,y:safe.y},route:pathTo(nodes,safe)});
   }
-  add('hold','Наблюдать',1,'Ожидание доступного действия.',{route:[]});candidates.sort((a,b)=>b.score-a.score);
-  return {...candidates[0],alternatives:candidates.slice(0,4),evaluatedAt:s.tick,controller:mode,neural};
+  add('hold','Наблюдать',1,'Ожидание доступного действия.',{route:[]});
+  candidates.sort((a,b)=>b.score-a.score);
+  const baseline=candidates[0];
+  if(neural.active){
+    const budget=Math.min(REFLEX_BURST,u.reflex.remaining+1),plan=planReflexRetreat(s,u,neural.side,budget);
+    if(plan)add('retreat','Рефлекс MaleCNS · отход',baseline.score+10+neural.drive*100,
+      'LC4/LPLC2 → DN: сигнал '+neural.drive.toFixed(3)+' (порог '+neural.threshold.toFixed(3)+'). Угроза по маршруту не растёт; снижение достижимо за '+plan.safety.steps+' кл. при оставшемся лимите '+budget+'.',
+      {destination:plan.destination,route:plan.route,routeSafety:plan.safety,neuralOverride:true});
+    else neural.blockedReason=currentDanger<=0?'Рефлекс активен, но прямой угрозы огня сейчас нет. Тактический план сохранён.':
+      'Рефлекс активен, но за оставшиеся '+budget+' кл. нет пути со снижением угрозы без её роста на промежуточных шагах. Тактический план сохранён.';
+  }
+  candidates.sort((a,b)=>b.score-a.score);
+  const chosen=candidates[0],counterfactual={type:baseline.type,label:baseline.label,score:baseline.score,target:baseline.target??null,
+    firstStep:baseline.route?.[0]?{...baseline.route[0]}:null,changed:actionKey(chosen)!==actionKey(baseline)};
+  return {...chosen,alternatives:candidates.slice(0,4),counterfactual,origin:{x:u.x,y:u.y},evaluatedAt:s.tick,controller:mode,neural};
 }
 export function updateDecisions(s){for(const u of s.units)u.decision=decideUnit(s,u);}
 function event(s,type,text,team=null){s.events.push({tick:s.tick,type,text,team});if(s.events.length>160)s.events.shift();}
@@ -160,11 +210,12 @@ export function updateObjectives(s,award=true){
     o.owner=owner;o.contested=counts[0]>0&&counts[1]>0;if(award&&owner!==null)s.scores[owner]++;
   }
 }
-export function stepSimulation(s){
+// Optional read-only observer sees each choice before it is executed, including units killed later in the tick.
+export function stepSimulation(s,observeDecision){
   if(s.finished)return s;s.tick++;s.effects=[];for(const u of s.units){u.px=u.x;u.py=u.y;if(u.hp<=0)u.decision=null;}
   const order=aliveUnits(s).map(u=>u.id);for(let i=order.length-1;i>0;i--){const j=Math.floor(random(s)*(i+1));[order[i],order[j]]=[order[j],order[i]];}
   for(const id of order){
-    const u=s.units.find(v=>v.id===id);if(u.hp<=0)continue;stepBrain(u.brain,observeThreat(s,u),controllerFor(s,u));stepReflex(u.reflex,neuralReadout(u.brain,profile(u),controllerFor(s,u)),controllerFor(s,u)!=='utility');const d=decideUnit(s,u);u.decision=d;if(d.neuralOverride){u.neuralEscapes++;event(s,'reflex',u.id+' · MaleCNS: короткий отход, сигнал '+d.neural.drive.toFixed(3),u.team);}
+    const u=s.units.find(v=>v.id===id);if(u.hp<=0)continue;stepBrain(u.brain,observeThreat(s,u),controllerFor(s,u));stepReflex(u.reflex,neuralReadout(u.brain,profile(u),controllerFor(s,u)),controllerFor(s,u)!=='utility');const d=decideUnit(s,u);u.decision=d;observeDecision?.(d,u,s);if(d.neuralOverride){u.neuralEscapes++;event(s,'reflex',u.id+' · MaleCNS: короткий отход, сигнал '+d.neural.drive.toFixed(3),u.team);}
     if(d.type==='attack'){
       const target=s.units.find(v=>v.id===d.target);if(!target||target.hp<=0||distance(u,target)>u.range||!hasLineOfSight(s,u,target))continue;
       const melee=distance(u,target)===1,hit=random(s)<(melee?.94:.83),damage=hit?Math.max(1,Math.round(u.damage*(covered(s,target)&&!melee?.60:1)*(.85+random(s)*.30))):0;
@@ -195,14 +246,14 @@ export function importScene(text){
   if(typeof text!=='string'||text.length>2_000_000)throw new Error('Слишком большой файл сцены.');
   let data;try{data=JSON.parse(text);}catch{throw new Error('Файл не содержит корректный JSON.');}
   const v=data?.state,invalid=()=>{throw new Error('Неподдерживаемая или повреждённая сцена.');};
-  if(data?.format!=='malecns-scene'||![1,2,VERSION].includes(data.version)||!v||!v.config)invalid();
+  if(data?.format!=='malecns-scene'||![1,2,3,VERSION].includes(data.version)||!v||!v.config)invalid();
   if(!Array.isArray(v.map)||v.map.length!==W*H||v.map.some(t=>![0,1,2].includes(t)))invalid();
   if(!Number.isInteger(v.tick)||v.tick<0||v.tick>MAX_TICKS||!Number.isInteger(v.rng)||v.rng<0||v.rng>4294967295)invalid();
   if(!Array.isArray(v.scores)||v.scores.length!==2||v.scores.some(n=>!Number.isInteger(n)||n<0||n>MAX_TICKS*3))invalid();
   if(!Object.hasOwn(MAPS,v.config.mapKind)||!Object.hasOwn(FACTIONS,v.config.factionA)||!Object.hasOwn(FACTIONS,v.config.factionB)||typeof v.config.seed!=='string'||v.config.seed.length>64||!Number.isFinite(v.config.density)||v.config.density<8||v.config.density>50)invalid();
   if(data.version>=2&&(!Object.hasOwn(CONTROLLERS,v.config.controllerA)||!Object.hasOwn(CONTROLLERS,v.config.controllerB)))invalid();
-  if(data.version===VERSION&&!Object.hasOwn(SCENARIOS,v.config.scenario))invalid();
-  const scenario=data.version===VERSION?v.config.scenario:'battle',perTeam=scenario==='contact'?1:5;
+  if(data.version>=3&&!Object.hasOwn(SCENARIOS,v.config.scenario))invalid();
+  const scenario=data.version>=3?v.config.scenario:'battle',perTeam=scenario==='contact'?1:5;
   if(!Array.isArray(v.units)||v.units.length!==perTeam*2||!Array.isArray(v.objectives)||v.objectives.length!==3)invalid();
   if(typeof v.finished!=='boolean'||![null,0,1].includes(v.winner))invalid();
   const pos=p=>Number.isInteger(p.x)&&Number.isInteger(p.y)&&inside(p.x,p.y)&&v.map[key(p.x,p.y)]!==1;
@@ -216,14 +267,14 @@ export function importScene(text){
     for(const k of Object.keys(u.overrides))if(!['aggression','caution','objective','reactivity'].includes(k)||!Number.isFinite(u.overrides[k])||u.overrides[k]<0||u.overrides[k]>1)invalid();
     if(!Number.isInteger(u.kills)||u.kills<0||u.kills>perTeam||!Number.isFinite(u.damageDone)||u.damageDone<0||u.damageDone>1000||!['I','II','III'].includes(u.assignment))invalid();
     if(data.version>=2&&(!validateBrain(u.brain,v.tick)||!Number.isInteger(u.neuralEscapes)||u.neuralEscapes<0||u.neuralEscapes>v.tick))invalid();
-    if(data.version===VERSION&&!validateReflex(u.reflex,v.tick))invalid();
+    if(data.version>=3&&!validateReflex(u.reflex,v.tick))invalid();
     if(u.hp>0){const k=key(u.x,u.y);if(occupied.has(k))invalid();occupied.add(k);}ids.add(u.id);
   }
   for(const [i,o] of v.objectives.entries())if(!o||o.id!==['I','II','III'][i]||!pos(o)||![null,0,1].includes(o.owner))invalid();
   const config={...v.config,scenario};
   if(data.version===1){config.controllerA='utility';config.controllerB='utility';}
   const s=createSimulation(config);s.map=[...v.map];s.tick=v.tick;s.rng=v.rng;s.scores=[...v.scores];s.finished=v.finished;s.winner=v.winner;
-  s.units=v.units.map(u=>({id:u.id,name:u.name,team:u.team,faction:u.faction,role:u.role,x:u.x,y:u.y,px:u.x,py:u.y,hp:u.hp,maxHp:u.maxHp,damage:u.damage,range:u.range,overrides:{...u.overrides},kills:u.kills,damageDone:u.damageDone,decision:null,brain:data.version===1?createBrain():copyBrain(u.brain),reflex:data.version===VERSION?copyReflex(u.reflex):createReflex(),neuralEscapes:data.version===1?0:u.neuralEscapes,assignment:u.assignment}));
+  s.units=v.units.map(u=>({id:u.id,name:u.name,team:u.team,faction:u.faction,role:u.role,x:u.x,y:u.y,px:u.x,py:u.y,hp:u.hp,maxHp:u.maxHp,damage:u.damage,range:u.range,overrides:{...u.overrides},kills:u.kills,damageDone:u.damageDone,decision:null,brain:data.version===1?createBrain():copyBrain(u.brain),reflex:data.version>=3?copyReflex(u.reflex):createReflex(),neuralEscapes:data.version===1?0:u.neuralEscapes,assignment:u.assignment}));
   s.objectives=v.objectives.map(o=>({id:o.id,x:o.x,y:o.y,owner:o.owner,contested:false}));s.events=[];s.effects=[];
   if(data.version<VERSION)s.importNote='Сцена v'+data.version+' обновлена: состояние сохранено, дальнейшее поведение рассчитывается по правилам v'+VERSION+'.';
   updateDecisions(s);return s;

@@ -27,7 +27,7 @@
 </defs></svg>
 <header class="topbar">
   <a href="./" class="brand" aria-label="Malecns, главная"><span class="brandmark"><span></span><span></span><span></span></span><strong>malecns<span>.</span></strong><span class="brand-divider"></span><span class="brand-sub">WARHAMMER<br><b>BEHAVIOR LAB</b></span></a>
-  <div class="header-right"><span class="version"><i></i> PROTOTYPE 0.3</span><button class="text-btn" id="about-btn"><svg><use href="#i-device"/></svg>От экрана к столу</button></div>
+  <div class="header-right"><span class="version"><i></i> PROTOTYPE 0.4</span><button class="text-btn" id="about-btn"><svg><use href="#i-device"/></svg>От экрана к столу</button></div>
 </header>
 <main>
   <div class="page-heading"><div><div class="eyebrow">ЭКСПЕРИМЕНТАЛЬНЫЙ ПОЛИГОН / 001</div><h1>У каждой армии — свой характер<span>.</span></h1><p>Создавай поле боя. Меняй поведение. Наблюдай за решениями.</p></div><span class="heading-tag">TACTICAL SANDBOX <span>↗</span></span></div>
@@ -71,7 +71,13 @@
       <div class="unit-header"><div id="unit-emblem" class="unit-emblem">◇</div><div><div class="eyebrow" id="unit-code">A-01 / ASTARTES</div><h2 id="unit-name">Vega</h2><span id="unit-role" class="muted">Разведчик</span></div><span class="team-chip" id="unit-team">A</span></div>
       <div class="health-section"><div><span>Состояние</span><strong id="unit-health">25 / 25 HP</strong></div><div class="health-track"><i id="health-fill"></i></div></div>
       <div class="unit-stats"><div><span>Дальность</span><strong id="stat-range">6 <small>кл.</small></strong></div><div><span>Урон</span><strong id="stat-damage">5</strong></div><div><span>Позиция</span><strong id="stat-position">03 : 06</strong></div></div>
-      <section class="decision-section"><div class="section-label">РЕШЕНИЕ ЮНИТА <span class="accent">↗</span></div><div class="decision-card"><span class="decision-state" id="decision-state">ДВИЖЕНИЕ</span><h3 id="decision-title">Захватить I</h3><p id="decision-reason"></p></div><div class="candidates-heading">Оценка вариантов <span title="Условная полезность действия, не вероятность">utility</span></div><div id="candidates"></div><p class="decision-caption" id="decision-caption">Расчёт перед первым тактом</p></section>
+      <section class="decision-section"><div class="section-label">РЕШЕНИЕ ЮНИТА <span class="accent">↗</span></div><div class="decision-card"><span class="decision-state" id="decision-state">ДВИЖЕНИЕ</span><h3 id="decision-title">Захватить I</h3><p id="decision-reason"></p></div><div class="decision-comparison" id="decision-comparison">
+        <div class="section-label">ВЛИЯНИЕ РЕФЛЕКСА</div>
+        <dl><div><dt>Без вмешательства</dt><dd id="baseline-action"></dd></div><div><dt>Выбрано</dt><dd id="actual-action"></dd></div></dl>
+        <p class="decision-impact" id="decision-impact"></p>
+        <div id="route-safety" hidden><div class="route-risk-values"><span>Сейчас<strong id="risk-now"></strong></span><span>Первый шаг<strong id="risk-first"></strong></span><span>Конец пути<strong id="risk-end"></strong></span></div><p id="route-budget"></p></div>
+        <p class="comparison-caveat">Сравнение первого действия в момент выбора. Угроза — условная оценка до следующих действий противника.</p>
+      </div><div class="candidates-heading">Оценка вариантов <span title="Условная полезность действия, не вероятность">utility</span></div><div id="candidates"></div><p class="decision-caption" id="decision-caption">Расчёт перед первым тактом</p></section>
       <section class="neural-section">
   <div class="section-label">НЕЙРОННАЯ ЦЕПЬ <span class="accent" id="brain-mode">MALECNS</span></div>
   <p class="neural-summary" id="brain-summary"></p>
