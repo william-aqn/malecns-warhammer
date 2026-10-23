@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "id": "malecns-visual-motor-11436",
+  "dataset": "male-cns:v1.0",
+  "license": "CC-BY-4.0",
+  "source": {
+    "url": "https://huggingface.co/slvDev/esp32-ai-fly",
+    "revision": "d36ff5e192da832c4348ab509d150357cb70ddd8",
+    "assets": {
+      "connectome.fcl": {
+        "bytes": 14174411,
+        "sha256": "1e35e6ba658986de5e3163ea49b600378a2e3daa64700b8b619c4f21cc0a6e1f"
+      },
+      "escape-circuit.json": {
+        "bytes": 38724,
+        "sha256": "566df28669c4b6ae5fff4a2330558837bce0c2a4fb08eb9edec4193285f3a91d"
+      },
+      "neurons.csv": {
+        "bytes": 2132569,
+        "sha256": "348e54b2a1c94b8387263c7af82ff41e8518be5fd662aed62bc28ebf281c3703"
+      }
+    },
+    "nodes": 48311,
+    "edges": 9462135
+  },
+  "selection": "LC4/LPLC2 and LC10 inputs, DNa01/DNa02/DNp09/MDN and DNp01/02/04/11 outputs, plus all intermediate neurons on input-to-output paths of at most three anatomical edges. Full induced graph; no contact threshold. All other neurons omitted.",
+  "normalization": "Original unsigned contact counts divided by the full 48311-neuron source incoming total; omitted cells contribute zero.",
+  "counts": {
+    "neurons": 11436,
+    "edges": 1687031,
+    "contacts": 10931415
+  },
+  "calibration": {
+    "target": {
+      "DNa01L": 0.006451264955103397,
+      "DNa01R": 0.006059878505766392,
+      "DNa02L": 0.02152717299759388,
+      "DNa02R": 0.020863499492406845,
+      "DNp09L": 0.002175029832869768,
+      "DNp09R": 0.018647674471139908,
+      "MDNL": 0.008373714983463287,
+      "MDNR": 0.008008651901036501,
+      "DNp01L": 0.001591415610164404,
+      "DNp01R": 0.001598712638951838,
+      "DNp02L": 0.0013182347174733877,
+      "DNp02R": 0.0013894862495362759,
+      "DNp04L": 0.0022374417167156935,
+      "DNp04R": 0.002295606303960085,
+      "DNp11L": 0.005723951850086451,
+      "DNp11R": 0.008297140710055828
+    },
+    "threat": {
+      "DNa01L": 0.002611086005344987,
+      "DNa01R": 0.002912120195105672,
+      "DNa02L": 0.001909727114252746,
+      "DNa02R": 0.0022675995714962482,
+      "DNp09L": 0.010393120348453522,
+      "DNp09R": 0.005407189950346947,
+      "MDNL": 0.0018807929009199142,
+      "MDNR": 0.0019011347321793437,
+      "DNp01L": 0.13701650500297546,
+      "DNp01R": 0.13400492072105408,
+      "DNp02L": 0.11715852469205856,
+      "DNp02R": 0.10259922593832016,
+      "DNp04L": 0.26883867383003235,
+      "DNp04R": 0.2554679214954376,
+      "DNp11L": 0.09598740935325623,
+      "DNp11R": 0.09718727320432663
+    }
+  },
+  "calibrationNote": "32 zero-start rate steps for symmetric target or looming inputs at 0.5. Used only to scale the engineered motor decoder, not trained against combat rewards.",
+  "sha256": "2e00fbe4528b5ba23cbbcdb40aa94ee26772d1bf7c6b8ce7cfe14888029f3d89",
+  "packedBytes": 6793872
+}

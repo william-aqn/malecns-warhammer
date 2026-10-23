@@ -1,5 +1,5 @@
 {
-  "version": "0.4.0",
+  "version": "0.5.0",
   "model": "6a1452434783f8e3e9ebdb82fc36e3c56071b85e1575c755af55a1f84b89a477",
   "reflex": {
     "contract": "bounded-escape-v1",
@@ -76,6 +76,768 @@
       "maxConsecutiveReflexMoves": 0
     }
   ],
+  "motor": {
+    "model": "2e00fbe4528b5ba23cbbcdb40aa94ee26772d1bf7c6b8ce7cfe14888029f3d89",
+    "counts": {
+      "neurons": 11436,
+      "edges": 1687031,
+      "contacts": 10931415
+    },
+    "stepsPerActivation": 8,
+    "scope": "One fixed 1v1 contact scene, 12 ticks at most, with neural/disconnected/utility A against utility B; same factions, seed and initial state. Lateral stimuli are separate zero-start probes. Command decoding, sensory projection and target binding are engineered. No claim of tactical superiority or biological behavior.",
+    "contact": [
+      {
+        "mode": "neural",
+        "label": "MaleCNS · нейронное управление",
+        "reactivity": 0.5,
+        "firstAction": "Нейронная команда · назад",
+        "firstType": "retreat",
+        "neuralEscapes": 0,
+        "motorCommands": 12,
+        "episodes": 0,
+        "damageDone": 0,
+        "hp": 15,
+        "ticks": 12,
+        "maxDrive": 0.13837194629013538,
+        "timeline": [
+          {
+            "tick": 1,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.11978080682456493,
+            "phase": "ready",
+            "heading": 2,
+            "x": 9,
+            "y": 10,
+            "hp": 20
+          },
+          {
+            "tick": 2,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.13837194629013538,
+            "phase": "ready",
+            "heading": 2,
+            "x": 8,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 3,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.12295274250209332,
+            "phase": "ready",
+            "heading": 2,
+            "x": 7,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 4,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.10279429890215397,
+            "phase": "ready",
+            "heading": 2,
+            "x": 6,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 5,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.10030175745487213,
+            "phase": "ready",
+            "heading": 2,
+            "x": 5,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 6,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.10014268197119236,
+            "phase": "ready",
+            "heading": 2,
+            "x": 4,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 7,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.10013033077120781,
+            "phase": "ready",
+            "heading": 2,
+            "x": 3,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 8,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.11848608963191509,
+            "phase": "ready",
+            "heading": 2,
+            "x": 2,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 9,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.10252157039940357,
+            "phase": "ready",
+            "heading": 2,
+            "x": 1,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 10,
+            "action": "move",
+            "label": "Нейронная команда · вперёд",
+            "command": "advance",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.06474672257900238,
+            "phase": "ready",
+            "heading": 2,
+            "x": 2,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 11,
+            "action": "move",
+            "label": "Нейронная команда · вперёд",
+            "command": "advance",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.04022345785051584,
+            "phase": "ready",
+            "heading": 2,
+            "x": 3,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 12,
+            "action": "turn",
+            "label": "Нейронная команда · поворот вправо",
+            "command": "right",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.06781446561217308,
+            "phase": "ready",
+            "heading": 3,
+            "x": 3,
+            "y": 10,
+            "hp": 15
+          }
+        ]
+      },
+      {
+        "mode": "neural-disconnected",
+        "label": "Нейронное управление · без связей",
+        "reactivity": 0.5,
+        "firstAction": "Нет двигательной команды",
+        "firstType": "hold",
+        "neuralEscapes": 0,
+        "motorCommands": 0,
+        "episodes": 0,
+        "damageDone": 0,
+        "hp": 0,
+        "ticks": 6,
+        "maxDrive": 0,
+        "timeline": [
+          {
+            "tick": 1,
+            "action": "hold",
+            "label": "Нет двигательной команды",
+            "command": "wait",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 20
+          },
+          {
+            "tick": 2,
+            "action": "hold",
+            "label": "Нет двигательной команды",
+            "command": "wait",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 3,
+            "action": "hold",
+            "label": "Нет двигательной команды",
+            "command": "wait",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 4,
+            "action": "hold",
+            "label": "Нет двигательной команды",
+            "command": "wait",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 9
+          },
+          {
+            "tick": 5,
+            "action": "hold",
+            "label": "Нет двигательной команды",
+            "command": "wait",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 4
+          },
+          {
+            "tick": 6,
+            "action": "hold",
+            "label": "Нет двигательной команды",
+            "command": "wait",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 0
+          }
+        ]
+      },
+      {
+        "mode": "utility",
+        "label": "Только тактика",
+        "reactivity": 0.5,
+        "firstAction": "Огонь · B-01",
+        "firstType": "attack",
+        "neuralEscapes": 0,
+        "motorCommands": 0,
+        "episodes": 0,
+        "damageDone": 5,
+        "hp": 0,
+        "ticks": 7,
+        "maxDrive": 0,
+        "timeline": [
+          {
+            "tick": 1,
+            "action": "attack",
+            "label": "Огонь · B-01",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 20
+          },
+          {
+            "tick": 2,
+            "action": "retreat",
+            "label": "Снизить угрозу",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 11,
+            "hp": 14
+          },
+          {
+            "tick": 3,
+            "action": "retreat",
+            "label": "Снизить угрозу",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 12,
+            "hp": 8
+          },
+          {
+            "tick": 4,
+            "action": "retreat",
+            "label": "Снизить угрозу",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 9,
+            "y": 12,
+            "hp": 8
+          },
+          {
+            "tick": 5,
+            "action": "hold",
+            "label": "Остаться в укрытии",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 9,
+            "y": 12,
+            "hp": 5
+          },
+          {
+            "tick": 6,
+            "action": "hold",
+            "label": "Остаться в укрытии",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 9,
+            "y": 12,
+            "hp": 2
+          },
+          {
+            "tick": 7,
+            "action": "hold",
+            "label": "Остаться в укрытии",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 9,
+            "y": 12,
+            "hp": 0
+          }
+        ]
+      }
+    ],
+    "probes": [
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "outputs": {
+          "steer": [
+            0.021189268678426743,
+            0.010350811295211315
+          ],
+          "walk": [
+            0.0024873525835573673,
+            0.0017243800684809685
+          ],
+          "reverse": [
+            0.005905200028792024,
+            0.00667645619250834
+          ],
+          "escape": [
+            0.0035899626091122627,
+            0.000592132615565788
+          ]
+        },
+        "scores": {
+          "advance": 0.6180331426365481,
+          "left": 0.98038507777324,
+          "right": 0.023198424264015458,
+          "reverse": 0.0044214547409296865,
+          "wait": 0.06
+        },
+        "milliseconds": 185
+      },
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "outputs": {
+          "steer": [
+            0.01168820820748806,
+            0.021565554663538933
+          ],
+          "walk": [
+            0.0008879912784323096,
+            0.0270650926977396
+          ],
+          "reverse": [
+            0.0069834638852626085,
+            0.005631628446280956
+          ],
+          "escape": [
+            0.0006330119576887228,
+            0.004713594680652022
+          ]
+        },
+        "scores": {
+          "advance": 0.7883006501360149,
+          "left": 0.03199674133144854,
+          "right": 0.9854876336476176,
+          "reverse": 0.004499592255786266,
+          "wait": 0.06
+        },
+        "milliseconds": 182
+      },
+      {
+        "mode": "neural",
+        "inputs": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "outputs": {
+          "steer": [
+            0.0017177576664835215,
+            0.0013502149377018213
+          ],
+          "walk": [
+            0.013309916481375694,
+            0.0010823437478393316
+          ],
+          "reverse": [
+            0.0013256637030281126,
+            0.001447036222089082
+          ],
+          "escape": [
+            0.2260167859494686,
+            0.008052443736232817
+          ]
+        },
+        "scores": {
+          "advance": 0.07225573239992811,
+          "left": 0.08481795220257722,
+          "right": 1.4605258778841443,
+          "reverse": 0.06012760418477653,
+          "wait": 0.06
+        },
+        "milliseconds": 182
+      },
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "outputs": {
+          "steer": [
+            0.0011035716161131859,
+            0.002018534578382969
+          ],
+          "walk": [
+            0.0015027185436338186,
+            0.006745907478034496
+          ],
+          "reverse": [
+            0.001478851423598826,
+            0.0013861744664609432
+          ],
+          "escape": [
+            0.007080072071403265,
+            0.216085534542799
+          ]
+        },
+        "scores": {
+          "advance": 0.07400684521525469,
+          "left": 1.466828062797568,
+          "right": 0.13672248921980407,
+          "reverse": 0.05032675461489517,
+          "wait": 0.06
+        },
+        "milliseconds": 182
+      },
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "outputs": {
+          "steer": [
+            0,
+            0
+          ],
+          "walk": [
+            0,
+            0
+          ],
+          "reverse": [
+            0,
+            0
+          ],
+          "escape": [
+            0,
+            0
+          ]
+        },
+        "scores": {
+          "advance": 0,
+          "left": 0,
+          "right": 0,
+          "reverse": 0,
+          "wait": 0.06
+        },
+        "milliseconds": 180
+      },
+      {
+        "mode": "neural-disconnected",
+        "inputs": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "outputs": {
+          "steer": [
+            0,
+            0
+          ],
+          "walk": [
+            0,
+            0
+          ],
+          "reverse": [
+            0,
+            0
+          ],
+          "escape": [
+            0,
+            0
+          ]
+        },
+        "scores": {
+          "advance": 0,
+          "left": 0,
+          "right": 0,
+          "reverse": 0,
+          "wait": 0.06
+        },
+        "milliseconds": 2
+      },
+      {
+        "mode": "neural-disconnected",
+        "inputs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "outputs": {
+          "steer": [
+            0,
+            0
+          ],
+          "walk": [
+            0,
+            0
+          ],
+          "reverse": [
+            0,
+            0
+          ],
+          "escape": [
+            0,
+            0
+          ]
+        },
+        "scores": {
+          "advance": 0,
+          "left": 0,
+          "right": 0,
+          "reverse": 0,
+          "wait": 0.06
+        },
+        "milliseconds": 2
+      },
+      {
+        "mode": "neural-disconnected",
+        "inputs": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "outputs": {
+          "steer": [
+            0,
+            0
+          ],
+          "walk": [
+            0,
+            0
+          ],
+          "reverse": [
+            0,
+            0
+          ],
+          "escape": [
+            0,
+            0
+          ]
+        },
+        "scores": {
+          "advance": 0,
+          "left": 0,
+          "right": 0,
+          "reverse": 0,
+          "wait": 0.06
+        },
+        "milliseconds": 2
+      },
+      {
+        "mode": "neural-disconnected",
+        "inputs": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "outputs": {
+          "steer": [
+            0,
+            0
+          ],
+          "walk": [
+            0,
+            0
+          ],
+          "reverse": [
+            0,
+            0
+          ],
+          "escape": [
+            0,
+            0
+          ]
+        },
+        "scores": {
+          "advance": 0,
+          "left": 0,
+          "right": 0,
+          "reverse": 0,
+          "wait": 0.06
+        },
+        "milliseconds": 1
+      },
+      {
+        "mode": "neural-disconnected",
+        "inputs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "outputs": {
+          "steer": [
+            0,
+            0
+          ],
+          "walk": [
+            0,
+            0
+          ],
+          "reverse": [
+            0,
+            0
+          ],
+          "escape": [
+            0,
+            0
+          ]
+        },
+        "scores": {
+          "advance": 0,
+          "left": 0,
+          "right": 0,
+          "reverse": 0,
+          "wait": 0.06
+        },
+        "milliseconds": 1
+      }
+    ]
+  },
   "contact": [
     {
       "mode": "malecns",
@@ -84,6 +846,7 @@
       "firstAction": "Рефлекс MaleCNS · отход",
       "firstType": "retreat",
       "neuralEscapes": 2,
+      "motorCommands": 0,
       "episodes": 1,
       "damageDone": 9,
       "hp": 15,
@@ -94,10 +857,12 @@
           "tick": 1,
           "action": "retreat",
           "label": "Рефлекс MaleCNS · отход",
+          "command": null,
           "reflex": true,
           "override": true,
           "rawDrive": 0.06991070974618196,
           "phase": "responding",
+          "heading": 2,
           "x": 10,
           "y": 11,
           "hp": 20
@@ -106,10 +871,12 @@
           "tick": 2,
           "action": "retreat",
           "label": "Рефлекс MaleCNS · отход",
+          "command": null,
           "reflex": true,
           "override": true,
           "rawDrive": 0.11389687284827232,
           "phase": "responding",
+          "heading": 2,
           "x": 9,
           "y": 11,
           "hp": 15
@@ -118,10 +885,12 @@
           "tick": 3,
           "action": "attack",
           "label": "Огонь · B-01",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0.11367381550371647,
           "phase": "cooldown",
+          "heading": 2,
           "x": 9,
           "y": 11,
           "hp": 15
@@ -130,106 +899,124 @@
           "tick": 4,
           "action": "attack",
           "label": "Огонь · B-01",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0.10953488200902939,
           "phase": "cooldown",
+          "heading": 2,
           "x": 9,
           "y": 11,
           "hp": 15
         },
         {
           "tick": 5,
-          "action": "retreat",
-          "label": "Снизить угрозу",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0.09789489768445492,
           "phase": "cooldown",
+          "heading": 2,
           "x": 9,
-          "y": 12,
+          "y": 11,
           "hp": 15
         },
         {
           "tick": 6,
-          "action": "retreat",
-          "label": "Снизить угрозу",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
-          "rawDrive": 0.06784885842353106,
+          "rawDrive": 0.07977417949587107,
           "phase": "cooldown",
+          "heading": 2,
           "x": 9,
           "y": 11,
           "hp": 15
         },
         {
           "tick": 7,
-          "action": "retreat",
-          "label": "Снизить угрозу",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
-          "rawDrive": 0.063726925291121,
+          "rawDrive": 0.07121071498841047,
           "phase": "waiting",
+          "heading": 2,
           "x": 9,
-          "y": 12,
+          "y": 11,
           "hp": 15
         },
         {
           "tick": 8,
-          "action": "retreat",
-          "label": "Снизить угрозу",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
-          "rawDrive": 0.05554821388795972,
+          "rawDrive": 0.06932204030454159,
           "phase": "waiting",
+          "heading": 2,
           "x": 9,
           "y": 11,
           "hp": 15
         },
         {
           "tick": 9,
-          "action": "retreat",
-          "label": "Снизить угрозу",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
-          "rawDrive": 0.06100987922400236,
+          "rawDrive": 0.06893261428922415,
           "phase": "waiting",
+          "heading": 2,
           "x": 9,
-          "y": 12,
+          "y": 11,
           "hp": 15
         },
         {
           "tick": 10,
-          "action": "retreat",
-          "label": "Снизить угрозу",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
-          "rawDrive": 0.054967285599559546,
+          "rawDrive": 0.0688491826876998,
           "phase": "waiting",
+          "heading": 2,
           "x": 9,
           "y": 11,
           "hp": 15
         },
         {
           "tick": 11,
-          "action": "retreat",
-          "label": "Снизить угрозу",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
-          "rawDrive": 0.04870998952537775,
+          "rawDrive": 0.0688302842900157,
           "phase": "waiting",
+          "heading": 2,
           "x": 9,
-          "y": 12,
+          "y": 11,
           "hp": 15
         },
         {
           "tick": 12,
-          "action": "retreat",
-          "label": "Снизить угрозу",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
-          "rawDrive": 0.04721962567418814,
+          "rawDrive": 0.06882580369710922,
           "phase": "waiting",
+          "heading": 2,
           "x": 9,
           "y": 11,
           "hp": 15
@@ -243,6 +1030,7 @@
       "firstAction": "Огонь · B-01",
       "firstType": "attack",
       "neuralEscapes": 0,
+      "motorCommands": 0,
       "episodes": 0,
       "damageDone": 5,
       "hp": 0,
@@ -253,10 +1041,12 @@
           "tick": 1,
           "action": "attack",
           "label": "Огонь · B-01",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 10,
           "y": 10,
           "hp": 20
@@ -265,10 +1055,12 @@
           "tick": 2,
           "action": "retreat",
           "label": "Снизить угрозу",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 10,
           "y": 11,
           "hp": 14
@@ -277,10 +1069,12 @@
           "tick": 3,
           "action": "retreat",
           "label": "Снизить угрозу",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 10,
           "y": 12,
           "hp": 8
@@ -289,48 +1083,56 @@
           "tick": 4,
           "action": "retreat",
           "label": "Снизить угрозу",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 9,
           "y": 12,
           "hp": 8
         },
         {
           "tick": 5,
-          "action": "retreat",
-          "label": "Снизить угрозу",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 9,
-          "y": 11,
+          "y": 12,
           "hp": 5
         },
         {
           "tick": 6,
-          "action": "retreat",
-          "label": "Снизить угрозу",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 9,
           "y": 12,
           "hp": 2
         },
         {
           "tick": 7,
-          "action": "dead",
-          "label": "Выведен из боя",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 9,
-          "y": 11,
+          "y": 12,
           "hp": 0
         }
       ]
@@ -342,6 +1144,7 @@
       "firstAction": "Огонь · B-01",
       "firstType": "attack",
       "neuralEscapes": 0,
+      "motorCommands": 0,
       "episodes": 0,
       "damageDone": 5,
       "hp": 0,
@@ -352,10 +1155,12 @@
           "tick": 1,
           "action": "attack",
           "label": "Огонь · B-01",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 10,
           "y": 10,
           "hp": 20
@@ -364,10 +1169,12 @@
           "tick": 2,
           "action": "retreat",
           "label": "Снизить угрозу",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 10,
           "y": 11,
           "hp": 14
@@ -376,10 +1183,12 @@
           "tick": 3,
           "action": "retreat",
           "label": "Снизить угрозу",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 10,
           "y": 12,
           "hp": 8
@@ -388,48 +1197,56 @@
           "tick": 4,
           "action": "retreat",
           "label": "Снизить угрозу",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 9,
           "y": 12,
           "hp": 8
         },
         {
           "tick": 5,
-          "action": "retreat",
-          "label": "Снизить угрозу",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 9,
-          "y": 11,
+          "y": 12,
           "hp": 5
         },
         {
           "tick": 6,
-          "action": "retreat",
-          "label": "Снизить угрозу",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 9,
           "y": 12,
           "hp": 2
         },
         {
           "tick": 7,
-          "action": "dead",
-          "label": "Выведен из боя",
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
           "reflex": false,
           "override": false,
           "rawDrive": 0,
           "phase": "ready",
+          "heading": 2,
           "x": 9,
-          "y": 11,
+          "y": 12,
           "hp": 0
         }
       ]
@@ -550,7 +1367,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 136
+      "milliseconds": 129
     },
     {
       "suite": "historical",
@@ -576,7 +1393,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 64
+      "milliseconds": 47
     },
     {
       "suite": "historical",
@@ -602,7 +1419,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 40
+      "milliseconds": 39
     },
     {
       "suite": "historical",
@@ -628,7 +1445,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 1,
-      "milliseconds": 97
+      "milliseconds": 90
     },
     {
       "suite": "historical",
@@ -654,7 +1471,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 45
+      "milliseconds": 42
     },
     {
       "suite": "historical",
@@ -706,7 +1523,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 72
+      "milliseconds": 71
     },
     {
       "suite": "historical",
@@ -732,7 +1549,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 31
     },
     {
       "suite": "historical",
@@ -758,7 +1575,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 30
+      "milliseconds": 29
     },
     {
       "suite": "historical",
@@ -784,7 +1601,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 99
+      "milliseconds": 98
     },
     {
       "suite": "historical",
@@ -836,7 +1653,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 29
     },
     {
       "suite": "historical",
@@ -862,7 +1679,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 79
+      "milliseconds": 81
     },
     {
       "suite": "historical",
@@ -888,7 +1705,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 37
+      "milliseconds": 35
     },
     {
       "suite": "historical",
@@ -914,7 +1731,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 32
     },
     {
       "suite": "historical",
@@ -940,7 +1757,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 65
+      "milliseconds": 63
     },
     {
       "suite": "historical",
@@ -992,7 +1809,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 30
     },
     {
       "suite": "historical",
@@ -1018,7 +1835,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 99
+      "milliseconds": 97
     },
     {
       "suite": "historical",
@@ -1070,7 +1887,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 26
+      "milliseconds": 24
     },
     {
       "suite": "historical",
@@ -1096,7 +1913,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 70
+      "milliseconds": 69
     },
     {
       "suite": "historical",
@@ -1122,7 +1939,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 28
+      "milliseconds": 27
     },
     {
       "suite": "historical",
@@ -1174,7 +1991,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 83
+      "milliseconds": 80
     },
     {
       "suite": "historical",
@@ -1200,7 +2017,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 36
+      "milliseconds": 34
     },
     {
       "suite": "historical",
@@ -1226,7 +2043,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 31
     },
     {
       "suite": "historical",
@@ -1252,7 +2069,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 74
+      "milliseconds": 72
     },
     {
       "suite": "historical",
@@ -1278,7 +2095,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 36
+      "milliseconds": 34
     },
     {
       "suite": "historical",
@@ -1304,7 +2121,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 31
     },
     {
       "suite": "historical",
@@ -1330,7 +2147,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 1,
-      "milliseconds": 98
+      "milliseconds": 95
     },
     {
       "suite": "historical",
@@ -1356,7 +2173,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 46
+      "milliseconds": 42
     },
     {
       "suite": "historical",
@@ -1382,7 +2199,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 41
+      "milliseconds": 39
     },
     {
       "suite": "historical",
@@ -1408,7 +2225,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 77
+      "milliseconds": 76
     },
     {
       "suite": "historical",
@@ -1434,7 +2251,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 46
+      "milliseconds": 43
     },
     {
       "suite": "historical",
@@ -1460,7 +2277,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 40
+      "milliseconds": 39
     },
     {
       "suite": "additional",
@@ -1486,7 +2303,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 68
+      "milliseconds": 67
     },
     {
       "suite": "additional",
@@ -1538,7 +2355,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 30
+      "milliseconds": 29
     },
     {
       "suite": "additional",
@@ -1564,7 +2381,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 77
+      "milliseconds": 75
     },
     {
       "suite": "additional",
@@ -1590,7 +2407,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 33
+      "milliseconds": 32
     },
     {
       "suite": "additional",
@@ -1616,7 +2433,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 30
+      "milliseconds": 29
     },
     {
       "suite": "additional",
@@ -1668,7 +2485,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 36
+      "milliseconds": 35
     },
     {
       "suite": "additional",
@@ -1694,7 +2511,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 34
+      "milliseconds": 31
     },
     {
       "suite": "additional",
@@ -1720,7 +2537,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 87
+      "milliseconds": 83
     },
     {
       "suite": "additional",
@@ -1746,7 +2563,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 35
+      "milliseconds": 34
     },
     {
       "suite": "additional",
@@ -1772,7 +2589,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 31
     },
     {
       "suite": "additional",
@@ -1798,7 +2615,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 105
+      "milliseconds": 104
     },
     {
       "suite": "additional",
@@ -1824,7 +2641,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 36
+      "milliseconds": 35
     },
     {
       "suite": "additional",
@@ -1850,7 +2667,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 31
     },
     {
       "suite": "additional",
@@ -1876,7 +2693,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 86
+      "milliseconds": 85
     },
     {
       "suite": "additional",
@@ -1902,7 +2719,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 35
+      "milliseconds": 34
     },
     {
       "suite": "additional",
@@ -1928,7 +2745,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 31
     },
     {
       "suite": "additional",
@@ -1954,7 +2771,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 80
+      "milliseconds": 78
     },
     {
       "suite": "additional",
@@ -2032,7 +2849,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 78
+      "milliseconds": 76
     },
     {
       "suite": "additional",
@@ -2058,7 +2875,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 30
+      "milliseconds": 29
     },
     {
       "suite": "additional",
@@ -2084,7 +2901,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 27
+      "milliseconds": 26
     },
     {
       "suite": "additional",
@@ -2110,7 +2927,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 1,
-      "milliseconds": 65
+      "milliseconds": 63
     },
     {
       "suite": "additional",
@@ -2136,7 +2953,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 30
     },
     {
       "suite": "additional",
@@ -2162,7 +2979,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 29
+      "milliseconds": 28
     },
     {
       "suite": "additional",
@@ -2188,7 +3005,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 70
+      "milliseconds": 68
     },
     {
       "suite": "additional",
@@ -2214,7 +3031,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 31
     },
     {
       "suite": "additional",
@@ -2240,7 +3057,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 29
+      "milliseconds": 28
     },
     {
       "suite": "additional",
@@ -2266,7 +3083,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 77
+      "milliseconds": 76
     },
     {
       "suite": "additional",
@@ -2292,7 +3109,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 30
     },
     {
       "suite": "additional",
@@ -2318,7 +3135,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 30
+      "milliseconds": 28
     },
     {
       "suite": "additional",
@@ -2370,7 +3187,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 31
     },
     {
       "suite": "additional",
@@ -2396,8 +3213,8 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 28
+      "milliseconds": 27
     }
   ],
-  "totalMilliseconds": 3694
+  "totalMilliseconds": 5050
 }

@@ -1,6 +1,9 @@
+import {isMotorMode,isMotorBrain,createMotorBrain,stepMotorBrain,validateMotorBrain,copyMotorBrain} from './motor.mjs';
 import {CONNECTOME,CONNECTOME_SHA256} from './data/malecns-escape.mjs';
 export {CONNECTOME,CONNECTOME_SHA256};
 export const CONTROLLERS={
+  neural:'MaleCNS · нейронное управление',
+  'neural-disconnected':'Нейронное управление · без связей',
   malecns:'MaleCNS + тактика',
   disconnected:'Контроль: связи отключены',
   utility:'Только тактика'
@@ -11,13 +14,15 @@ CONNECTOME.neurons.forEach((n,i)=>(n.kind==='input'?inputIndices:outputIndices)[
 const edgeFrom=Uint16Array.from(CONNECTOME.edges,e=>e[0]);
 const edgeTo=Uint16Array.from(CONNECTOME.edges,e=>e[1]);
 const edgeWeight=Float32Array.from(CONNECTOME.edges,e=>NEURAL_GAIN*e[2]/Math.max(1,CONNECTOME.neurons[e[1]].incomingTotal));
-export function createBrain(){
+export function createBrain(mode='malecns'){
+  if(isMotorMode(mode))return createMotorBrain();
   return {model:CONNECTOME_SHA256,activity:Array(CONNECTOME.neurons.length).fill(0),steps:0,inputs:[0,0],outputs:[0,0],trace:[]};
 }
 // Discrete leaky rate model, NOT measured electrophysiology. All edges are
 // unsigned because the source bundle contains no transmitter signs.
 // The full-source denominator is retained; missing neurons contribute zero.
 export function stepBrain(brain,inputs,mode='malecns',steps=NEURAL_STEPS){
+  if(isMotorMode(mode))return stepMotorBrain(brain,inputs,mode,arguments.length>=4?steps:undefined);
   if(!Object.hasOwn(CONTROLLERS,mode)||!Array.isArray(inputs)||inputs.length!==2||inputs.some(v=>!Number.isFinite(v)||v<0||v>1))throw new Error('Invalid neural input');
   if(!Number.isInteger(steps)||steps<1||steps>64)throw new Error('Invalid neural step count');
   if(mode==='utility')return brain;
@@ -45,6 +50,7 @@ export function neuralReadout(brain,traits,mode){
   return {outputs:[...outputs],rawDrive,gain,drive,threshold,triggered:mode!=='utility'&&drive>threshold,side:outputs[0]>outputs[1]?'L':'R'};
 }
 export function validateBrain(b,maxTicks){
+  if(isMotorBrain(b))return validateMotorBrain(b,maxTicks);
   const finite=(x,lo=0,hi=1)=>Number.isFinite(x)&&x>=lo&&x<=hi;
   const pair=x=>Array.isArray(x)&&x.length===2&&x.every(v=>finite(v));
   if(!b||b.model!==CONNECTOME_SHA256||!Array.isArray(b.activity)||b.activity.length!==CONNECTOME.neurons.length||!b.activity.every(v=>finite(v))||
@@ -53,4 +59,4 @@ export function validateBrain(b,maxTicks){
   const actual=['L','R'].map(side=>outputIndices[side].reduce((sum,i)=>sum+b.activity[i],0)/outputIndices[side].length);
   return actual.every((x,i)=>Math.abs(x-b.outputs[i])<1e-8);
 }
-export function copyBrain(b){return {model:b.model,activity:[...b.activity],steps:b.steps,inputs:[...b.inputs],outputs:[...b.outputs],trace:b.trace.map(t=>({step:t.step,inputs:[...t.inputs],outputs:[...t.outputs]}))};}
+export function copyBrain(b){if(isMotorBrain(b))return copyMotorBrain(b);return {model:b.model,activity:[...b.activity],steps:b.steps,inputs:[...b.inputs],outputs:[...b.outputs],trace:b.trace.map(t=>({step:t.step,inputs:[...t.inputs],outputs:[...t.outputs]}))};}

@@ -1,5 +1,5 @@
 # MaleCNS data in Malecns Warhammer
-The bundled data in dist/data/malecns-escape.mjs is licensed CC BY 4.0,
+The bundled data in dist/data/malecns-escape.mjs and dist/data/malecns-motor.mjs is licensed CC BY 4.0,
 independently of the application's MIT code license.
 
 ## Additional modifications in this project
@@ -93,3 +93,48 @@ gain (0–2, default 1) scales the readout used by the game. The separate action
 allows up to two neural-priority activations, then five recovery activations,
 then requires a fall to 65% of the onset threshold before rearming.
 These constants describe engineered gameplay, not measured fly refractory times.
+
+## Visual-motor extension in 0.5
+
+A second reduced model is bundled as dist/data/malecns-motor.mjs under the same
+CC BY 4.0 data license. The source FCL and neuron annotations are identical to
+the pinned distributor revision d36ff5e192da832c4348ab509d150357cb70ddd8.
+
+Selected LC4/LPLC2 and LC10 inputs, DNa01/DNa02/DNp09/MDN and
+DNp01/DNp02/DNp04/DNp11 populations, plus all intermediary neurons on directed
+input-to-output paths of at most three edges. Retained the entire induced graph:
+11,436 neurons, 1,687,031 directed edges, 10,931,415 original integer contacts.
+No contact threshold or synthetic edges were introduced. Other neurons and
+their incident connections were omitted. Original body IDs, types, sides,
+execution indices and full-source incoming totals are retained.
+
+The graph is packed as incoming CSR with uint32 row offsets and uint16
+source/contact pairs. Its binary payload has 6,793,872 bytes. Data and calibration
+are pinned by SHA-256 in data/motor-manifest.json. Reproduce using
+scripts/import-motor.mjs after fetching the pinned source files.
+
+Float32 leaky-rate dynamics use the same engineering constants as the compact
+model: gain 0.7, leak 0.5, amplitude 0.8, full-source incoming normalization.
+There are eight neural steps per unit activation. Symmetric target-only and
+threat-only inputs at 0.5 for 32 steps provide reference output scales;
+no behavioral reward, training or combat tuning is used for this calibration.
+
+The added game controller reads DNa02, DNp09, MDN and escape outputs to score
+forward, reverse, left, right and wait commands. DNa01 is retained in the graph
+but is not directly read by the current steering decoder. Selection was informed
+by primary studies of descending motor networks and steering:
+https://www.nature.com/articles/s41586-024-07523-9
+https://pmc.ncbi.nlm.nih.gov/articles/PMC12279373/
+
+These populations have context-dependent biological functions. The command
+mapping is an engineered adapter, not a reproduction of those experiments.
+Scene projection, background visual stimulus, command coefficients, waiting
+threshold, collision checks, the conversion of forward into fire and nearest
+visible in-sector target binding are all software rules added by this project.
+Tactical utility and pathfinding do not choose actions in the new mode.
+The old hybrid/reflex mode remains available separately.
+
+No transmitter signs, inhibition, spikes, full retinal model, morphology,
+learning, validated fly behavior or full CNS are simulated. The larger number
+of anatomical connections does not establish biological fidelity or strategic
+competence. Each game unit has independent computed activity over the same graph.
