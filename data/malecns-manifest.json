@@ -1,0 +1,34 @@
+{
+  "id": "malecns-v1-escape-319",
+  "dataset": "male-cns:v1.0",
+  "sha256": "6a1452434783f8e3e9ebdb82fc36e3c56071b85e1575c755af55a1f84b89a477",
+  "counts": {
+    "neurons": 319,
+    "edges": 21288,
+    "contacts": 102445
+  },
+  "source": {
+    "url": "https://huggingface.co/slvDev/esp32-ai-fly",
+    "revision": "d36ff5e192da832c4348ab509d150357cb70ddd8",
+    "assets": {
+      "connectome.fcl": {
+        "bytes": 14174411,
+        "sha256": "1e35e6ba658986de5e3163ea49b600378a2e3daa64700b8b619c4f21cc0a6e1f"
+      },
+      "escape-circuit.json": {
+        "bytes": 38724,
+        "sha256": "566df28669c4b6ae5fff4a2330558837bce0c2a4fb08eb9edec4193285f3a91d"
+      },
+      "neurons.csv": {
+        "bytes": 2132569,
+        "sha256": "348e54b2a1c94b8387263c7af82ff41e8518be5fd662aed62bc28ebf281c3703"
+      }
+    },
+    "datasetUrl": "https://male-cns.janelia.org/",
+    "sourceNodes": 48311,
+    "sourceEdges": 9462135,
+    "sourceContacts": 49481754
+  },
+  "selection": "Induced subgraph of all LC4/LPLC2 inputs and DNp01/DNp02/DNp04/DNp11 outputs in the pinned escape circuit. Both sides; no edge threshold. Other neurons and incident edges omitted.",
+  "normalization": "Each retained edge uses its original contact count divided by the target incoming total in the 48311-neuron source graph. Omitted neurons contribute zero."
+}

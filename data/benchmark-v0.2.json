@@ -1,0 +1,403 @@
+{
+  "model": "6a1452434783f8e3e9ebdb82fc36e3c56071b85e1575c755af55a1f84b89a477",
+  "scope": "Six fixed seeds; same factions, setup and combat seed; A controller varies, B utility. Divergent actions consume RNG differently. This is a smoke comparison, not evidence of superior tactics or biological validity.",
+  "probes": [
+    {
+      "mode": "malecns",
+      "inputs": [
+        1,
+        0
+      ],
+      "outputs": [
+        0.21377331390976906,
+        0.00046727233285537295
+      ]
+    },
+    {
+      "mode": "malecns",
+      "inputs": [
+        0,
+        1
+      ],
+      "outputs": [
+        0.0001529737655801,
+        0.20322156697511673
+      ]
+    },
+    {
+      "mode": "malecns",
+      "inputs": [
+        0.5,
+        0.5
+      ],
+      "outputs": [
+        0.14108394272625446,
+        0.1327900905162096
+      ]
+    },
+    {
+      "mode": "malecns",
+      "inputs": [
+        0,
+        0
+      ],
+      "outputs": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "disconnected",
+      "inputs": [
+        1,
+        0
+      ],
+      "outputs": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "disconnected",
+      "inputs": [
+        0,
+        1
+      ],
+      "outputs": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "disconnected",
+      "inputs": [
+        0.5,
+        0.5
+      ],
+      "outputs": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "disconnected",
+      "inputs": [
+        0,
+        0
+      ],
+      "outputs": [
+        0,
+        0
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "seed": "40721",
+      "controllerA": "malecns",
+      "controllerB": "utility",
+      "tick": 37,
+      "scores": [
+        12,
+        66
+      ],
+      "winner": 1,
+      "survivors": [
+        3,
+        5
+      ],
+      "neuralEscapes": 60,
+      "milliseconds": 126
+    },
+    {
+      "seed": "40721",
+      "controllerA": "disconnected",
+      "controllerB": "utility",
+      "tick": 53,
+      "scores": [
+        64,
+        24
+      ],
+      "winner": 0,
+      "survivors": [
+        4,
+        0
+      ],
+      "neuralEscapes": 0,
+      "milliseconds": 63
+    },
+    {
+      "seed": "40721",
+      "controllerA": "utility",
+      "controllerB": "utility",
+      "tick": 53,
+      "scores": [
+        64,
+        24
+      ],
+      "winner": 0,
+      "survivors": [
+        4,
+        0
+      ],
+      "neuralEscapes": 0,
+      "milliseconds": 41
+    },
+    {
+      "seed": "104",
+      "controllerA": "malecns",
+      "controllerB": "utility",
+      "tick": 39,
+      "scores": [
+        17,
+        66
+      ],
+      "winner": 1,
+      "survivors": [
+        2,
+        5
+      ],
+      "neuralEscapes": 37,
+      "milliseconds": 82
+    },
+    {
+      "seed": "104",
+      "controllerA": "disconnected",
+      "controllerB": "utility",
+      "tick": 38,
+      "scores": [
+        21,
+        53
+      ],
+      "winner": 1,
+      "survivors": [
+        0,
+        5
+      ],
+      "neuralEscapes": 0,
+      "milliseconds": 33
+    },
+    {
+      "seed": "104",
+      "controllerA": "utility",
+      "controllerB": "utility",
+      "tick": 38,
+      "scores": [
+        21,
+        53
+      ],
+      "winner": 1,
+      "survivors": [
+        0,
+        5
+      ],
+      "neuralEscapes": 0,
+      "milliseconds": 30
+    },
+    {
+      "seed": "orbit",
+      "controllerA": "malecns",
+      "controllerB": "utility",
+      "tick": 36,
+      "scores": [
+        13,
+        67
+      ],
+      "winner": 1,
+      "survivors": [
+        2,
+        5
+      ],
+      "neuralEscapes": 54,
+      "milliseconds": 81
+    },
+    {
+      "seed": "orbit",
+      "controllerA": "disconnected",
+      "controllerB": "utility",
+      "tick": 47,
+      "scores": [
+        59,
+        34
+      ],
+      "winner": 0,
+      "survivors": [
+        3,
+        0
+      ],
+      "neuralEscapes": 0,
+      "milliseconds": 37
+    },
+    {
+      "seed": "orbit",
+      "controllerA": "utility",
+      "controllerB": "utility",
+      "tick": 47,
+      "scores": [
+        59,
+        34
+      ],
+      "winner": 0,
+      "survivors": [
+        3,
+        0
+      ],
+      "neuralEscapes": 0,
+      "milliseconds": 33
+    },
+    {
+      "seed": "ruins-7",
+      "controllerA": "malecns",
+      "controllerB": "utility",
+      "tick": 43,
+      "scores": [
+        32,
+        67
+      ],
+      "winner": 1,
+      "survivors": [
+        4,
+        5
+      ],
+      "neuralEscapes": 75,
+      "milliseconds": 99
+    },
+    {
+      "seed": "ruins-7",
+      "controllerA": "disconnected",
+      "controllerB": "utility",
+      "tick": 34,
+      "scores": [
+        51,
+        18
+      ],
+      "winner": 0,
+      "survivors": [
+        5,
+        0
+      ],
+      "neuralEscapes": 0,
+      "milliseconds": 31
+    },
+    {
+      "seed": "ruins-7",
+      "controllerA": "utility",
+      "controllerB": "utility",
+      "tick": 34,
+      "scores": [
+        51,
+        18
+      ],
+      "winner": 0,
+      "survivors": [
+        5,
+        0
+      ],
+      "neuralEscapes": 0,
+      "milliseconds": 26
+    },
+    {
+      "seed": "control-5",
+      "controllerA": "malecns",
+      "controllerB": "utility",
+      "tick": 39,
+      "scores": [
+        25,
+        66
+      ],
+      "winner": 1,
+      "survivors": [
+        3,
+        4
+      ],
+      "neuralEscapes": 50,
+      "milliseconds": 89
+    },
+    {
+      "seed": "control-5",
+      "controllerA": "disconnected",
+      "controllerB": "utility",
+      "tick": 45,
+      "scores": [
+        61,
+        25
+      ],
+      "winner": 0,
+      "survivors": [
+        5,
+        0
+      ],
+      "neuralEscapes": 0,
+      "milliseconds": 37
+    },
+    {
+      "seed": "control-5",
+      "controllerA": "utility",
+      "controllerB": "utility",
+      "tick": 45,
+      "scores": [
+        61,
+        25
+      ],
+      "winner": 0,
+      "survivors": [
+        5,
+        0
+      ],
+      "neuralEscapes": 0,
+      "milliseconds": 33
+    },
+    {
+      "seed": "tabletop",
+      "controllerA": "malecns",
+      "controllerB": "utility",
+      "tick": 40,
+      "scores": [
+        26,
+        67
+      ],
+      "winner": 1,
+      "survivors": [
+        3,
+        5
+      ],
+      "neuralEscapes": 34,
+      "milliseconds": 85
+    },
+    {
+      "seed": "tabletop",
+      "controllerA": "disconnected",
+      "controllerB": "utility",
+      "tick": 51,
+      "scores": [
+        30,
+        66
+      ],
+      "winner": 1,
+      "survivors": [
+        2,
+        5
+      ],
+      "neuralEscapes": 0,
+      "milliseconds": 48
+    },
+    {
+      "seed": "tabletop",
+      "controllerA": "utility",
+      "controllerB": "utility",
+      "tick": 51,
+      "scores": [
+        30,
+        66
+      ],
+      "winner": 1,
+      "survivors": [
+        2,
+        5
+      ],
+      "neuralEscapes": 0,
+      "milliseconds": 42
+    }
+  ],
+  "totalMilliseconds": 1055
+}

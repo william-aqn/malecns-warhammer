@@ -1,0 +1,14 @@
+{
+  "name": "malecns-warhammer-sandbox",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test tests/engine.test.mjs tests/neural.test.mjs tests/reflex.test.mjs",
+    "export": "node scripts/export-standalone.mjs",
+    "data:build": "node scripts/import-malecns.mjs",
+    "data:fetch": "node scripts/import-malecns.mjs --download",
+    "benchmark": "node scripts/benchmark.mjs"
+  }
+}
