@@ -1,0 +1,10 @@
+{
+  "graphLoadedViaHTTP": true,
+  "checksums": true,
+  "actualWorkerProtocol": true,
+  "uiControls": true,
+  "neuronInspector": true,
+  "snapshotDownload": true,
+  "canvasCalls": 48763,
+  "note": "Node worker + DOM/Canvas stubs, not browser rendering."
+}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101715"><title>MaleCNS · Сенсорная лаборатория</title><link rel="stylesheet" href="lab.css"></head>
+<body>
+<header><a class="brand" href="./">malecns<span>.</span><small>WARHAMMER / RESEARCH</small></a><a href="./">Тактическая песочница ↗</a><span class="badge">FULL CNS · 0.10</span></header>
+<main>
+<div class="heading"><div><p class="eyebrow">СЕНСОРНЫЙ ПОЛИГОН / 002</p><h1>Мир на входе нервной системы<span>.</span></h1><p>Два глаза, химическая среда и обратная связь от тела. Обучение выключено.</p></div><div class="status"><i id="status-led"></i><span id="status" role="status">Подготовка лаборатории…</span></div></div>
+<div class="stats"><div><span>НЕЙРОНЫ</span><strong id="neurons">—</strong><small>Все аннотированные классы</small></div><div><span>НАПРАВЛЕННЫЕ СВЯЗИ</span><strong id="edges">—</strong><small>Без отбора коротких путей</small></div><div><span>СИНАПТИЧЕСКИЕ КОНТАКТЫ</span><strong id="contacts">—</strong><small>Исходные количества сохранены</small></div><div><span>СЕНСОРНЫЕ ПОРТЫ</span><strong id="ports">—</strong><small id="unmapped">Проверка соответствий</small></div></div>
+<p class="notice">Это полный <b>аннотированный граф</b> в упрощённой модели активности. Оптика, чувствительность рецепторов и механика тела заданы экспериментально. Автономное восприятие и поведение пока не валидированы.</p>
+<p id="error" role="alert" hidden></p>
+<div class="workspace">
+<aside class="panel controls"><div class="panel-title"><span>01</span><h2>Среда и тело</h2></div>
+<fieldset id="controls" disabled>
+<label for="seed">Seed среды</label><input id="seed" value="40721" maxlength="64">
+<label for="preset">Карта</label><select id="preset"><option value="arena">Стена с проходом</option><option value="random">Генератор препятствий</option><option value="open">Открытая арена</option></select>
+<button id="reset" class="wide">Создать среду ↗</button>
+<label class="check"><input id="clamped" type="checkbox" checked> Зафиксировать тело</label><p class="hint">Фиксация позволяет сравнивать стимулы в одной позе. При освобождении движение задают шесть групп моторных клеток VNC.</p>
+<div class="move-controls" aria-label="Ручное перемещение"><button data-manual="left" title="Повернуть влево">↶</button><button data-manual="forward" title="Шаг вперёд">↑</button><button data-manual="right" title="Повернуть вправо">↷</button><button data-manual="backward" title="Шаг назад">↓</button></div><p class="hint">Стрелки — внешнее движение тела для проверки обратной связи.</p>
+<label for="edit">Щелчок по карте</label><select id="edit"><option value="body">Переместить организм</option><option value="wall">Поставить / убрать стену</option><option value="light">Переместить световой объект</option><option value="odor">Переместить источник запаха</option><option value="sound">Переместить источник звука</option><option value="taste">Переместить контактное вещество</option><option value="climate">Переместить тепло / влагу</option></select>
+<label for="light">Освещённость <output id="light-value">1.00</output></label><input id="light" type="range" min="0" max="2" step=".05" value="1">
+<label for="wind">Ветер по горизонтали <output id="wind-value">0.20</output></label><input id="wind" type="range" min="-1" max="1" step=".05" value=".2">
+<label for="odor">Канал запаха</label><select id="odor"></select><p class="hint">Название группы ORN задаёт тестовый канал. Химический состав и естественная избирательность запахов пока не моделируются.</p>
+<label for="overlay">Показать поле</label><select id="overlay"><option value="odor">Запах</option><option value="temperature">Температура</option><option value="humidity">Влажность</option><option value="none">Без наложения</option></select>
+<div class="subhead">ВХОДНЫЕ МОДАЛЬНОСТИ</div><div id="senses"></div>
+</fieldset>
+</aside>
+<section class="center">
+<div class="panel arena"><div class="arena-top"><div><span class="dot"></span><b id="tick">Такт 0</b><small id="timing">—</small></div><div><button id="step" disabled>Шаг</button><button id="run" class="primary" disabled>▶ Запустить</button></div></div><canvas id="arena" width="960" height="720" aria-label="Среда организма: стены, источники стимулов и положение тела"></canvas><div class="legend"><span><i style="--c:#8ed3da"></i>Организм</span><span><i style="--c:#a7cc7d"></i>Запах</span><span><i style="--c:#ddba75"></i>Звук</span><span><i style="--c:#bd9ddd"></i>Контакт</span><span><i style="--c:#e49a78"></i>Тепло / влага</span></div></div>
+<div class="panel eyes"><div class="panel-title"><span>02</span><h2>Изображение на входе</h2><select id="eye-band" aria-label="Зрительный канал"><option value="mixed">UV / синий / зелёный</option><option value="0">Ультрафиолет</option><option value="1">Синий</option><option value="2">Зелёный</option></select></div><div class="eye-grid"><figure><figcaption>ЛЕВЫЙ ГЛАЗ <span>879 колонок</span></figcaption><canvas id="eye-left" width="440" height="330" aria-label="Левое зрительное поле"></canvas></figure><figure><figcaption>ПРАВЫЙ ГЛАЗ <span>892 колонки</span></figcaption><canvas id="eye-right" width="440" height="330" aria-label="Правое зрительное поле"></canvas></figure></div><p class="hint">Цвета здесь обозначают три спектральных канала. Геометрия колонок взята из аннотаций; проекция в мир и спектральные коэффициенты — допущения. Это входное изображение, не доказательство распознавания объектов.</p></div>
+<div class="panel"><div class="panel-title"><span>03</span><h2>Что поступает в сеть</h2></div><div id="readings" class="readings"></div><div class="motor-row" id="motors"></div></div>
+<div class="panel"><details><summary>Что уже подключено и чего ещё не хватает</summary><div id="coverage"></div><p>Клетки без подтверждённого соответствия органу или стимулу остаются в графе и участвуют во внутренних связях, но не получают придуманный внешний сигнал. Для крыльев, питания и части механочувствительных органов ещё нужны модели тела и рецепторной избирательности.</p><p>Морфология ветвей, отдельные координаты синапсов, рецепторы, спайковые параметры и нейропептиды ещё не подключены. Обучение будет отдельным этапом после проверок сенсорных и моторных цепей.</p><a href="https://male-cns.janelia.org/download/" target="_blank" rel="noreferrer">Источник данных · MaleCNS / CC BY 4.0 ↗</a></details></div>
+</section>
+<aside class="right">
+<div class="panel"><div class="panel-title"><span>04</span><h2>Активность классов</h2></div><p class="hint">Средняя активность от 0 до 1. Фоновый тонус тоже создаёт активность.</p><div id="classes"></div></div>
+<div class="panel"><details open><summary>Динамика и контроль</summary><fieldset id="dynamics" disabled>
+<label class="check"><input id="connected" type="checkbox" checked> Передавать сигналы по связям</label>
+<label for="tonic">Фоновый тонус <output id="tonic-value">0.12</output></label><input id="tonic" type="range" min="0" max=".5" step=".01" value=".12">
+<label for="glu">Допущение для глутамата</label><select id="glu"><option value="-1">Торможение</option><option value="1">Возбуждение</option></select>
+<p class="hint">ACh: +; GABA и гистамин: −. Неизвестный медиатор: 0. Это модель знаков, а не карта рецепторов.</p>
+<div class="subhead">МЕДЛЕННЫЕ МОДУЛЯТОРЫ</div><p class="hint">Сигналы накапливаются по исходным связям. Нулевой коэффициент означает только наблюдение; ненулевой — проверяемую гипотезу усиления или подавления.</p>
+<label for="da">Дофамин <output id="da-value">0.0</output></label><input id="da" type="range" min="-2" max="2" step=".1" value="0">
+<label for="oa">Октопамин <output id="oa-value">0.0</output></label><input id="oa" type="range" min="-2" max="2" step=".1" value="0">
+<label for="serotonin">Серотонин <output id="serotonin-value">0.0</output></label><input id="serotonin" type="range" min="-2" max="2" step=".1" value="0"><div id="modulators" class="hint"></div>
+</fieldset></details></div>
+<div class="panel"><details><summary>Инспектор нейрона</summary><label for="neuron-query">Body ID или точный тип</label><div class="inline"><input id="neuron-query" value="DNa01"><button id="inspect" disabled>↗</button></div><pre id="neuron-detail">Аннотации, входящие связи и текущий сигнал.</pre></details></div>
+<div class="panel"><div class="file-actions"><button id="save" disabled>Сохранить сцену<br><small>состояние эксперимента</small></button><button id="load" disabled>Открыть<br><small>продолжить с того же такта</small></button></div><input type="file" id="file" accept=".json,application/json" hidden><p class="hint">Сохраняются мир, поля чувств, активность клеток и настройки. Обучаемых коэффициентов в этом режиме нет.</p></div>
+</aside>
+</div>
+<footer>MALE CNS v1.0 · АНАТОМИЧЕСКИЕ ДАННЫЕ CC BY 4.0 <span>MODEL → BODY → WORLD → SENSES</span></footer>
+</main><script type="module" src="lab.mjs"></script>
+</body></html>

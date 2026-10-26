@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "dataset": "male-cns:v1.0",
+  "license": "CC-BY-4.0",
+  "source": [
+    {
+      "url": "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-annotations-male-cns-v1.0-minconf-0.5.feather",
+      "bytes": 14483314,
+      "md5_base64": "UKdxh3DFciDxYLpPQxq4ng==",
+      "sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+      "gcs_generation": "1780494878811468",
+      "name": "body-annotations-male-cns-v1.0-minconf-0.5.feather",
+      "used_for_graph_selection_or_weights": true
+    },
+    {
+      "url": "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-neurotransmitters-male-cns-v1.0.feather",
+      "bytes": 43282834,
+      "md5_base64": "PYQrEv5cSe763lKNfdJKHw==",
+      "sha256": "95c9289220663abeb3409f3ad9e5a7f8a53f8093f5139d15502cd08da8879621",
+      "gcs_generation": "1780894899156750",
+      "name": "body-neurotransmitters-male-cns-v1.0.feather",
+      "used_for_graph_selection_or_weights": false
+    },
+    {
+      "url": "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/connectome-weights-male-cns-v1.0-minconf-0.5.feather",
+      "bytes": 1051241946,
+      "md5_base64": "8w6dzKJc/QIb8eez2XVZng==",
+      "sha256": "e35da783d1c686b2b58b3b87cd6a403ae43bfcfba8bff28e08ef752c1a56afc1",
+      "gcs_generation": "1780494887545976",
+      "name": "connectome-weights-male-cns-v1.0-minconf-0.5.feather",
+      "used_for_graph_selection_or_weights": true
+    },
+    {
+      "url": "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-stats-male-cns-v1.0-minconf-0.5.feather",
+      "bytes": 778062826,
+      "md5_base64": "QEwzScKFgBSOFoFeuZ84Kg==",
+      "sha256": "ca5dc83a26382ae70c8d8f42fc09ce2dbc1af7c03f3a001a1936b5e142540647",
+      "gcs_generation": "1780494888472305",
+      "name": "body-stats-male-cns-v1.0-minconf-0.5.feather",
+      "used_for_graph_selection_or_weights": false
+    }
+  ],
+  "selection": "All annotations with nonempty superclass and status != Glia, sorted by bodyId; all induced connections, including weight=1 and self edges. Unclassified segments/fragments remain outside the neuronal model.",
+  "normalization": "Original contact count divided by each destination total from ALL source segments, including omitted unclassified segments; those omitted sources contribute zero.",
+  "counts": {
+    "neurons": 166700,
+    "edges": 25582938,
+    "contacts": 124177617,
+    "sourceAnnotationRows": 211577,
+    "sourceStatisticsRows": 88384522,
+    "neuronsWithStatistics": 166576,
+    "sourceSegmentEdges": 151856684,
+    "sourceSegmentContacts": 311833243,
+    "excludedAnnotationRows": 44877,
+    "excludedSegmentEdges": 126273746,
+    "excludedSegmentContacts": 187655626,
+    "selfEdges": 101,
+    "zeroIncoming": 370,
+    "maxContactsPerEdge": 2591
+  },
+  "superclasses": {
+    "ENS": 50,
+    "ascending_neuron": 1846,
+    "cb_efferent": 4,
+    "cb_endocrine": 72,
+    "cb_intrinsic": 32164,
+    "cb_motor": 107,
+    "cb_sensory": 4868,
+    "cb_sensory_tbc": 14,
+    "descending_neuron": 1314,
+    "descending_neuron_tbc": 2,
+    "efferent_ascending": 8,
+    "efferent_descending": 4,
+    "ol_intrinsic": 89403,
+    "ol_sensory": 6098,
+    "sensory_ascending": 537,
+    "sensory_ascending_tbc": 2,
+    "sensory_descending": 12,
+    "visual_centrifugal": 563,
+    "visual_projection": 9201,
+    "visual_projection_tbc": 2,
+    "vnc_efferent": 94,
+    "vnc_endocrine": 22,
+    "vnc_intrinsic": 13161,
+    "vnc_motor": 708,
+    "vnc_sensory": 6370,
+    "vnc_sensory_tbc": 36,
+    "vnc_tbc": 38
+  },
+  "sensoryClasses": {
+    "chemosensory": 58,
+    "gustatory": 1428,
+    "hygrosensory": 66,
+    "mechanosensory": 1733,
+    "mechanosensory_proprioceptive": 1454,
+    "mechanosensory_tactile": 2558,
+    "mechanosensory_tbc": 11,
+    "olfactory": 2639,
+    "thermosensory": 25,
+    "unassigned": 162,
+    "unknown_sensory": 1712,
+    "visual": 6091
+  },
+  "transmitters": {
+    "acetylcholine": 103720,
+    "dopamine": 392,
+    "gaba": 22069,
+    "glutamate": 29302,
+    "histamine": 7891,
+    "octopamine": 101,
+    "serotonin": 48,
+    "unclear": 2999,
+    "unknown": 178
+  },
+  "retina": {
+    "photoreceptors": 6091,
+    "mapped": 5895,
+    "unmapped": 196,
+    "columns": {
+      "L": 879,
+      "R": 892
+    },
+    "method": "Weighted anatomical outgoing contacts to ipsilateral annotated columns; weights retained for all candidates, ambiguity reported. Optical projection and spectral gains are engineering assumptions."
+  },
+  "files": {
+    "graph.bin": {
+      "sha256": "5d7159275c55055ad3d80952531350a018b0483847b5878450ccfac0ad9be509",
+      "bytes": 205997140
+    },
+    "neurons.json": {
+      "sha256": "2717e33391b50162b472b7d591509be39d37e978cbc8074e9953f609fdd70733",
+      "bytes": 72798295
+    },
+    "retina.json": {
+      "sha256": "7ce919541b0160c115fbb89f5c765f20fc3644a88abaa7491c87e67e85f1e5ba",
+      "bytes": 710302
+    }
+  },
+  "build": {
+    "numpy": "2.5.4",
+    "pyarrow": "26.0.0"
+  },
+  "learning": false
+}

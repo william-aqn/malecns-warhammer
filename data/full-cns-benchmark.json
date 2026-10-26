@@ -1,0 +1,537 @@
+{
+  "schema": 1,
+  "graph": "5d7159275c55055ad3d80952531350a018b0483847b5878450ccfac0ad9be509",
+  "annotations": "2717e33391b50162b472b7d591509be39d37e978cbc8074e9953f609fdd70733",
+  "learning": false,
+  "initMs": 607.4315,
+  "processMiB": 1096.328125,
+  "inventory": {
+    "coverage": {
+      "vision": 5895,
+      "smell": 2635,
+      "temperature": 25,
+      "hearing": 114,
+      "wind": 475,
+      "taste": 1011,
+      "proprioception": 901,
+      "humidity": 66,
+      "touch": 2557
+    },
+    "unmapped": 4258,
+    "unmappedClasses": {
+      "mechanosensory": 1144,
+      "unknown_sensory": 1712,
+      "gustatory": 437,
+      "unassigned": 162,
+      "visual": 196,
+      "mechanosensory_proprioceptive": 553,
+      "olfactory": 4,
+      "chemosensory": 38,
+      "mechanosensory_tbc": 11,
+      "mechanosensory_tactile": 1
+    },
+    "motorCells": [
+      68,
+      67,
+      58,
+      58,
+      66,
+      64
+    ],
+    "odorTypes": [
+      "ORN_D",
+      "ORN_DA1",
+      "ORN_DA2",
+      "ORN_DA3",
+      "ORN_DA4l",
+      "ORN_DA4m",
+      "ORN_DC1",
+      "ORN_DC2",
+      "ORN_DC3",
+      "ORN_DC4",
+      "ORN_DL1",
+      "ORN_DL2d",
+      "ORN_DL2v",
+      "ORN_DL3",
+      "ORN_DL4",
+      "ORN_DL5",
+      "ORN_DM1",
+      "ORN_DM2",
+      "ORN_DM3",
+      "ORN_DM4",
+      "ORN_DM5",
+      "ORN_DM6",
+      "ORN_DP1l",
+      "ORN_DP1m",
+      "ORN_V",
+      "ORN_VA1d",
+      "ORN_VA1v",
+      "ORN_VA2",
+      "ORN_VA3",
+      "ORN_VA4",
+      "ORN_VA5",
+      "ORN_VA6",
+      "ORN_VA7l",
+      "ORN_VA7m",
+      "ORN_VC1",
+      "ORN_VC2",
+      "ORN_VC3",
+      "ORN_VC4",
+      "ORN_VC5",
+      "ORN_VL1",
+      "ORN_VL2a",
+      "ORN_VL2p",
+      "ORN_VM1",
+      "ORN_VM2",
+      "ORN_VM3",
+      "ORN_VM4",
+      "ORN_VM5d",
+      "ORN_VM5v",
+      "ORN_VM6l",
+      "ORN_VM6m",
+      "ORN_VM6v",
+      "ORN_VM7d",
+      "ORN_VM7v"
+    ],
+    "retinalColumns": 1771,
+    "retinalMapped": 5895
+  },
+  "conditions": {
+    "baseline": {
+      "ticks": 24,
+      "meanMs": 172.71636249999997,
+      "motors": [
+        0.11781972701496937,
+        0.1135620219049169,
+        0.1174711388503683,
+        0.11765928039776868,
+        0.12025394471305789,
+        0.12214786966796964
+      ],
+      "metrics": {
+        "vision": {
+          "mean": 0,
+          "max": 0,
+          "count": 5895,
+          "enabled": false
+        },
+        "smell": {
+          "mean": 0,
+          "max": 0,
+          "count": 2635,
+          "enabled": false
+        },
+        "taste": {
+          "mean": 0,
+          "max": 0,
+          "count": 1011,
+          "enabled": false
+        },
+        "touch": {
+          "mean": 0,
+          "max": 0,
+          "count": 2557,
+          "enabled": false
+        },
+        "hearing": {
+          "mean": 0,
+          "max": 0,
+          "count": 114,
+          "enabled": false
+        },
+        "wind": {
+          "mean": 0,
+          "max": 0,
+          "count": 475,
+          "enabled": false
+        },
+        "proprioception": {
+          "mean": 0,
+          "max": 0,
+          "count": 901,
+          "enabled": false
+        },
+        "temperature": {
+          "mean": 0,
+          "max": 0,
+          "count": 25,
+          "enabled": false
+        },
+        "humidity": {
+          "mean": 0,
+          "max": 0,
+          "count": 66,
+          "enabled": false
+        }
+      }
+    },
+    "vision": {
+      "ticks": 24,
+      "meanMs": 181.45755416666648,
+      "motors": [
+        0.11781965733012732,
+        0.11356189535624946,
+        0.1174710701251852,
+        0.11765918161334663,
+        0.12025392879590843,
+        0.12214783357921988
+      ],
+      "metrics": {
+        "vision": {
+          "mean": 0.2894932758522431,
+          "max": 0.9,
+          "count": 5895,
+          "enabled": true
+        },
+        "smell": {
+          "mean": 0,
+          "max": 0,
+          "count": 2635,
+          "enabled": false
+        },
+        "taste": {
+          "mean": 0,
+          "max": 0,
+          "count": 1011,
+          "enabled": false
+        },
+        "touch": {
+          "mean": 0,
+          "max": 0,
+          "count": 2557,
+          "enabled": false
+        },
+        "hearing": {
+          "mean": 0,
+          "max": 0,
+          "count": 114,
+          "enabled": false
+        },
+        "wind": {
+          "mean": 0,
+          "max": 0,
+          "count": 475,
+          "enabled": false
+        },
+        "proprioception": {
+          "mean": 0,
+          "max": 0,
+          "count": 901,
+          "enabled": false
+        },
+        "temperature": {
+          "mean": 0,
+          "max": 0,
+          "count": 25,
+          "enabled": false
+        },
+        "humidity": {
+          "mean": 0,
+          "max": 0,
+          "count": 66,
+          "enabled": false
+        }
+      }
+    },
+    "all": {
+      "ticks": 24,
+      "meanMs": 154.24764583333345,
+      "motors": [
+        0.11781751232988694,
+        0.11354316504143958,
+        0.11746995562109454,
+        0.11766236198359523,
+        0.12025380834485545,
+        0.12215132627170533
+      ],
+      "metrics": {
+        "vision": {
+          "mean": 0.2894932758522431,
+          "max": 0.9,
+          "count": 5895,
+          "enabled": true
+        },
+        "smell": {
+          "mean": 4.724929831324328e-10,
+          "max": 1.8176031346683885e-8,
+          "count": 2635,
+          "enabled": true
+        },
+        "taste": {
+          "mean": 0.2205736894164194,
+          "max": 1,
+          "count": 1011,
+          "enabled": true
+        },
+        "touch": {
+          "mean": 0,
+          "max": 0,
+          "count": 2557,
+          "enabled": true
+        },
+        "hearing": {
+          "mean": 0.03591172155478181,
+          "max": 0.0400501952035266,
+          "count": 114,
+          "enabled": true
+        },
+        "wind": {
+          "mean": 0.10707790621982838,
+          "max": 0.10707790621982838,
+          "count": 475,
+          "enabled": true
+        },
+        "proprioception": {
+          "mean": 1.2526464928903495e-17,
+          "max": 7.347880794884119e-17,
+          "count": 901,
+          "enabled": true
+        },
+        "temperature": {
+          "mean": 0.30000001192092896,
+          "max": 0.30000001192092896,
+          "count": 25,
+          "enabled": true
+        },
+        "humidity": {
+          "mean": 0.4000000059604645,
+          "max": 0.4000000059604645,
+          "count": 66,
+          "enabled": true
+        }
+      }
+    },
+    "cut": {
+      "ticks": 24,
+      "meanMs": 25.550412499999766,
+      "motors": [
+        0.11942729353904724,
+        0.11942729353904724,
+        0.11942729353904724,
+        0.11942729353904724,
+        0.11942729353904724,
+        0.11942729353904724
+      ],
+      "metrics": {
+        "vision": {
+          "mean": 0.2894932758522431,
+          "max": 0.9,
+          "count": 5895,
+          "enabled": true
+        },
+        "smell": {
+          "mean": 4.724929831324328e-10,
+          "max": 1.8176031346683885e-8,
+          "count": 2635,
+          "enabled": true
+        },
+        "taste": {
+          "mean": 0.2205736894164194,
+          "max": 1,
+          "count": 1011,
+          "enabled": true
+        },
+        "touch": {
+          "mean": 0,
+          "max": 0,
+          "count": 2557,
+          "enabled": true
+        },
+        "hearing": {
+          "mean": 0.03591172155478181,
+          "max": 0.0400501952035266,
+          "count": 114,
+          "enabled": true
+        },
+        "wind": {
+          "mean": 0.10707790621982838,
+          "max": 0.10707790621982838,
+          "count": 475,
+          "enabled": true
+        },
+        "proprioception": {
+          "mean": 1.2526464928903495e-17,
+          "max": 7.347880794884119e-17,
+          "count": 901,
+          "enabled": true
+        },
+        "temperature": {
+          "mean": 0.30000001192092896,
+          "max": 0.30000001192092896,
+          "count": 25,
+          "enabled": true
+        },
+        "humidity": {
+          "mean": 0.4000000059604645,
+          "max": 0.4000000059604645,
+          "count": 66,
+          "enabled": true
+        }
+      }
+    }
+  },
+  "visualEffect": {
+    "descending_neuron": {
+      "mean": 0.000010835554002808291,
+      "max": 0.0006897076964378357
+    },
+    "visual_projection": {
+      "mean": 0.001277320029589752,
+      "max": 0.07384783402085304
+    },
+    "visual_centrifugal": {
+      "mean": 0.0001668885059085663,
+      "max": 0.002873048186302185
+    },
+    "cb_intrinsic": {
+      "mean": 0.000045996263786314614,
+      "max": 0.028480634093284607
+    },
+    "ol_intrinsic": {
+      "mean": 0.0036684742848094795,
+      "max": 0.12098810076713562
+    },
+    "cb_motor": {
+      "mean": 5.77315548870051e-7,
+      "max": 0.000006206333637237549
+    },
+    "ascending_neuron": {
+      "mean": 0.0000010098805923503243,
+      "max": 0.00008150935173034668
+    },
+    "cb_endocrine": {
+      "mean": 0.000001733605232503679,
+      "max": 0.000030249357223510742
+    },
+    "cb_sensory": {
+      "mean": 6.916122350324444e-8,
+      "max": 0.000020131468772888184
+    },
+    "vnc_intrinsic": {
+      "mean": 4.3560449823982835e-7,
+      "max": 0.000027641654014587402
+    },
+    "sensory_descending": {
+      "mean": 1.6298145055770874e-7,
+      "max": 5.736947059631348e-7
+    },
+    "ol_sensory": {
+      "mean": 0.20583481228461067,
+      "max": 0.6082291267812252
+    },
+    "efferent_descending": {
+      "mean": 9.313225746154785e-8,
+      "max": 2.2351741790771484e-7
+    },
+    "sensory_ascending": {
+      "mean": 5.078118717648242e-7,
+      "max": 0.00000867992639541626
+    },
+    "vnc_efferent": {
+      "mean": 4.94670994738315e-7,
+      "max": 0.000004783272743225098
+    },
+    "cb_efferent": {
+      "mean": 3.46451997756958e-7,
+      "max": 5.289912223815918e-7
+    },
+    "ENS": {
+      "mean": 0,
+      "max": 0
+    },
+    "efferent_ascending": {
+      "mean": 0.000009554438292980194,
+      "max": 0.00004105269908905029
+    },
+    "cb_sensory_tbc": {
+      "mean": 1.1069434029715402e-7,
+      "max": 9.462237358093262e-7
+    },
+    "visual_projection_tbc": {
+      "mean": 0.0002204105257987976,
+      "max": 0.0004369020462036133
+    },
+    "vnc_motor": {
+      "mean": 2.471951104826846e-7,
+      "max": 0.000006124377250671387
+    },
+    "sensory_ascending_tbc": {
+      "mean": 0.0000011883676052093506,
+      "max": 0.0000021904706954956055
+    },
+    "vnc_sensory": {
+      "mean": 3.425878131969757e-8,
+      "max": 0.0000037476420402526855
+    },
+    "vnc_endocrine": {
+      "mean": 2.624636346643621e-7,
+      "max": 9.685754776000977e-7
+    },
+    "vnc_tbc": {
+      "mean": 1.037199246255975e-7,
+      "max": 9.98377799987793e-7
+    },
+    "vnc_sensory_tbc": {
+      "mean": 8.071462313334147e-9,
+      "max": 7.078051567077637e-8
+    },
+    "descending_neuron_tbc": {
+      "mean": 3.417953848838806e-7,
+      "max": 5.569308996200562e-7
+    }
+  },
+  "snapshotBytes": 7003020,
+  "exactReplay": true,
+  "invalidImportAtomic": true,
+  "longRun": {
+    "ticks": 180,
+    "body": {
+      "x": 6.706216940475276,
+      "y": 9.006571130760198,
+      "heading": -0.0038727398904108553,
+      "radius": 0.28,
+      "z": 0.65,
+      "velocity": [
+        0,
+        0
+      ],
+      "omega": -0.0010155051943250715,
+      "collision": 1,
+      "phase": [
+        2.248005956845255,
+        2.248005956845255,
+        2.248005956845255,
+        2.248005956845255,
+        2.248005956845255,
+        2.248005956845255
+      ],
+      "joints": [
+        0.4675945526881423,
+        -0.46759455268814254,
+        0.4675945526881423,
+        -0.46759455268814254,
+        0.4675945526881423,
+        -0.46759455268814254
+      ],
+      "jointVelocity": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "loads": [
+        0.6,
+        1,
+        0.6,
+        1,
+        0.6,
+        1
+      ]
+    },
+    "allFinite": true
+  },
+  "anatomyUnchanged": true,
+  "note": "Numerical and causal integration checks, not evidence of biological fidelity or useful behavior."
+}

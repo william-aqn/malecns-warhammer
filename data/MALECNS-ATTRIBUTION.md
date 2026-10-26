@@ -1,8 +1,8 @@
 # MaleCNS data in Malecns Warhammer
 
-Current version 0.9 adds exact official neurotransmitter annotations and an optional
-signed, rectified rate model. Earlier sections below document historical versions;
-the 0.9 section specifies the current changes and remaining limitations.
+Version 0.10 adds a separate full annotated CNS sensory laboratory. The 0.10
+section below describes its direct official-source import and modifications.
+Earlier sections describe the preserved tactical models and their history.
 The bundled data in dist/data/malecns-escape.mjs and dist/data/malecns-motor.mjs is licensed CC BY 4.0,
 independently of the application's MIT code license.
 
@@ -222,3 +222,36 @@ The original unsigned mode remains available. The data, inferred transmitter
 identity, assumed effect and game interpretation are distinct. See
 docs/neurotransmitters.md and docs/malecns-scope.md. No biological equivalence
 or tactical-performance claim is made.
+
+## Full annotated CNS and embodied sensory laboratory in 0.10
+
+The four original MaleCNS v1.0 Feather tables (annotations, neurotransmitters,
+connection strengths, body statistics) are downloaded directly from the official
+project, with object generation, byte length and SHA-256 pinned in
+data/SOURCE_DATA.json. The credit, citation and CC BY 4.0 license above apply
+to the derived graph, annotations, receptive-field data and source metadata.
+
+This project retains all 166,700 annotations with nonempty superclass and
+status != Glia, sorted by bodyId, and every induced connection: 25,582,938
+directed edges and 124,177,617 original contacts, including self edges and
+weight-one connections. Unclassified segments outside that population are
+excluded and accounted for explicitly. The upstream minconf-0.5 filtering
+remains part of the source snapshot; we do not reconstruct discarded contacts.
+The reduced slvDev graph is not used to build this full mode.
+
+Indices are repacked as uint32 incoming CSR without altering integer contacts.
+All source annotation fields, body-level NT fields and available body statistics
+are joined by identity. Retina-to-column mappings are derived from weighted
+outgoing contacts to ipsilateral cells with assignedOlHex1/2. These inferred
+receptive fields are adaptations, not measured optics or upstream annotations.
+Large reproducible artifacts reside in .cache/full-cns; they are not checked
+into git. data/full-cns-manifest.json records counts, exclusions and identities.
+
+The signed rate model, tonic background, three slow modulator traces, hypothetical
+receptor gains, optical projection, synthetic UV/blue/green channels, other sensory
+transducers, diffusion fields, kinematic body, six motor-group actuators and user
+interface are this project's engineering work. Source data does not endorse or
+validate them. No neural learning is enabled in the full laboratory.
+4,258 sensory neurons currently have no assigned external input. Many biological
+functions, detailed morphology, synapse coordinates, spikes, physiological
+receptors, muscles and plasticity are still absent. See docs/full-cns.md.

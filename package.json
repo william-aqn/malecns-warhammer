@@ -1,11 +1,11 @@
 {
   "name": "malecns-warhammer-sandbox",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
-    "test": "node --test tests/engine.test.mjs tests/neural.test.mjs tests/reflex.test.mjs tests/decision.test.mjs tests/motor.test.mjs tests/aim.test.mjs tests/navigation.test.mjs tests/experience.test.mjs tests/neurochemistry.test.mjs",
+    "test": "node --test tests/engine.test.mjs tests/neural.test.mjs tests/reflex.test.mjs tests/decision.test.mjs tests/motor.test.mjs tests/aim.test.mjs tests/navigation.test.mjs tests/experience.test.mjs tests/neurochemistry.test.mjs tests/full-cns.test.mjs tests/senses.test.mjs tests/server.test.mjs",
     "export": "node scripts/export-standalone.mjs",
     "data:build": "node scripts/import-malecns.mjs",
     "data:fetch": "node scripts/import-malecns.mjs --download",
@@ -14,6 +14,9 @@
     "benchmark:navigation": "node scripts/navigation-benchmark.mjs",
     "data:motor": "node scripts/import-motor.mjs",
     "data:neurotransmitters": "node scripts/import-neurotransmitters.mjs",
-    "benchmark:neurotransmitters": "node scripts/neurotransmitter-benchmark.mjs"
+    "benchmark:neurotransmitters": "node scripts/neurotransmitter-benchmark.mjs",
+    "data:full": "uv --system-certs --cache-dir .cache/uv run --no-project --with pyarrow==26.0.0 --with numpy==2.5.4 scripts/build-full-cns.py",
+    "benchmark:full": "node scripts/full-cns-benchmark.mjs",
+    "check:full-ui": "node scripts/check-full-ui.mjs"
   }
 }
