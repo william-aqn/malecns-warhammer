@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "sha256": "eb1b702978c5a661c1c8b0d8eab3dbbc6d8c67dbf664dad50740ba0bbfde2001",
+  "source": {
+    "url": "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-neurotransmitters-male-cns-v1.0.feather",
+    "bytes": 43282834,
+    "sha256": "95c9289220663abeb3409f3ad9e5a7f8a53f8093f5139d15502cd08da8879621",
+    "gcsGeneration": "1780894899156750",
+    "rows": 1835518
+  },
+  "selection": {
+    "motorModel": "2e00fbe4528b5ba23cbbcdb40aa94ee26772d1bf7c6b8ce7cfe14888029f3d89",
+    "reflexModel": "6a1452434783f8e3e9ebdb82fc36e3c56071b85e1575c755af55a1f84b89a477",
+    "neurons": 11436
+  },
+  "columns": [
+    "body",
+    "consensus_nt",
+    "predicted_nt",
+    "predicted_nt_confidence",
+    "total_nt_predictions",
+    "ground_truth",
+    "celltype_predicted_nt",
+    "celltype_predicted_nt_confidence",
+    "celltype_total_nt_predictions",
+    "cell_type"
+  ],
+  "counts": {
+    "acetylcholine": 8418,
+    "gaba": 1568,
+    "unclear": 184,
+    "glutamate": 1210,
+    "octopamine": 20,
+    "serotonin": 6,
+    "dopamine": 30
+  },
+  "groundTruth": 2036,
+  "build": {
+    "pyarrow": "26.0.0"
+  },
+  "annotation": "Exact consensus_nt and supporting prediction fields joined by body ID. Confidence columns belong to their own predictions, not necessarily to consensus_nt. No receptor or synaptic-effect measurements are inferred."
+}

@@ -1,9 +1,10 @@
+import {CHEMISTRIES,chemistryOf} from './neurochemistry.mjs';
 import {createExperience,copyExperience,validateExperience,experienceReadout,experienceChoice,experienceNovelty,visitExperience,addExperienceReward,beginExperience,settleExperience,carryExperience} from './experience.mjs';
 import {isMotorMode,isMotorBrain,isAdaptiveMode,motorReadout} from './motor.mjs';
 import {REFLEX_BURST,createReflex,stepReflex,reflexAllows,validateReflex,copyReflex} from './reflex.mjs';
 import {CONTROLLERS,createBrain,stepBrain,neuralReadout,validateBrain,copyBrain} from './neural.mjs';
 // Pure deterministic simulation: no browser, clock or network dependencies.
-export const VERSION=8, W=32, H=22, MAX_TICKS=180, WIN_SCORE=65;
+export const VERSION=9, W=32, H=22, MAX_TICKS=180, WIN_SCORE=65;
 export const TERRAIN={FLOOR:0,WALL:1,COVER:2};
 export const FACTIONS={
   marines:{name:'Space Marines',short:'Astartes',description:'Согласованное продвижение и контроль позиций.',aggression:.62,caution:.67,objective:.85,hp:30,damage:6,range:6},
@@ -57,13 +58,13 @@ export function makeMap(seed,kind='ruins',density=28){
   return {map,objectives};
 }
 export function createSimulation(config={}){
-  const c={scenario:Object.hasOwn(SCENARIOS,config.scenario)?config.scenario:'battle',seed:String(config.seed??'40721').slice(0,64),mapKind:Object.hasOwn(MAPS,config.mapKind)?config.mapKind:'ruins',density:clamp(Number(config.density)||28,8,50),factionA:Object.hasOwn(FACTIONS,config.factionA)?config.factionA:'marines',factionB:Object.hasOwn(FACTIONS,config.factionB)?config.factionB:'orks',controllerA:Object.hasOwn(CONTROLLERS,config.controllerA)?config.controllerA:'malecns',controllerB:Object.hasOwn(CONTROLLERS,config.controllerB)?config.controllerB:'malecns'};
+  const c={scenario:Object.hasOwn(SCENARIOS,config.scenario)?config.scenario:'battle',seed:String(config.seed??'40721').slice(0,64),mapKind:Object.hasOwn(MAPS,config.mapKind)?config.mapKind:'ruins',density:clamp(Number(config.density)||28,8,50),factionA:Object.hasOwn(FACTIONS,config.factionA)?config.factionA:'marines',factionB:Object.hasOwn(FACTIONS,config.factionB)?config.factionB:'orks',controllerA:Object.hasOwn(CONTROLLERS,config.controllerA)?config.controllerA:'malecns',controllerB:Object.hasOwn(CONTROLLERS,config.controllerB)?config.controllerB:'malecns',neurochemistry:Object.hasOwn(CHEMISTRIES,config.neurochemistry)?config.neurochemistry:'unsigned'};
   const terrain=makeMap(c.seed,c.mapKind,c.density),s={version:VERSION,config:c,...terrain,units:[],tick:0,rng:hash(c.seed+':combat'),scores:[0,0],events:[],effects:[],finished:false,winner:null};
   const unitCounts=scenarioSizes(c.scenario);
   const roles=['scout','assault','support','assault','scout'],names=[['Vega','Castor','Atlas','Pollux','Lynx'],['Ruk','Gor','Zog','Mog','Krag']];
   for(let team=0;team<2;team++)for(let i=0;i<unitCounts[team];i++){
     const faction=team?c.factionB:c.factionA,role=roles[i],f=FACTIONS[faction],r=ROLES[role],id=(team?'B':'A')+'-'+String(i+1).padStart(2,'0');
-    s.units.push({id,name:names[team][i],team,faction,role,x:team?W-4:3,y:6+i*2,px:team?W-4:3,py:6+i*2,hp:f.hp+r.hp,maxHp:f.hp+r.hp,damage:f.damage+r.damage,range:Math.max(1,f.range+r.range),overrides:{},kills:0,damageDone:0,decision:null,heading:team?6:2,brain:createBrain(team?c.controllerB:c.controllerA),reflex:createReflex(),experience:createExperience(W*H),neuralEscapes:0,assignment:terrain.objectives[i%3].id});
+    s.units.push({id,name:names[team][i],team,faction,role,x:team?W-4:3,y:6+i*2,px:team?W-4:3,py:6+i*2,hp:f.hp+r.hp,maxHp:f.hp+r.hp,damage:f.damage+r.damage,range:Math.max(1,f.range+r.range),overrides:{},kills:0,damageDone:0,decision:null,heading:team?6:2,brain:createBrain(team?c.controllerB:c.controllerA,c.neurochemistry),reflex:createReflex(),experience:createExperience(W*H),neuralEscapes:0,assignment:terrain.objectives[i%3].id});
   }
   if(c.scenario==='contact'){
     s.map.fill(0);
@@ -421,7 +422,8 @@ export function repeatWithExperience(previous,config=previous.config){
   for(const u of next.units){
     const old=previous.units.find(v=>v.id===u.id&&v.faction===u.faction&&v.role===u.role);
     if(old&&isAdaptiveMode(controllerFor(next,u))&&isAdaptiveMode(controllerFor(previous,old))){
-      u.experience=carryExperience(old.experience,W*H);u.overrides={...old.overrides};
+      u.overrides={...old.overrides};
+      if(chemistryOf(old.brain)===chemistryOf(u.brain))u.experience=carryExperience(old.experience,W*H);
     }
   }
   updateDecisions(next);return next;
@@ -431,12 +433,14 @@ export function importScene(text){
   if(typeof text!=='string'||text.length>8_000_000)throw new Error('Слишком большой файл сцены.');
   let data;try{data=JSON.parse(text);}catch{throw new Error('Файл не содержит корректный JSON.');}
   const v=data?.state,invalid=()=>{throw new Error('Неподдерживаемая или повреждённая сцена.');};
-  if(data?.format!=='malecns-scene'||![1,2,3,4,5,6,7,VERSION].includes(data.version)||!v||!v.config)invalid();
+  if(data?.format!=='malecns-scene'||![1,2,3,4,5,6,7,8,VERSION].includes(data.version)||!v||!v.config)invalid();
   if(!Array.isArray(v.map)||v.map.length!==W*H||v.map.some(t=>![0,1,2].includes(t)))invalid();
   if(!Number.isInteger(v.tick)||v.tick<0||v.tick>MAX_TICKS||!Number.isInteger(v.rng)||v.rng<0||v.rng>4294967295)invalid();
   if(!Array.isArray(v.scores)||v.scores.length!==2||v.scores.some(n=>!Number.isInteger(n)||n<0||n>MAX_TICKS*3))invalid();
   if(!Object.hasOwn(MAPS,v.config.mapKind)||!Object.hasOwn(FACTIONS,v.config.factionA)||!Object.hasOwn(FACTIONS,v.config.factionB)||typeof v.config.seed!=='string'||v.config.seed.length>64||!Number.isFinite(v.config.density)||v.config.density<8||v.config.density>50)invalid();
   if(data.version>=2&&(!Object.hasOwn(CONTROLLERS,v.config.controllerA)||!Object.hasOwn(CONTROLLERS,v.config.controllerB)))invalid();
+  if(data.version>=9&&!Object.hasOwn(CHEMISTRIES,v.config.neurochemistry))invalid();
+  if(data.version<9&&v.config.neurochemistry!==undefined&&v.config.neurochemistry!=='unsigned')invalid();
   if(data.version<8&&(isAdaptiveMode(v.config.controllerA)||isAdaptiveMode(v.config.controllerB)))invalid();
   if(data.version<5&&(isMotorMode(v.config.controllerA)||isMotorMode(v.config.controllerB)))invalid();
   if(data.version>=3&&!Object.hasOwn(SCENARIOS,v.config.scenario))invalid();
@@ -455,6 +459,8 @@ export function importScene(text){
     for(const k of Object.keys(u.overrides))if(!['aggression','caution','objective','reactivity'].includes(k)||!Number.isFinite(u.overrides[k])||u.overrides[k]<0||u.overrides[k]>1)invalid();
     if(!Number.isInteger(u.kills)||u.kills<0||u.kills>sizes[1-team]||!Number.isFinite(u.damageDone)||u.damageDone<0||u.damageDone>1000||!['I','II','III'].includes(u.assignment))invalid();
     if(data.version>=2&&(!validateBrain(u.brain,v.tick)||!Number.isInteger(u.neuralEscapes)||u.neuralEscapes<0||u.neuralEscapes>v.tick))invalid();
+    if(data.version>=9&&(!Object.hasOwn(u.brain,'chemistry')||chemistryOf(u.brain)!==v.config.neurochemistry))invalid();
+    if(data.version>=2&&data.version<9&&chemistryOf(u.brain)!=='unsigned')invalid();
     if(data.version>=3&&!validateReflex(u.reflex,v.tick))invalid();
     if(data.version>=5&&(!Number.isInteger(u.heading)||u.heading<0||u.heading>7))invalid();
     if(data.version>=2&&isMotorMode(team?v.config.controllerB:v.config.controllerA)!==isMotorBrain(u.brain))invalid();
@@ -462,7 +468,7 @@ export function importScene(text){
     if(u.hp>0){const k=key(u.x,u.y);if(occupied.has(k))invalid();occupied.add(k);}ids.add(u.id);
   }
   for(const [i,o] of v.objectives.entries())if(!o||o.id!==['I','II','III'][i]||!pos(o)||![null,0,1].includes(o.owner))invalid();
-  const config={...v.config,scenario};
+  const config={...v.config,scenario,neurochemistry:data.version>=9?v.config.neurochemistry:'unsigned'};
   if(data.version===1){config.controllerA='utility';config.controllerB='utility';}
   const s=createSimulation(config);s.map=[...v.map];s.tick=v.tick;s.rng=v.rng;s.scores=[...v.scores];s.finished=v.finished;s.winner=v.winner;
   s.units=v.units.map(u=>({id:u.id,name:u.name,team:u.team,faction:u.faction,role:u.role,x:u.x,y:u.y,px:u.x,py:u.y,hp:u.hp,maxHp:u.maxHp,damage:u.damage,range:u.range,overrides:{...u.overrides},kills:u.kills,damageDone:u.damageDone,heading:data.version>=5?u.heading:u.team?6:2,decision:null,brain:data.version===1?createBrain():copyBrain(u.brain),reflex:data.version>=3?copyReflex(u.reflex):createReflex(),experience:data.version>=8?copyExperience(u.experience):createExperience(W*H),neuralEscapes:data.version===1?0:u.neuralEscapes,assignment:u.assignment}));

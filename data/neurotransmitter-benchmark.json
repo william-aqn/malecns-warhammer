@@ -1,0 +1,536 @@
+{
+  "version": "0.9.0",
+  "anatomy": "2e00fbe4528b5ba23cbbcdb40aa94ee26772d1bf7c6b8ce7cfe14888029f3d89",
+  "transmitters": "eb1b702978c5a661c1c8b0d8eab3dbbc6d8c67dbf664dad50740ba0bbfde2001",
+  "decoder": "visual-motor-v3",
+  "scope": "Three complete games with the same seed, initial profiles and zero learned experience, varying only the transmission model. The online-learning trajectories diverge; different decisions also consume different combat random draws. This is a finite-state and integration diagnostic, not evidence of tactical superiority or biological fidelity.",
+  "dynamics": "Fixed unsigned anatomical contact counts and full-source normalization. ACh +1; GABA -1; glutamate -1 or +1 by explicit assumption. Unclear, DA, 5-HT and OA have zero assumed fast effect. Nonnegative rectified leaky rates. The game readout retains the same original unsigned calibration in every condition.",
+  "probes": [
+    {
+      "chemistry": "unsigned",
+      "label": "Без медиаторов · все связи +",
+      "inputs": [
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "steps": 32,
+      "summary": {
+        "neurons": 11436,
+        "excitatory": 11436,
+        "inhibitory": 0,
+        "unresolved": 0,
+        "labels": {
+          "acetylcholine": 8418,
+          "glutamate": 1210,
+          "gaba": 1568,
+          "octopamine": 20,
+          "dopamine": 30,
+          "unclear": 184,
+          "serotonin": 6
+        },
+        "groundTruth": 2036
+      },
+      "meanRate": 0.07521455577555203,
+      "escape": [
+        0.15700764954090118,
+        0.15024704299867153
+      ],
+      "aim": [
+        0.009043877013027668,
+        0.008953195065259933
+      ]
+    },
+    {
+      "chemistry": "nt",
+      "label": "Медиаторы · глутамат −",
+      "inputs": [
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "steps": 32,
+      "summary": {
+        "neurons": 11436,
+        "excitatory": 8418,
+        "inhibitory": 2778,
+        "unresolved": 240,
+        "labels": {
+          "acetylcholine": 8418,
+          "glutamate": 1210,
+          "gaba": 1568,
+          "octopamine": 20,
+          "dopamine": 30,
+          "unclear": 184,
+          "serotonin": 6
+        },
+        "groundTruth": 2036
+      },
+      "meanRate": 0.06010200032674336,
+      "escape": [
+        0.1405044849961996,
+        0.1324976161122322
+      ],
+      "aim": [
+        0.0008621275192126632,
+        0.000833352911286056
+      ]
+    },
+    {
+      "chemistry": "nt-glu-positive",
+      "label": "Медиаторы · глутамат +",
+      "inputs": [
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "steps": 32,
+      "summary": {
+        "neurons": 11436,
+        "excitatory": 9628,
+        "inhibitory": 1568,
+        "unresolved": 240,
+        "labels": {
+          "acetylcholine": 8418,
+          "glutamate": 1210,
+          "gaba": 1568,
+          "octopamine": 20,
+          "dopamine": 30,
+          "unclear": 184,
+          "serotonin": 6
+        },
+        "groundTruth": 2036
+      },
+      "meanRate": 0.06769078992105373,
+      "escape": [
+        0.14179235883057117,
+        0.13370140455663204
+      ],
+      "aim": [
+        0.0038770486135035753,
+        0.0035822205245494843
+      ]
+    }
+  ],
+  "referenceResponses": {
+    "unsigned": {
+      "target": {
+        "DNa01L": 0.006451264955103397,
+        "DNa01R": 0.006059878505766392,
+        "DNa02L": 0.02152717299759388,
+        "DNa02R": 0.020863499492406845,
+        "DNp09L": 0.002175029832869768,
+        "DNp09R": 0.018647674471139908,
+        "MDNL": 0.008373714983463287,
+        "MDNR": 0.008008651901036501,
+        "DNp01L": 0.001591415610164404,
+        "DNp01R": 0.001598712638951838,
+        "DNp02L": 0.0013182347174733877,
+        "DNp02R": 0.0013894862495362759,
+        "DNp04L": 0.0022374417167156935,
+        "DNp04R": 0.002295606303960085,
+        "DNp11L": 0.005723951850086451,
+        "DNp11R": 0.008297140710055828
+      },
+      "threat": {
+        "DNa01L": 0.002611086005344987,
+        "DNa01R": 0.002912120195105672,
+        "DNa02L": 0.001909727114252746,
+        "DNa02R": 0.0022675995714962482,
+        "DNp09L": 0.010393120348453522,
+        "DNp09R": 0.005407189950346947,
+        "MDNL": 0.0018807929009199142,
+        "MDNR": 0.0019011347321793437,
+        "DNp01L": 0.13701650500297546,
+        "DNp01R": 0.13400492072105408,
+        "DNp02L": 0.11715852469205856,
+        "DNp02R": 0.10259922593832016,
+        "DNp04L": 0.26883867383003235,
+        "DNp04R": 0.2554679214954376,
+        "DNp11L": 0.09598740935325623,
+        "DNp11R": 0.09718727320432663
+      }
+    },
+    "nt": {
+      "target": {
+        "DNa01L": 0.0003088740340899676,
+        "DNa01R": 0,
+        "DNa02L": 0.008127620443701744,
+        "DNa02R": 0.00785413570702076,
+        "DNp09L": 0.0004421609337441623,
+        "DNp09R": 0.013361524790525436,
+        "MDNL": 0.00015382232959382236,
+        "MDNR": 0.0004451075947145,
+        "DNp01L": 0.0001339461887255311,
+        "DNp01R": 0.00014199524594005197,
+        "DNp02L": 0.00030764861730858684,
+        "DNp02R": 0.00035000816569663584,
+        "DNp04L": 0.0005775645840913057,
+        "DNp04R": 0.0005991082289256155,
+        "DNp11L": 0.003351610153913498,
+        "DNp11R": 0.005346671212464571
+      },
+      "threat": {
+        "DNa01L": 0.0005660823080688715,
+        "DNa01R": 0.0008477467345073819,
+        "DNa02L": 0.0002864442940335721,
+        "DNa02R": 0.0004305174807086587,
+        "DNp09L": 0.0052277883514761925,
+        "DNp09R": 0.0015032959636300802,
+        "MDNL": 0.00044518691720440984,
+        "MDNR": 0.0004475347086554393,
+        "DNp01L": 0.12467093020677567,
+        "DNp01R": 0.1200585886836052,
+        "DNp02L": 0.10370990633964539,
+        "DNp02R": 0.09002610296010971,
+        "DNp04L": 0.24974890053272247,
+        "DNp04R": 0.23559437692165375,
+        "DNp11L": 0.0800323635339737,
+        "DNp11R": 0.07835749536752701
+      }
+    },
+    "nt-glu-positive": {
+      "target": {
+        "DNa01L": 0.002850389340892434,
+        "DNa01R": 0.0022434755228459835,
+        "DNa02L": 0.012055248953402042,
+        "DNa02R": 0.01171618327498436,
+        "DNp09L": 0.0008984865853562951,
+        "DNp09R": 0.016084743663668633,
+        "MDNL": 0.0014027655415702611,
+        "MDNR": 0.0019455772126093507,
+        "DNp01L": 0.0003449931973591447,
+        "DNp01R": 0.0003020501753780991,
+        "DNp02L": 0.00045332201989367604,
+        "DNp02R": 0.0005070497281849384,
+        "DNp04L": 0.0009017268312163651,
+        "DNp04R": 0.0008835238986648619,
+        "DNp11L": 0.003972896374762058,
+        "DNp11R": 0.006312400568276644
+      },
+      "threat": {
+        "DNa01L": 0.0010543550597503781,
+        "DNa01R": 0.001363624120131135,
+        "DNa02L": 0.0006293525802902877,
+        "DNa02R": 0.0008251843973994255,
+        "DNp09L": 0.005657478701323271,
+        "DNp09R": 0.0019859136082232,
+        "MDNL": 0.0006150692061055452,
+        "MDNR": 0.0006281510577537119,
+        "DNp01L": 0.12560878694057465,
+        "DNp01R": 0.12074794620275497,
+        "DNp02L": 0.10540952533483505,
+        "DNp02R": 0.09139247238636017,
+        "DNp04L": 0.25027504563331604,
+        "DNp04R": 0.2360685020685196,
+        "DNp11L": 0.08092577755451202,
+        "DNp11R": 0.07930059731006622
+      }
+    }
+  },
+  "runs": [
+    {
+      "chemistry": "unsigned",
+      "tick": 85,
+      "scores": [
+        0,
+        17
+      ],
+      "winner": 1,
+      "alive": 3,
+      "actions": {
+        "advance": 363,
+        "left": 60,
+        "right": 52,
+        "reverse": 15,
+        "wait": 10,
+        "fire": 49
+      },
+      "late": {
+        "activations": 0,
+        "edge": 0,
+        "attacks": 0
+      },
+      "activityBounds": [
+        0.000001260097974409291,
+        0.8577271103858948
+      ],
+      "snapshotBytes": 4331042,
+      "units": [
+        {
+          "id": "A-01",
+          "hp": 0,
+          "cells": 37,
+          "updates": 48,
+          "reward": -0.8825000000000003
+        },
+        {
+          "id": "A-02",
+          "hp": 0,
+          "cells": 63,
+          "updates": 85,
+          "reward": 0.4432000000000005
+        },
+        {
+          "id": "A-03",
+          "hp": 0,
+          "cells": 13,
+          "updates": 40,
+          "reward": -2.3935000000000004
+        },
+        {
+          "id": "A-04",
+          "hp": 0,
+          "cells": 12,
+          "updates": 20,
+          "reward": -0.11160000000000014
+        },
+        {
+          "id": "A-05",
+          "hp": 0,
+          "cells": 13,
+          "updates": 21,
+          "reward": -1.29
+        },
+        {
+          "id": "B-01",
+          "hp": 28,
+          "cells": 47,
+          "updates": 85,
+          "reward": 2.773
+        },
+        {
+          "id": "B-02",
+          "hp": 10,
+          "cells": 63,
+          "updates": 85,
+          "reward": 4.7180000000000035
+        },
+        {
+          "id": "B-03",
+          "hp": 0,
+          "cells": 31,
+          "updates": 44,
+          "reward": 2.5448000000000017
+        },
+        {
+          "id": "B-04",
+          "hp": 0,
+          "cells": 24,
+          "updates": 36,
+          "reward": 0.24099999999999988
+        },
+        {
+          "id": "B-05",
+          "hp": 5,
+          "cells": 49,
+          "updates": 85,
+          "reward": 3.150799999999999
+        }
+      ]
+    },
+    {
+      "chemistry": "nt",
+      "tick": 180,
+      "scores": [
+        36,
+        29
+      ],
+      "winner": 0,
+      "alive": 8,
+      "actions": {
+        "left": 363,
+        "advance": 868,
+        "right": 321,
+        "reverse": 45,
+        "wait": 75,
+        "fire": 11
+      },
+      "late": {
+        "activations": 534,
+        "edge": 43,
+        "attacks": 7
+      },
+      "activityBounds": [
+        0,
+        0.8148843050003052
+      ],
+      "snapshotBytes": 4252314,
+      "units": [
+        {
+          "id": "A-01",
+          "hp": 25,
+          "cells": 50,
+          "updates": 180,
+          "reward": 1.9449999999999992
+        },
+        {
+          "id": "A-02",
+          "hp": 0,
+          "cells": 39,
+          "updates": 78,
+          "reward": -2.0600000000000005
+        },
+        {
+          "id": "A-03",
+          "hp": 27,
+          "cells": 27,
+          "updates": 180,
+          "reward": 1.4627499999999982
+        },
+        {
+          "id": "A-04",
+          "hp": 0,
+          "cells": 95,
+          "updates": 165,
+          "reward": 4.168100000000009
+        },
+        {
+          "id": "A-05",
+          "hp": 25,
+          "cells": 52,
+          "updates": 180,
+          "reward": 2.950000000000016
+        },
+        {
+          "id": "B-01",
+          "hp": 28,
+          "cells": 113,
+          "updates": 180,
+          "reward": 1.931200000000002
+        },
+        {
+          "id": "B-02",
+          "hp": 37,
+          "cells": 116,
+          "updates": 180,
+          "reward": 5.795999999999998
+        },
+        {
+          "id": "B-03",
+          "hp": 30,
+          "cells": 72,
+          "updates": 180,
+          "reward": -0.2996000000000002
+        },
+        {
+          "id": "B-04",
+          "hp": 29,
+          "cells": 75,
+          "updates": 180,
+          "reward": 0.1539999999999987
+        },
+        {
+          "id": "B-05",
+          "hp": 28,
+          "cells": 84,
+          "updates": 180,
+          "reward": 0.7843000000000007
+        }
+      ]
+    },
+    {
+      "chemistry": "nt-glu-positive",
+      "tick": 67,
+      "scores": [
+        0,
+        11
+      ],
+      "winner": 1,
+      "alive": 5,
+      "actions": {
+        "advance": 307,
+        "left": 95,
+        "right": 87,
+        "reverse": 3,
+        "wait": 6,
+        "fire": 25
+      },
+      "late": {
+        "activations": 0,
+        "edge": 0,
+        "attacks": 0
+      },
+      "activityBounds": [
+        0,
+        0.845963716506958
+      ],
+      "snapshotBytes": 4285858,
+      "units": [
+        {
+          "id": "A-01",
+          "hp": 0,
+          "cells": 43,
+          "updates": 55,
+          "reward": -1.5700000000000007
+        },
+        {
+          "id": "A-02",
+          "hp": 0,
+          "cells": 36,
+          "updates": 66,
+          "reward": -2.1824000000000003
+        },
+        {
+          "id": "A-03",
+          "hp": 0,
+          "cells": 11,
+          "updates": 18,
+          "reward": -2.236
+        },
+        {
+          "id": "A-04",
+          "hp": 0,
+          "cells": 14,
+          "updates": 24,
+          "reward": -0.9660000000000002
+        },
+        {
+          "id": "A-05",
+          "hp": 0,
+          "cells": 12,
+          "updates": 25,
+          "reward": -2
+        },
+        {
+          "id": "B-01",
+          "hp": 28,
+          "cells": 36,
+          "updates": 67,
+          "reward": 2.4555999999999996
+        },
+        {
+          "id": "B-02",
+          "hp": 37,
+          "cells": 24,
+          "updates": 67,
+          "reward": 4.3660000000000085
+        },
+        {
+          "id": "B-03",
+          "hp": 30,
+          "cells": 47,
+          "updates": 67,
+          "reward": 4.649200000000001
+        },
+        {
+          "id": "B-04",
+          "hp": 37,
+          "cells": 27,
+          "updates": 67,
+          "reward": 2.9189999999999996
+        },
+        {
+          "id": "B-05",
+          "hp": 10,
+          "cells": 32,
+          "updates": 67,
+          "reward": 3.1560999999999995
+        }
+      ]
+    }
+  ]
+}

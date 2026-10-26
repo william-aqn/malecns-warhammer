@@ -1,3 +1,4 @@
+import {chemistryOf,chemistryState,validateChemistry,transmitterWeights,rectifiedRate} from './neurochemistry.mjs';
 import {MOTOR_MODEL,MOTOR_PACKED,MOTOR_SHA256} from './data/malecns-motor.mjs';
 export {MOTOR_MODEL,MOTOR_SHA256};
 export const MOTOR_STEPS=8;
@@ -14,21 +15,27 @@ for(let row=0;row<motorN;row++)for(let e=motorOffsets[row];e<motorOffsets[row+1]
   motorSources[e]=motorView.getUint16(offset,true);
   motorWeights[e]=.7*motorView.getUint16(offset+2,true)/Math.max(1,MOTOR_MODEL.neurons[row].incomingTotal);
 }
+const motorWeightSets=new Map([['unsigned',motorWeights]]);
+function motorTransmission(chemistry){
+  if(!motorWeightSets.has(chemistry))motorWeightSets.set(chemistry,transmitterWeights(MOTOR_MODEL.neurons,motorSources,motorWeights,chemistry));
+  return motorWeightSets.get(chemistry);
+}
 function motorMean(activity,key){const indices=MOTOR_MODEL.outputs[key];return indices.reduce((sum,i)=>sum+activity[i],0)/indices.length;}
 function escapePair(activity){return ['L','R'].map(side=>['DNp01','DNp02','DNp04','DNp11'].reduce((sum,type)=>sum+motorMean(activity,type+side),0)/4);}
-export function createMotorBrain(){
-  return {model:MOTOR_SHA256,activity:Array(motorN).fill(0),steps:0,inputs:[0,0],targets:[0,0],outputs:[0,0],trace:[]};
+export function createMotorBrain(chemistry='unsigned'){
+  return {model:MOTOR_SHA256,...chemistryState(chemistry),activity:Array(motorN).fill(0),steps:0,inputs:[0,0],targets:[0,0],outputs:[0,0],trace:[]};
 }
 export function stepMotorBrain(brain,inputs,mode,steps=MOTOR_STEPS){
   if(!isMotorMode(mode)||!Array.isArray(inputs)||inputs.length!==4||inputs.some(v=>!Number.isFinite(v)||v<0||v>1)||
     !Number.isInteger(steps)||steps<1||steps>64)throw new Error('Invalid visual-motor input');
+  const weights=motorTransmission(chemistryOf(brain));
   const activity=Float32Array.from(brain.activity),sums=new Float32Array(motorN),stimulus=new Float32Array(motorN);
   for(const [channel,value] of [['threatL',inputs[0]],['threatR',inputs[1]],['targetL',inputs[2]],['targetR',inputs[3]]])
     for(const i of MOTOR_MODEL.inputs[channel])stimulus[i]+=.8*value;
   for(let step=0;step<steps;step++){
     sums.fill(0);
-    if(mode==='neural'||mode==='adaptive')for(let row=0;row<motorN;row++)for(let e=motorOffsets[row];e<motorOffsets[row+1];e++)sums[row]+=motorWeights[e]*activity[motorSources[e]];
-    for(let i=0;i<motorN;i++)activity[i]=.5*activity[i]+.5*Math.tanh(sums[i]+stimulus[i]);
+    if(mode==='neural'||mode==='adaptive')for(let row=0;row<motorN;row++)for(let e=motorOffsets[row];e<motorOffsets[row+1];e++)sums[row]+=weights[e]*activity[motorSources[e]];
+    for(let i=0;i<motorN;i++)activity[i]=.5*activity[i]+.5*rectifiedRate(sums[i]+stimulus[i]);
   }
   brain.activity=Array.from(activity);brain.steps+=steps;brain.inputs=inputs.slice(0,2);brain.targets=inputs.slice(2);
   brain.outputs=escapePair(activity);
@@ -36,10 +43,23 @@ export function stepMotorBrain(brain,inputs,mode,steps=MOTOR_STEPS){
   if(brain.trace.length>40)brain.trace.shift();
   return brain;
 }
+const motorCalibrations=new Map([['unsigned',MOTOR_MODEL.calibration]]);
+export function motorCalibration(chemistry='unsigned'){
+  if(motorCalibrations.has(chemistry))return motorCalibrations.get(chemistry);
+  const calibration={};
+  for(const [name,input] of [['target',[0,0,.5,.5]],['threat',[.5,.5,0,0]]]){
+    const brain=createMotorBrain(chemistry);stepMotorBrain(brain,input,'neural',32);
+    calibration[name]=Object.fromEntries(Object.keys(MOTOR_MODEL.outputs).map(key=>[key,motorMean(brain.activity,key)]));
+  }
+  motorCalibrations.set(chemistry,calibration);return calibration;
+}
+// A silent reference retains unit scale instead of dividing by zero or amplifying noise.
+const motorScale=value=>value>1e-9?value:1;
 // Engineering adapter: motor populations provide every command score.
 // Symmetric reference stimuli equalize channel scales; no utility scores,
 // pathfinding, assigned objective, combat optimizer or trained action labels.
 export function motorReadout(brain,reactivity=.5){
+  // Keep the same unsigned reference scales across chemistries: inhibition is not normalized away.
   const gain=2*reactivity,cal=MOTOR_MODEL.calibration;
   const raw={
     aim:['L','R'].map(side=>motorMean(brain.activity,'DNa01'+side)),
@@ -48,12 +68,12 @@ export function motorReadout(brain,reactivity=.5){
     reverse:['L','R'].map(side=>motorMean(brain.activity,'MDN'+side)),
     escape:escapePair(brain.activity)
   };
-  const steer=raw.steer.map((v,i)=>gain*v/cal.target['DNa02'+['L','R'][i]]);
+  const steer=raw.steer.map((v,i)=>gain*v/motorScale(cal.target['DNa02'+['L','R'][i]]));
   // DNa01 supplies an engineered aim/fire readout, not a biological attack label.
-  const aim=raw.aim.map((v,i)=>gain*v/cal.target['DNa01'+['L','R'][i]]);
+  const aim=raw.aim.map((v,i)=>gain*v/motorScale(cal.target['DNa01'+['L','R'][i]]));
   const aimTotal=aim[0]+aim[1],aimAngle=aimTotal>1e-9?Math.atan2(aim[1]-aim[0],aimTotal):null;
-  const fear=raw.escape.map((v,i)=>gain*v/(['DNp01','DNp02','DNp04','DNp11'].reduce((sum,type)=>sum+cal.threat[type+['L','R'][i]],0)/4));
-  const walk=raw.walk.map((v,i)=>gain*v/cal.target['DNp09'+['L','R'][i]]),reverse=raw.reverse.map((v,i)=>gain*v/cal.threat['MDN'+['L','R'][i]]);
+  const fear=raw.escape.map((v,i)=>gain*v/motorScale(['DNp01','DNp02','DNp04','DNp11'].reduce((sum,type)=>sum+cal.threat[type+['L','R'][i]],0)/4));
+  const walk=raw.walk.map((v,i)=>gain*v/motorScale(cal.target['DNp09'+['L','R'][i]])),reverse=raw.reverse.map((v,i)=>gain*v/motorScale(cal.threat['MDN'+['L','R'][i]]));
   // Opponent locomotor readout: forward activity damps repeated backing-up.
   // This is an engineered command mapping, not a change to the connectome.
   const advance=Math.min((steer[0]+steer[1])/2,(walk[0]+walk[1])/2);
@@ -69,14 +89,14 @@ export function motorReadout(brain,reactivity=.5){
 }
 export function validateMotorBrain(b,maxTicks){
   const scalar=v=>Number.isFinite(v)&&v>=0&&v<=1,pair=x=>Array.isArray(x)&&x.length===2&&x.every(scalar);
-  if(!b||b.model!==MOTOR_SHA256||!Array.isArray(b.activity)||b.activity.length!==motorN||!b.activity.every(scalar)||
+  if(!b||!validateChemistry(b)||b.model!==MOTOR_SHA256||!Array.isArray(b.activity)||b.activity.length!==motorN||!b.activity.every(scalar)||
     !Number.isInteger(b.steps)||b.steps<0||b.steps>maxTicks*MOTOR_STEPS||b.steps%MOTOR_STEPS!==0||
     !pair(b.inputs)||!pair(b.targets)||!pair(b.outputs)||!Array.isArray(b.trace)||b.trace.length>40||
     b.trace.some((t,i)=>!t||!Number.isInteger(t.step)||t.step<1||t.step>b.steps||t.step%MOTOR_STEPS!==0||!pair(t.inputs)||!pair(t.targets)||!pair(t.outputs)||(i>0&&t.step<=b.trace[i-1].step)))return false;
   return escapePair(b.activity).every((v,i)=>Math.abs(v-b.outputs[i])<1e-8);
 }
 export function copyMotorBrain(b){
-  return {model:b.model,activity:[...b.activity],steps:b.steps,inputs:[...b.inputs],targets:[...b.targets],outputs:[...b.outputs],
+  return {model:b.model,...chemistryState(chemistryOf(b)),activity:[...b.activity],steps:b.steps,inputs:[...b.inputs],targets:[...b.targets],outputs:[...b.outputs],
     trace:b.trace.map(t=>({step:t.step,inputs:[...t.inputs],targets:[...t.targets],outputs:[...t.outputs]}))};
 }
 const motorDisplayIndices=Array.from({length:319},(_,i)=>Math.floor(i*(motorN-1)/318));

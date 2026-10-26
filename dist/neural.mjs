@@ -1,3 +1,4 @@
+import {chemistryOf,chemistryState,validateChemistry,transmitterWeights,rectifiedRate} from './neurochemistry.mjs';
 import {isMotorMode,isMotorBrain,createMotorBrain,stepMotorBrain,validateMotorBrain,copyMotorBrain} from './motor.mjs';
 import {CONNECTOME,CONNECTOME_SHA256} from './data/malecns-escape.mjs';
 export {CONNECTOME,CONNECTOME_SHA256};
@@ -16,26 +17,32 @@ CONNECTOME.neurons.forEach((n,i)=>(n.kind==='input'?inputIndices:outputIndices)[
 const edgeFrom=Uint16Array.from(CONNECTOME.edges,e=>e[0]);
 const edgeTo=Uint16Array.from(CONNECTOME.edges,e=>e[1]);
 const edgeWeight=Float32Array.from(CONNECTOME.edges,e=>NEURAL_GAIN*e[2]/Math.max(1,CONNECTOME.neurons[e[1]].incomingTotal));
-export function createBrain(mode='malecns'){
-  if(isMotorMode(mode))return createMotorBrain();
-  return {model:CONNECTOME_SHA256,activity:Array(CONNECTOME.neurons.length).fill(0),steps:0,inputs:[0,0],outputs:[0,0],trace:[]};
+const reflexWeightSets=new Map([['unsigned',edgeWeight]]);
+function reflexTransmission(chemistry){
+  if(!reflexWeightSets.has(chemistry))reflexWeightSets.set(chemistry,transmitterWeights(CONNECTOME.neurons,edgeFrom,edgeWeight,chemistry));
+  return reflexWeightSets.get(chemistry);
 }
-// Discrete leaky rate model, NOT measured electrophysiology. All edges are
-// unsigned because the source bundle contains no transmitter signs.
+export function createBrain(mode='malecns',chemistry='unsigned'){
+  if(isMotorMode(mode))return createMotorBrain(chemistry);
+  return {model:CONNECTOME_SHA256,...chemistryState(chemistry),activity:Array(CONNECTOME.neurons.length).fill(0),steps:0,inputs:[0,0],outputs:[0,0],trace:[]};
+}
+// Discrete rectified leaky-rate model, NOT measured electrophysiology.
+// The selected chemistry maps source consensus labels to assumed fast-effect signs.
 // The full-source denominator is retained; missing neurons contribute zero.
 export function stepBrain(brain,inputs,mode='malecns',steps=NEURAL_STEPS){
   if(isMotorMode(mode))return stepMotorBrain(brain,inputs,mode,arguments.length>=4?steps:undefined);
   if(!Object.hasOwn(CONTROLLERS,mode)||!Array.isArray(inputs)||inputs.length!==2||inputs.some(v=>!Number.isFinite(v)||v<0||v>1))throw new Error('Invalid neural input');
   if(!Number.isInteger(steps)||steps<1||steps>64)throw new Error('Invalid neural step count');
   if(mode==='utility')return brain;
+  const weights=reflexTransmission(chemistryOf(brain));
   const drive=[...inputs];let activity=Float32Array.from(brain.activity);
   const incoming=new Float32Array(activity.length),next=new Float32Array(activity.length);
   for(let substep=0;substep<steps;substep++){
     incoming.fill(0);
-    if(mode==='malecns')for(let e=0;e<edgeFrom.length;e++)incoming[edgeTo[e]]+=edgeWeight[e]*activity[edgeFrom[e]];
+    if(mode==='malecns')for(let e=0;e<edgeFrom.length;e++)incoming[edgeTo[e]]+=weights[e]*activity[edgeFrom[e]];
     for(let i=0;i<activity.length;i++)next[i]=incoming[i];
     for(const [side,indices] of Object.entries(inputIndices))for(const i of indices)next[i]+=NEURAL_AMPLITUDE*drive[side==='L'?0:1];
-    for(let i=0;i<activity.length;i++)next[i]=(1-NEURAL_LEAK)*activity[i]+NEURAL_LEAK*Math.tanh(next[i]);
+    for(let i=0;i<activity.length;i++)next[i]=(1-NEURAL_LEAK)*activity[i]+NEURAL_LEAK*rectifiedRate(next[i]);
     activity.set(next);
   }
   brain.activity=Array.from(activity);brain.steps+=steps;brain.inputs=drive;
@@ -55,10 +62,10 @@ export function validateBrain(b,maxTicks){
   if(isMotorBrain(b))return validateMotorBrain(b,maxTicks);
   const finite=(x,lo=0,hi=1)=>Number.isFinite(x)&&x>=lo&&x<=hi;
   const pair=x=>Array.isArray(x)&&x.length===2&&x.every(v=>finite(v));
-  if(!b||b.model!==CONNECTOME_SHA256||!Array.isArray(b.activity)||b.activity.length!==CONNECTOME.neurons.length||!b.activity.every(v=>finite(v))||
+  if(!b||!validateChemistry(b)||b.model!==CONNECTOME_SHA256||!Array.isArray(b.activity)||b.activity.length!==CONNECTOME.neurons.length||!b.activity.every(v=>finite(v))||
     !Number.isInteger(b.steps)||b.steps<0||b.steps>maxTicks*NEURAL_STEPS||b.steps%NEURAL_STEPS!==0||!pair(b.inputs)||!pair(b.outputs)||
     !Array.isArray(b.trace)||b.trace.length>40||b.trace.some((t,i)=>!t||!Number.isInteger(t.step)||t.step<1||t.step>b.steps||t.step%NEURAL_STEPS!==0||!pair(t.inputs)||!pair(t.outputs)||(i>0&&t.step<=b.trace[i-1].step)))return false;
   const actual=['L','R'].map(side=>outputIndices[side].reduce((sum,i)=>sum+b.activity[i],0)/outputIndices[side].length);
   return actual.every((x,i)=>Math.abs(x-b.outputs[i])<1e-8);
 }
-export function copyBrain(b){if(isMotorBrain(b))return copyMotorBrain(b);return {model:b.model,activity:[...b.activity],steps:b.steps,inputs:[...b.inputs],outputs:[...b.outputs],trace:b.trace.map(t=>({step:t.step,inputs:[...t.inputs],outputs:[...t.outputs]}))};}
+export function copyBrain(b){if(isMotorBrain(b))return copyMotorBrain(b);return {model:b.model,...chemistryState(chemistryOf(b)),activity:[...b.activity],steps:b.steps,inputs:[...b.inputs],outputs:[...b.outputs],trace:b.trace.map(t=>({step:t.step,inputs:[...t.inputs],outputs:[...t.outputs]}))};}

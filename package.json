@@ -1,17 +1,19 @@
 {
   "name": "malecns-warhammer-sandbox",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
-    "test": "node --test tests/engine.test.mjs tests/neural.test.mjs tests/reflex.test.mjs tests/decision.test.mjs tests/motor.test.mjs tests/aim.test.mjs tests/navigation.test.mjs tests/experience.test.mjs",
+    "test": "node --test tests/engine.test.mjs tests/neural.test.mjs tests/reflex.test.mjs tests/decision.test.mjs tests/motor.test.mjs tests/aim.test.mjs tests/navigation.test.mjs tests/experience.test.mjs tests/neurochemistry.test.mjs",
     "export": "node scripts/export-standalone.mjs",
     "data:build": "node scripts/import-malecns.mjs",
     "data:fetch": "node scripts/import-malecns.mjs --download",
     "benchmark": "node scripts/benchmark.mjs",
     "benchmark:experience": "node scripts/experience-benchmark.mjs",
     "benchmark:navigation": "node scripts/navigation-benchmark.mjs",
-    "data:motor": "node scripts/import-motor.mjs"
+    "data:motor": "node scripts/import-motor.mjs",
+    "data:neurotransmitters": "node scripts/import-neurotransmitters.mjs",
+    "benchmark:neurotransmitters": "node scripts/neurotransmitter-benchmark.mjs"
   }
 }

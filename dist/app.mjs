@@ -1,12 +1,13 @@
+import {CHEMISTRIES,TRANSMITTER_NAMES,TRANSMITTER_COLORS,chemistryOf,transmitterInfo,transmitterPolarity,transmitterSummary} from './neurochemistry.mjs';
 import {createExperience,setExperienceLearning} from './experience.mjs';
-import {isMotorMode,isMotorBrain,isAdaptiveMode,motorReadout,motorDisplay} from './motor.mjs';
+import {MOTOR_MODEL,isMotorMode,isMotorBrain,isAdaptiveMode,motorReadout,motorDisplay} from './motor.mjs';
 import {SCENARIOS,W,H,FACTIONS,ROLES,MAPS,MAX_TICKS,WIN_SCORE,createSimulation,repeatWithExperience,stepSimulation,controllerFor,profile,decideUnit,updateDecisions,aliveUnits,threatAt,distance,hasLineOfSight,setTerrain,exportScene,importScene,clamp} from './engine.mjs';
 import {CONNECTOME,CONTROLLERS,neuralReadout} from './neural.mjs';
-import {contactConfig,aimConfig,runContactComparison,runMotorComparison,runAimComparison} from './experiments.mjs';
+import {contactConfig,aimConfig,runContactComparison,runMotorComparison,runAimComparison,runTransmitterComparison} from './experiments.mjs';
 const $=id=>document.getElementById(id),colors=['#86c4d1','#e0a07b'];
 const canvas=$('battlefield'),ctx=canvas.getContext('2d'),reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
-let state=createSimulation({controllerA:'adaptive',controllerB:'adaptive'}),initial=exportScene(state),selected='A-01',running=false,timer=null,lastStep=-10000,speed=1,brush='select',hover=null,toastTimer=null,revision=0,threatCache=null,tab='units',dimensions={width:0,height:0,cell:0,ox:0,oy:0};
-let neuralHover=null,comparisonReactivity=.5,comparisonNeural=false,comparisonAdaptive=false;
+let state=createSimulation({controllerA:'adaptive',controllerB:'adaptive',neurochemistry:'nt'}),initial=exportScene(state),selected='A-01',running=false,timer=null,lastStep=-10000,speed=1,brush='select',hover=null,toastTimer=null,revision=0,threatCache=null,tab='units',dimensions={width:0,height:0,cell:0,ox:0,oy:0};
+let neuralHover=null,comparisonReactivity=.5,comparisonNeural=false,comparisonAdaptive=false,comparisonChemistry='nt';
 const brainCells=brain=>isMotorBrain(brain)?motorDisplay(brain):CONNECTOME.neurons.map((n,i)=>({...n,activity:brain.activity[i]}));
 const t=()=>performance.now();
 const degrees=angle=>(angle>0?'+':'')+(angle*180/Math.PI).toFixed(1)+'°';
@@ -17,9 +18,11 @@ function populate(){
   for(const id of ['faction-a','faction-b'])for(const [key,f]of Object.entries(FACTIONS)){const o=document.createElement('option');o.value=key;o.textContent=f.name;$(id).append(o);}
   for(const id of ['controller-a','controller-b'])for(const [key,label] of Object.entries(CONTROLLERS)){const o=document.createElement('option');o.value=key;o.textContent=label;$(id).append(o);}
   for(const [value,label] of Object.entries(SCENARIOS)){const o=document.createElement('option');o.value=value;o.textContent=label;$('scenario').append(o);}
+  for(const [value,label] of Object.entries(CHEMISTRIES)){const o=document.createElement('option');o.value=value;o.textContent=label;$('neurochemistry').append(o);}
   syncConfig();
 }
 function syncConfig(){
+  $('neurochemistry').value=state.config.neurochemistry;
   $('scenario').value=state.config.scenario;syncScenarioControls();
   $('map-kind').value=state.config.mapKind;$('seed').value=state.config.seed;$('density').value=state.config.density;$('density-value').value=state.config.density;
   $('controller-a').value=state.config.controllerA;$('controller-b').value=state.config.controllerB;
@@ -42,7 +45,7 @@ function advance(){
 function reset(){
   setRunning(false);state=importScene(initial);lastStep=-10000;revision++;threatCache=null;syncConfig();renderUI();toast('Возврат к исходной сцене. Seed и настройки сохранены.');
 }
-function setupConfig(){return {scenario:$('scenario').value,seed:$('seed').value.trim()||'40721',mapKind:$('map-kind').value,density:Number($('density').value),factionA:$('faction-a').value,factionB:$('faction-b').value,controllerA:$('controller-a').value,controllerB:$('controller-b').value};}
+function setupConfig(){return {scenario:$('scenario').value,seed:$('seed').value.trim()||'40721',mapKind:$('map-kind').value,density:Number($('density').value),factionA:$('faction-a').value,factionB:$('faction-b').value,controllerA:$('controller-a').value,controllerB:$('controller-b').value,neurochemistry:$('neurochemistry').value};}
 function generate(){
   setRunning(false);
   state=createSimulation(setupConfig());
@@ -51,31 +54,32 @@ function generate(){
 function repeatExperienced(){
   setRunning(false);state=repeatWithExperience(state,setupConfig());initial=exportScene(state);
   selected='A-01';lastStep=-10000;revision++;threatCache=null;setBrush('select');syncConfig();renderUI();
-  toast('Новый бой с выученными коэффициентами. Память карты очищена.');
+  toast('Новый бой. Совместимый опыт перенесён; при смене модели передачи обучение начинается заново.');
 }
 function openExperiment(config,reactivity=.5){
-  for(const [id,key] of [['scenario','scenario'],['seed','seed'],['map-kind','mapKind'],['faction-a','factionA'],['faction-b','factionB'],['controller-a','controllerA'],['controller-b','controllerB']])$(id).value=config[key];
+  for(const [id,key] of [['scenario','scenario'],['seed','seed'],['map-kind','mapKind'],['faction-a','factionA'],['faction-b','factionB'],['controller-a','controllerA'],['controller-b','controllerB'],['neurochemistry','neurochemistry']])$(id).value=config[key];
   $('density').value=config.density;generate();state.units[0].overrides.reactivity=reactivity;updateDecisions(state);initial=exportScene(state);renderUI();
 }
-function openContactScene(reactivity=.5,controller='malecns'){
-  openExperiment(contactConfig(controller),reactivity);
+function openContactScene(reactivity=.5,controller='malecns',chemistry=state.config.neurochemistry){
+  openExperiment(contactConfig(controller,chemistry),reactivity);
   toast(isMotorMode(controller)?'Нейронное управление у A. Нажми «Шаг» и смотри команды сети.':'Тест рефлекса: нажми «Шаг». Затем сравни режимы.');
 }
 function openAimScene(){
-  openExperiment(aimConfig());
+  openExperiment(aimConfig('neural',state.config.neurochemistry));
   toast('Две мишени с отключёнными связями. У A — отдельные команды движения и огня.');
 }
 function compareControllers(){
-  const unit=state.units.find(u=>u.id===selected)||state.units[0],reactivity=profile(unit).reactivity,neural=isMotorMode(controllerFor(state,unit)),adaptive=isAdaptiveMode(controllerFor(state,unit)),results=neural?runMotorComparison(reactivity,adaptive):runContactComparison(reactivity);comparisonReactivity=reactivity;comparisonNeural=neural;comparisonAdaptive=adaptive;
+  const unit=state.units.find(u=>u.id===selected)||state.units[0],reactivity=profile(unit).reactivity,neural=isMotorMode(controllerFor(state,unit)),adaptive=isAdaptiveMode(controllerFor(state,unit)),chemistry=chemistryOf(unit.brain),results=neural?runMotorComparison(reactivity,adaptive,chemistry):runContactComparison(reactivity,chemistry);comparisonReactivity=reactivity;comparisonNeural=neural;comparisonAdaptive=adaptive;comparisonChemistry=chemistry;
   $('compare-neural-column').textContent=neural?'Двигательных команд':'Нейронных отходов';
-  $('compare-description').textContent=(adaptive?'С чистым опытом · ':'')+'12 тактов · один seed · два разведчика Astartes · одинаковые входные условия. Чувствительность A: '+(reactivity*2).toFixed(2)+'×. Текущий бой сохранён.';
+  $('compare-description').textContent=(adaptive?'С чистым опытом · ':'')+CHEMISTRIES[chemistry]+' · 12 тактов · один seed · два разведчика Astartes · одинаковые входные условия. Чувствительность A: '+(reactivity*2).toFixed(2)+'×. Текущий бой сохранён.';
   $('compare-results').innerHTML=results.map(r=>'<tr><th scope="row">'+escape(r.label)+'</th><td>'+escape(r.firstAction)+'</td><td>'+(neural?r.motorCommands:r.neuralEscapes)+'</td><td>'+r.damageDone+'</td><td>'+r.hp+'</td></tr>').join('');
   $('compare-timeline').innerHTML=results.map(r=>'<div class="comparison-run"><strong>'+escape(r.label)+'</strong><div class="comparison-ticks">'+r.timeline.map(t=>'<span class="action-'+(t.override?'reflex':t.action)+'" title="Такт '+t.tick+': '+escape(t.label)+'; выход цепи угрозы '+t.rawDrive.toFixed(3)+'">'+(t.override?'↙':t.action==='attack'?'×':t.action==='dead'?'—':t.action==='move'?'→':t.action==='retreat'?'↙':t.action==='turn'?'↶':'·')+'</span>').join('')+'</div></div>').join('');
   $('compare-aim-section').hidden=!neural;
   if(neural){
-    const probes=runAimComparison(reactivity);
+    const probes=runAimComparison(reactivity,chemistry);
     $('compare-aim-results').innerHTML=probes.map(p=>'<tr><th scope="row">'+escape(p.label)+'</th><td>'+(p.angle===null?'—':degrees(p.angle))+'</td><td>'+escape(p.target||'—')+'</td><td>'+escape(p.command==='fire'?'Огонь':p.command==='wait'?'Ожидание':p.command)+'</td></tr>').join('');
   }
+  $('compare-transmitter-results').innerHTML=runTransmitterComparison(controllerFor(state,unit)).map(p=>'<tr><th scope="row">'+escape(p.label)+'</th><td>'+p.meanRate.toFixed(5)+'</td><td>'+p.escape.map(v=>v.toFixed(5)).join(' / ')+'</td><td>'+(p.aim?p.aim.map(v=>v.toFixed(5)).join(' / '):'—')+'</td></tr>').join('');
   $('compare-dialog').showModal();
 }
 function selectUnit(id){selected=id;threatCache=null;renderInspector();renderRoster();}
@@ -154,9 +158,23 @@ function renderExperience(u,adaptive){
   $('learning-enabled').checked=e.enabled;$('memory-enabled').checked=e.useMemory;
   $('learning-enabled').disabled=u.hp<=0;$('memory-enabled').disabled=u.hp<=0;
 }
+function neuronDescription(node,brain){
+  const info=transmitterInfo(node.bodyId),sign=transmitterPolarity(info.consensus,chemistryOf(brain));
+  const label=TRANSMITTER_NAMES[info.consensus]||info.consensus;
+  const effect=sign>0?'возбуждение':sign<0?'торможение':'быстрый эффект не задан';
+  return (node.type||'Без типа')+' '+node.side+' · body '+node.bodyId+' · активность '+node.activity.toFixed(4)+
+    ' · медиатор: '+label+' · '+effect+(info.prediction&&info.confidence!==null?
+    ' · предсказание нейрона: '+(TRANSMITTER_NAMES[info.prediction]||info.prediction)+' ('+(info.confidence*100).toFixed(1)+'%)':'')+
+    (info.groundTruth?' · ground_truth: '+(TRANSMITTER_NAMES[info.groundTruth]||info.groundTruth):'');
+}
 function renderBrain(u){
   const mode=controllerFor(state,u),full=isMotorMode(mode),adaptive=isAdaptiveMode(mode),b=u.brain,n=neuralReadout(b,profile(u),mode),cells=brainCells(b),motor=full?(u.decision?.motor??motorReadout(b,profile(u).reactivity)):null;
   renderExperience(u,adaptive);
+  const chemistry=chemistryOf(b),nt=transmitterSummary(full?MOTOR_MODEL.neurons:CONNECTOME.neurons,chemistry);
+  $('chemistry-status').textContent=mode==='utility'?'Только тактика: нейронная передача не участвует.':CHEMISTRIES[chemistry];
+  $('chemistry-counts').textContent='Возбуждающих: '+nt.excitatory+' · тормозящих: '+nt.inhibitory+' · без заданного быстрого эффекта: '+nt.unresolved;
+  $('chemistry-note').textContent=chemistry==='unsigned'?'Контрольный режим: все контакты положительные. Метки медиаторов доступны для просмотра.':
+    'Метки consensus_nt из MaleCNS. Знак глутамата — допущение; для неопределённых меток и дофамина, серотонина, октопамина быстрый эффект не задан. Рецепторы и концентрации не моделируются.';
   $('brain-mode').textContent=adaptive?'ADAPTIVE':full?'NEURAL':mode==='malecns'?'REFLEX':mode==='utility'?'UTILITY':'CONTROL';
   $('brain-summary').textContent=full?((mode==='neural-disconnected'||mode==='adaptive-disconnected')?'11 436 нейронов; все связи отключены. Входы стимулируются, выходы не получают сигнал.':adaptive?'11 436 нейронов · фиксированные связи. Выходы читает обучаемый слой команд; память хранится отдельно.':'11 436 нейронов · 1 687 031 связь. Команды выбираются по выходам сети; тактический планировщик отключён.'):mode==='utility'?'Сеть не участвует. Действия выбирает тактический алгоритм.':mode==='disconnected'?'Входы работают, все связи отключены. Контроль вклада графа.':'319 нейронов · 21 288 связей. Короткий рефлекс поверх тактики.';
   $('brain-input').textContent=b.inputs.map(v=>v.toFixed(3)).join(' / ');
@@ -191,12 +209,14 @@ function renderBrain(u){
     $('brain-status').textContent=u.hp<=0?'Юнит выведен из боя; сеть остановлена.':mode==='utility'?'Активен обычный тактический выбор.':u.decision?.neuralOverride?'Короткий нейронный отход: до 2 действий за эпизод.':gate.phase==='cooldown'?'Рефлекс восстанавливается. Тактические решения доступны.':gate.phase==='waiting'?'Ожидание ослабления сигнала. Тактические решения доступны.':n.triggered&&!gate.active?'Порог превышен; реакция проверится на следующем такте.':u.decision?.neural?.blockedReason||'Сигнал ниже порога; действует тактический план.';
   }
   $('neural-sampling').textContent=full?'Показана равномерная выборка 319 из 11 436 нейронов. Расположение условное.':'Все 319 нейронов цепи рефлекса. Расположение условное.';
-  if(neuralHover!==null){const node=cells[neuralHover];if(node)$('neuron-detail').textContent=(node.type||'Без типа')+' '+node.side+' · body '+node.bodyId+' · '+node.activity.toFixed(4);}
+  if(neuralHover!==null){const node=cells[neuralHover];if(node)$('neuron-detail').textContent=neuronDescription(node,b);}
   const c=$('neural-canvas'),g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);
   c.setAttribute('aria-label',full?'Активность выборки 319 из 11436 нейронов':'Активность всех 319 нейронов');
   for(let i=0;i<cells.length;i++){
     const node=cells[i],x=i%29*20,y=Math.floor(i/29)*20;
-    g.fillStyle='hsl('+(node.side==='L'?190:26)+' 48% '+(10+node.activity*66)+'%)';g.fillRect(x+2,y+2,16,16);
+    if($('show-transmitters').checked){g.fillStyle=TRANSMITTER_COLORS[transmitterInfo(node.bodyId).consensus]||TRANSMITTER_COLORS.unclear;g.globalAlpha=.22+.78*node.activity;}
+    else g.fillStyle='hsl('+(node.side==='L'?190:26)+' 48% '+(10+node.activity*66)+'%)';
+    g.fillRect(x+2,y+2,16,16);g.globalAlpha=1;
     if(node.kind==='output'){g.strokeStyle='#c8df9b';g.lineWidth=1;g.strokeRect(x+2,y+2,16,16);}
   }
   const trace=$('neural-trace'),tc=trace.getContext('2d');tc.clearRect(0,0,trace.width,trace.height);
@@ -339,10 +359,11 @@ $('neural-canvas').addEventListener('pointermove',e=>{
   const c=e.currentTarget,r=c.getBoundingClientRect(),col=Math.floor((e.clientX-r.left)/r.width*29),row=Math.floor((e.clientY-r.top)/r.height*11),i=row*29+col;
   const u=state.units.find(v=>v.id===selected);if(!u)return;
   const n=brainCells(u.brain)[i];if(!n)return;neuralHover=i;
-  $('neuron-detail').textContent=(n.type||'Без типа')+' '+n.side+' · body '+n.bodyId+' · '+n.activity.toFixed(4)+(n.kind==='output'?' · выход':n.kind==='input'?' · вход':' · промежуточный');
+  $('neuron-detail').textContent=neuronDescription(n,u.brain);
 });
-$('neural-canvas').addEventListener('pointerleave',()=>{neuralHover=null;$('neuron-detail').textContent='Наведи на ячейку: тип, body ID и активность.';});
+$('neural-canvas').addEventListener('pointerleave',()=>{neuralHover=null;$('neuron-detail').textContent='Наведи на ячейку: медиатор, предсказание, знак передачи и активность.';});
 $('generate').addEventListener('click',generate);
+$('show-transmitters').addEventListener('change',()=>renderInspector());
 $('repeat-experience').addEventListener('click',repeatExperienced);
 $('learning-enabled').addEventListener('change',()=>{const u=state.units.find(v=>v.id===selected);setExperienceLearning(u.experience,$('learning-enabled').checked);u.decision=decideUnit(state,u);if(state.tick===0)initial=exportScene(state);renderInspector();});
 $('memory-enabled').addEventListener('change',()=>{const u=state.units.find(v=>v.id===selected);u.experience.useMemory=$('memory-enabled').checked;if(state.tick===0)initial=exportScene(state);renderInspector();});
@@ -353,7 +374,7 @@ $('neural-demo').addEventListener('click',()=>openContactScene(.5,'neural'));
 $('aim-demo').addEventListener('click',openAimScene);
 $('compare-btn').addEventListener('click',()=>{setRunning(false);compareControllers();});
 $('close-compare').addEventListener('click',()=>$('compare-dialog').close());
-$('compare-open-scene').addEventListener('click',()=>{$('compare-dialog').close();openContactScene(comparisonReactivity,comparisonAdaptive?'adaptive':comparisonNeural?'neural':'malecns');});
+$('compare-open-scene').addEventListener('click',()=>{$('compare-dialog').close();openContactScene(comparisonReactivity,comparisonAdaptive?'adaptive':comparisonNeural?'neural':'malecns',comparisonChemistry);});
 $('random-seed').addEventListener('click',()=>{$('seed').value=String(crypto.getRandomValues(new Uint32Array(1))[0]%999999);$('setup-hint').textContent='Новый seed выбран. Нажми «Создать поле».';});
 $('density').addEventListener('input',()=>{$('density-value').value=$('density').value;});
 for(const id of ['faction-a','faction-b'])$(id).addEventListener('change',updateFactionNotes);

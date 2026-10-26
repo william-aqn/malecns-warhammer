@@ -1,4 +1,8 @@
 # MaleCNS data in Malecns Warhammer
+
+Current version 0.9 adds exact official neurotransmitter annotations and an optional
+signed, rectified rate model. Earlier sections below document historical versions;
+the 0.9 section specifies the current changes and remaining limitations.
 The bundled data in dist/data/malecns-escape.mjs and dist/data/malecns-motor.mjs is licensed CC BY 4.0,
 independently of the application's MIT code license.
 
@@ -189,3 +193,32 @@ traces. Its weights, reward function, exploration, spatial memory and landmark
 recall are application code. Neither anatomical synaptic plasticity nor biological
 memory is reconstructed. No hidden tactical planner provides its action scores.
 See docs/experience.md for coefficients, causal controls and limitations.
+
+## Neurotransmitter annotations and signed transmission in 0.9
+
+dist/data/malecns-neurotransmitters.mjs contains exact selected rows from the
+official body-neurotransmitters-male-cns-v1.0.feather, licensed CC BY 4.0.
+The dataset attribution above applies. Source URL, generation, byte length,
+SHA-256, selected IDs and build version are recorded in
+data/neurotransmitter-manifest.json; this project now directly verifies that
+official Feather source, in addition to the pinned distributor graph assets.
+
+The body-ID join covers all 11,436 selected neurons, including the compact 319.
+consensus_nt is used without substituting labels from another specimen.
+Individual and cell-type predictions, confidence fields, counts and ground_truth
+are preserved separately. Confidence of a constituent prediction is not claimed
+as the confidence of the consensus annotation. The data hash is separate from
+the unchanged anatomical graph hash.
+
+The optional model assigns +1 to acetylcholine and -1 to GABA. Glutamate is -1
+by default, with a +1 sensitivity-control mode. Unclear, dopamine, serotonin and
+octopamine labels receive zero assumed fast effect; this is an engineering
+omission, not a claim of absent biological influence. Receptor specificity,
+modulator dynamics, cotransmission, concentration, spikes and biological
+plasticity are not reconstructed. The rectified tanh prevents negative rates.
+Normalization and game-decoder reference scales are unchanged.
+
+The original unsigned mode remains available. The data, inferred transmitter
+identity, assumed effect and game interpretation are distinct. See
+docs/neurotransmitters.md and docs/malecns-scope.md. No biological equivalence
+or tactical-performance claim is made.
