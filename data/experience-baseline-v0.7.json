@@ -1,0 +1,162 @@
+{
+  "version": "0.7.0",
+  "sourceCommit": "aa2f9ac",
+  "scope": "Unmodified fixed neural controllers, both teams, default seed 40721, full 180-tick game.",
+  "seed": "40721",
+  "tick": 180,
+  "scores": [
+    2,
+    7
+  ],
+  "winner": 1,
+  "alive": 3,
+  "attacks": 53,
+  "waits": 0,
+  "late": {
+    "activations": 183,
+    "edge": 183,
+    "attacks": 0
+  },
+  "units": [
+    {
+      "id": "A-01",
+      "hp": 0,
+      "position": [
+        0,
+        15
+      ],
+      "cells": 33,
+      "updates": 0,
+      "reward": null,
+      "known": [],
+      "captured": [],
+      "coefficientNorm": 0
+    },
+    {
+      "id": "A-02",
+      "hp": 34,
+      "position": [
+        0,
+        21
+      ],
+      "cells": 132,
+      "updates": 0,
+      "reward": null,
+      "known": [],
+      "captured": [],
+      "coefficientNorm": 0
+    },
+    {
+      "id": "A-03",
+      "hp": 0,
+      "position": [
+        6,
+        16
+      ],
+      "cells": 13,
+      "updates": 0,
+      "reward": null,
+      "known": [],
+      "captured": [],
+      "coefficientNorm": 0
+    },
+    {
+      "id": "A-04",
+      "hp": 0,
+      "position": [
+        22,
+        0
+      ],
+      "cells": 57,
+      "updates": 0,
+      "reward": null,
+      "known": [],
+      "captured": [],
+      "coefficientNorm": 0
+    },
+    {
+      "id": "A-05",
+      "hp": 0,
+      "position": [
+        8,
+        0
+      ],
+      "cells": 48,
+      "updates": 0,
+      "reward": null,
+      "known": [],
+      "captured": [],
+      "coefficientNorm": 0
+    },
+    {
+      "id": "B-01",
+      "hp": 16,
+      "position": [
+        14,
+        21
+      ],
+      "cells": 140,
+      "updates": 0,
+      "reward": null,
+      "known": [],
+      "captured": [],
+      "coefficientNorm": 0
+    },
+    {
+      "id": "B-02",
+      "hp": 0,
+      "position": [
+        4,
+        16
+      ],
+      "cells": 32,
+      "updates": 0,
+      "reward": null,
+      "known": [],
+      "captured": [],
+      "coefficientNorm": 0
+    },
+    {
+      "id": "B-03",
+      "hp": 2,
+      "position": [
+        31,
+        0
+      ],
+      "cells": 144,
+      "updates": 0,
+      "reward": null,
+      "known": [],
+      "captured": [],
+      "coefficientNorm": 0
+    },
+    {
+      "id": "B-04",
+      "hp": 0,
+      "position": [
+        7,
+        21
+      ],
+      "cells": 31,
+      "updates": 0,
+      "reward": null,
+      "known": [],
+      "captured": [],
+      "coefficientNorm": 0
+    },
+    {
+      "id": "B-05",
+      "hp": 0,
+      "position": [
+        0,
+        16
+      ],
+      "cells": 56,
+      "updates": 0,
+      "reward": null,
+      "known": [],
+      "captured": [],
+      "coefficientNorm": 0
+    }
+  ]
+}

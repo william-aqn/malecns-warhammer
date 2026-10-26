@@ -2,7 +2,7 @@ import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),out=path.resolve(root,'standalone');
-const modules=['data/malecns-escape.mjs','data/malecns-motor.mjs','motor.mjs','neural.mjs','reflex.mjs','engine.mjs','experiments.mjs','app.mjs'];
+const modules=['data/malecns-escape.mjs','data/malecns-motor.mjs','motor.mjs','experience.mjs','neural.mjs','reflex.mjs','engine.mjs','experiments.mjs','app.mjs'];
 const script='(function(){\n"use strict";\n'+modules.map(name=>readFileSync(path.join(root,'dist',name),'utf8')
   .replace(/^import[^\n]+\n/gm,'').replace(/^export\s*\{[^}]*\};?\r?\n/gm,'').replace(/^export\s+/gm,'')).join('\n')+'\n})();';
 new Function(script);

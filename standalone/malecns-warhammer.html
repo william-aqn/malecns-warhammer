@@ -75,6 +75,8 @@ select:disabled,input:disabled{opacity:.55}
 .motor-panel[hidden],.reflex-phases[hidden]{display:none}.comparison-ticks .action-turn{background:#35514a;color:#b4ded2}.comparison-ticks .action-retreat{background:#3b3d2b;color:#d7d4a9}
 
 .aim-table{width:100%;border-collapse:collapse;font:10px/1.6 var(--mono);margin:10px 0}.aim-table th,.aim-table td{padding:5px 4px;text-align:right;border-bottom:1px solid var(--line)}.aim-table th{font-size:8px;font-weight:400;color:var(--muted)}.aim-table th:first-child,.aim-table td:first-child{text-align:left}.aim-selected{color:#e6d69b;background:#e6d69b0c}.aim-explainer{font-size:9px;line-height:1.65;color:var(--muted);margin:10px 0}.aim-explainer summary{cursor:pointer;color:var(--accent)}
+
+.experience-switches{display:flex;flex-wrap:wrap;gap:8px 16px;margin:10px 0;font-size:11px}.experience-switches label{display:flex;align-items:center;gap:6px}#experience-panel{border-bottom:1px solid var(--line);margin-bottom:14px;padding-bottom:12px}#experience-parts,#experience-choice{overflow-wrap:anywhere}.layers{flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -96,7 +98,7 @@ select:disabled,input:disabled{opacity:.55}
 </defs></svg>
 <header class="topbar">
   <a href="./" class="brand" aria-label="Malecns, главная"><span class="brandmark"><span></span><span></span><span></span></span><strong>malecns<span>.</span></strong><span class="brand-divider"></span><span class="brand-sub">WARHAMMER<br><b>BEHAVIOR LAB</b></span></a>
-  <div class="header-right"><span class="version"><i></i> PROTOTYPE 0.7</span><button class="text-btn" id="about-btn"><svg><use href="#i-device"/></svg>От экрана к столу</button></div>
+  <div class="header-right"><span class="version"><i></i> PROTOTYPE 0.8</span><button class="text-btn" id="about-btn"><svg><use href="#i-device"/></svg>От экрана к столу</button></div>
 </header>
 <main>
   <div class="page-heading"><div><div class="eyebrow">ЭКСПЕРИМЕНТАЛЬНЫЙ ПОЛИГОН / 001</div><h1>У каждой армии — свой характер<span>.</span></h1><p>Создавай поле боя. Меняй поведение. Наблюдай за решениями.</p></div><span class="heading-tag">TACTICAL SANDBOX <span>↗</span></span></div>
@@ -115,6 +117,7 @@ select:disabled,input:disabled{opacity:.55}
         <div class="versus"><span>VS</span></div>
         <label for="faction-b" class="team-label"><span class="team-dot b"></span>Группа B <span id="team-size-b">05 юнитов</span></label><select id="faction-b"></select><p class="faction-note" id="faction-b-note"></p><label class="controller-label" for="controller-b">Управление группой B</label><select id="controller-b"></select>
       </section>
+      <button id="repeat-experience" class="generate-btn" title="Новое поле по выбранным настройкам; опыт сохраняется у совпадающих фракций и ролей">Повторить с опытом ↗</button>
       <button id="generate" class="generate-btn"><svg><use href="#i-shuffle"/></svg>Создать поле<span>↗</span></button>
       <p class="setup-hint" id="setup-hint">Настройки применятся к новой симуляции.</p><p class="migration-note" id="migration-note" role="status" hidden></p>
       <section class="mission"><div class="mission-top"><svg><use href="#i-cross"/></svg><span>МИССИЯ / КОНТРОЛЬ</span></div><h3 id="mission-title">Три точки. Один победитель.</h3><p id="mission-description">Занимай сектора I, II и III. Каждый удерживаемый сектор приносит 1 очко за такт.</p><div class="mission-goal"><b>65</b><span>очков для победы<br>или уничтожение противника</span></div></section>
@@ -125,7 +128,7 @@ select:disabled,input:disabled{opacity:.55}
         <div class="battle-top"><div class="live-label"><span id="status-dot"></span><span id="status-text">ГОТОВ К ЗАПУСКУ</span></div><div class="map-meta"><span id="map-name">FORPOST</span><span>32 × 22</span><span id="seed-display">SEED 40721</span></div></div>
         <div class="scoreboard"><div class="score-side"><span class="team-dot a"></span><span id="name-a">Astartes</span><strong id="score-a">00</strong></div><div class="objective-indicators" id="objective-indicators"><span>I</span><span>II</span><span>III</span></div><div class="score-side right"><strong id="score-b">00</strong><span id="name-b">Orks</span><span class="team-dot b"></span></div></div>
         <div class="map-shell" id="map-shell"><canvas id="battlefield" aria-label="Поле боя. Для выбора юнита используйте карту или список подразделений ниже." role="img"></canvas><div class="map-corner top-left"></div><div class="map-corner bottom-right"></div><div class="map-coordinate" id="map-coordinate">SECTOR / 40721</div><div class="map-north">N<br><span>↑</span></div><div class="result-overlay" id="result-overlay" hidden><span>СИМУЛЯЦИЯ ЗАВЕРШЕНА</span><h2 id="result-title"></h2><p id="result-summary"></p><button id="replay" class="primary">Повторить эксперимент</button></div></div>
-        <div class="map-tools"><div class="brushes" role="group" aria-label="Редактор карты"><button class="tool active" data-brush="select" title="Выбрать юнит" aria-label="Выбрать юнит" aria-pressed="true"><svg><use href="#i-cursor"/></svg></button><span class="tool-divider"></span><button class="tool" data-brush="1" title="Добавить стену до старта" aria-label="Добавить стену" aria-pressed="false"><svg><use href="#i-wall"/></svg></button><button class="tool" data-brush="2" title="Добавить укрытие до старта" aria-label="Добавить укрытие" aria-pressed="false"><svg><use href="#i-cover"/></svg></button><button class="tool" data-brush="0" title="Стереть препятствие до старта" aria-label="Стереть препятствие" aria-pressed="false"><svg><use href="#i-erase"/></svg></button></div><div class="layers"><label><input id="show-grid" type="checkbox" checked>Сетка</label><label><input id="show-paths" type="checkbox" checked>Маршруты</label><label><input id="show-threat" type="checkbox">Угроза</label></div></div>
+        <div class="map-tools"><div class="brushes" role="group" aria-label="Редактор карты"><button class="tool active" data-brush="select" title="Выбрать юнит" aria-label="Выбрать юнит" aria-pressed="true"><svg><use href="#i-cursor"/></svg></button><span class="tool-divider"></span><button class="tool" data-brush="1" title="Добавить стену до старта" aria-label="Добавить стену" aria-pressed="false"><svg><use href="#i-wall"/></svg></button><button class="tool" data-brush="2" title="Добавить укрытие до старта" aria-label="Добавить укрытие" aria-pressed="false"><svg><use href="#i-cover"/></svg></button><button class="tool" data-brush="0" title="Стереть препятствие до старта" aria-label="Стереть препятствие" aria-pressed="false"><svg><use href="#i-erase"/></svg></button></div><div class="layers"><label><input id="show-grid" type="checkbox" checked>Сетка</label><label><input id="show-paths" type="checkbox" checked>Маршруты</label><label><input id="show-memory" type="checkbox">Память</label><label><input id="show-threat" type="checkbox">Угроза</label></div></div>
         <div class="transport"><div class="transport-buttons"><button class="primary" id="play"><svg><use href="#i-play"/></svg><span>Запустить</span></button><button id="step" class="step-btn"><svg><use href="#i-step"/></svg>Шаг</button><button id="reset" class="icon-btn" aria-label="Сбросить симуляцию" title="Сбросить к исходной сцене"><svg><use href="#i-reset"/></svg></button></div><div class="transport-info"><label class="speed-select" for="speed">Скорость<select id="speed"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select></label><div class="tick"><span>ТАКТ</span><strong id="tick-value">000</strong><span>/ 180</span></div></div></div>
       </div>
       <div class="telemetry panel">
@@ -150,18 +153,29 @@ select:disabled,input:disabled{opacity:.55}
       <section class="neural-section">
   <div class="section-label">НЕЙРОННАЯ ЦЕПЬ <span class="accent" id="brain-mode">MALECNS</span></div>
   <p class="neural-summary" id="brain-summary"></p>
-  <div class="neural-metrics"><span>Вход L / R<strong id="brain-input">0 / 0</strong></span><span>Выход L / R<strong id="brain-output">0 / 0</strong></span></div>
+  <div class="neural-metrics"><span>Угроза / избегание L / R<strong id="brain-input">0 / 0</strong></span><span>Выход L / R<strong id="brain-output">0 / 0</strong></span></div>
   <div class="neural-meter"><i id="brain-drive"></i><b id="brain-threshold-marker"></b></div>
   <div class="neural-meter-label"><span id="brain-threshold"></span><span id="brain-steps"></span></div>
   <p id="brain-status" role="status"></p><div id="reflex-phases" class="reflex-phases" aria-label="Состояние игрового рефлекса"><span data-reflex-phase="ready">Готов</span><span data-reflex-phase="responding">Реакция</span><span data-reflex-phase="cooldown">Пауза</span><span data-reflex-phase="waiting">Ожидание</span></div><p class="neuron-detail" id="reflex-meta"></p>
   <div id="motor-panel" class="motor-panel" hidden>
+    <section id="experience-panel" hidden>
+      <div class="section-label">ПАМЯТЬ И ОБУЧЕНИЕ</div>
+      <p id="experience-status"></p>
+      <div class="neural-metrics"><span>Клеток в памяти<strong id="experience-cells">0</strong></span><span>Известные точки<strong id="experience-goals">—</strong></span></div>
+      <div class="neural-metrics"><span>Обновлений опыта<strong id="experience-updates">0</strong></span><span>Бой с этим опытом<strong id="experience-episode">1</strong></span></div>
+      <div class="neural-metrics"><span>Последняя награда<strong id="experience-reward">0</strong></span><span>За текущий бой<strong id="experience-total">0</strong></span></div>
+      <p id="experience-parts"></p><p id="experience-choice"></p>
+      <div class="experience-switches"><label><input id="learning-enabled" type="checkbox" checked>Учиться на действиях</label><label><input id="memory-enabled" type="checkbox" checked>Использовать память</label></div>
+      <button id="forget-experience" class="small-link">Сбросить память и опыт этого юнита</button>
+      <details class="aim-explainer"><summary>Что здесь обучается</summary><p>Исходные связи MaleCNS фиксированы. Память ослабляет привлекательность посещённых клеток, добавляет сигнал избегания повторного пути и сохраняет увиденные ориентиры. Дополнительный слой читает выходы сети и меняет 78 коэффициентов по наградам за бой и контроль точек. Во время обучения 8% решений — пробы допустимых команд. При выключении обучения коэффициенты сохраняются, обновления и пробы останавливаются.</p><p>Сохранение сцены включает опыт. «Повторить с опытом» сохраняет коэффициенты и создаёт поле по выбранным настройкам и начинает новый бой; опыт сохраняется у совпадающих фракций и ролей, память карты очищается. Это экспериментальное обучение, а не готовая стратегия.</p></details>
+    </section>
     <div class="neural-metrics"><span>Цель L / R<strong id="motor-targets"></strong></span><span>Взгляд<strong id="motor-heading"></strong></span></div>
     <div class="neural-metrics"><span>DNa01 · сигнал L / R<strong id="motor-aim-signal"></strong></span><span>Смещение прицела<strong id="motor-aim-angle"></strong></span></div>
     <div id="aim-candidates"></div><p id="aim-caption"></p>
     <details class="aim-explainer"><summary>Как сигнал выбирает цель</summary><p>L/R — активность DNa01, делённая на симметричный эталон. Смещение: atan2(R − L, R + L), до ±45°. Сигнал атаки: (L + R) / 2. Адаптер сопоставляет направление с видимыми целями; расстояние определяет только доступность выстрела. Это наш игровой декодер, не биологическое назначение DNa01.</p><p>Жёлтый пунктир на поле — прицел при последнем расчёте решения. Рамка — его предпочтительная цель. При точном равенстве сигналов команд порядок: огонь, вперёд, влево, вправо, назад, ожидание.</p></details>
     <dl><div><dt>DNa02 · поворот L / R</dt><dd id="motor-steer"></dd></div><div><dt>DNp09 · движение L / R</dt><dd id="motor-walk"></dd></div><div><dt>MDN · назад L / R</dt><dd id="motor-reverse"></dd></div></dl>
     <details class="aim-explainer"><summary>Как юнит видит проходы</summary><p>Пять лучей впереди проверяют до 4 клеток. Свободное пространство добавляет сигнал движения; заметная цель ослабляет этот фон. Стена сбоку или сзади больше не даёт сигнал приближающегося препятствия.</p><p>Сигнал «назад»: max(0, 1.1 × min(угроза L, угроза R, MDN) − 0.5 × сигнал «вперёд»). Это уменьшает цикл отхода и возврата. Выбор команды по-прежнему делает выход сети; готового маршрута здесь нет.</p></details>
-    <p id="motor-adapter"></p><p>Зрение, фоновый стимул и двигательный декодер заданы программой. Это экспериментальный контроллер без обучения стратегии боя.</p>
+    <p id="motor-adapter"></p><p>Зрение, фоновый стимул и двигательный декодер заданы программой. В режиме памяти и обучения добавлен обучаемый слой команд; фиксированный режим доступен для сравнения.</p>
   </div><p class="neuron-detail" id="neural-sampling"></p><canvas id="neural-canvas" width="580" height="220" role="img" aria-label="Активность 319 нейронов выбранного юнита. Яркость соответствует активности; выделены выходные нейроны."></canvas>
   <p id="neuron-detail" class="neuron-detail">Наведи на ячейку: тип, body ID и активность.</p>
   <canvas id="neural-trace" width="580" height="100" role="img" aria-label="История выхода цепи: левая и правая стороны."></canvas>
@@ -203,7 +217,8 @@ const MOTOR_SHA256 = "2e00fbe4528b5ba23cbbcdb40aa94ee26772d1bf7c6b8ce7cfe1488802
 
 const MOTOR_STEPS=8;
 const MOTOR_DECODER='visual-motor-v3';
-const isMotorMode=mode=>mode==='neural'||mode==='neural-disconnected';
+const isAdaptiveMode=mode=>mode==='adaptive'||mode==='adaptive-disconnected';
+const isMotorMode=mode=>mode==='neural'||mode==='neural-disconnected'||isAdaptiveMode(mode);
 const isMotorBrain=brain=>brain?.model===MOTOR_SHA256;
 const motorBytes=Uint8Array.from(atob(MOTOR_PACKED),c=>c.charCodeAt(0));
 const motorView=new DataView(motorBytes.buffer),motorN=MOTOR_MODEL.counts.neurons,motorE=MOTOR_MODEL.counts.edges;
@@ -227,7 +242,7 @@ function stepMotorBrain(brain,inputs,mode,steps=MOTOR_STEPS){
     for(const i of MOTOR_MODEL.inputs[channel])stimulus[i]+=.8*value;
   for(let step=0;step<steps;step++){
     sums.fill(0);
-    if(mode==='neural')for(let row=0;row<motorN;row++)for(let e=motorOffsets[row];e<motorOffsets[row+1];e++)sums[row]+=motorWeights[e]*activity[motorSources[e]];
+    if(mode==='neural'||mode==='adaptive')for(let row=0;row<motorN;row++)for(let e=motorOffsets[row];e<motorOffsets[row+1];e++)sums[row]+=motorWeights[e]*activity[motorSources[e]];
     for(let i=0;i<motorN;i++)activity[i]=.5*activity[i]+.5*Math.tanh(sums[i]+stimulus[i]);
   }
   brain.activity=Array.from(activity);brain.steps+=steps;brain.inputs=inputs.slice(0,2);brain.targets=inputs.slice(2);
@@ -282,7 +297,111 @@ function copyMotorBrain(b){
 const motorDisplayIndices=Array.from({length:319},(_,i)=>Math.floor(i*(motorN-1)/318));
 const motorDisplay=brain=>motorDisplayIndices.map(i=>({...MOTOR_MODEL.neurons[i],activity:brain.activity[i]}));
 
+// Engineered per-unit memory and a learned readout of frozen MaleCNS outputs.
+// Bounded semi-gradient Sarsa(lambda), with an epsilon-greedy behaviour policy.
+// No board coordinates, target IDs or tactical utilities are read by the policy head.
+const EXPERIENCE_VERSION=1, EXPERIENCE_FEATURES=13;
+const EXPERIENCE_COMMANDS=['fire','advance','left','right','reverse','wait'];
+const EXPERIENCE_RULE={alpha:.12,gamma:.9,lambda:.65,epsilon:.08,weightLimit:3,errorLimit:2};
+const EXPERIENCE_REWARDS=['capture','hold','damage','hurt','novelty','revisit','progress','cost','outcome'];
+const experienceClamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+const experienceMatrix=()=>EXPERIENCE_COMMANDS.map(()=>Array(EXPERIENCE_FEATURES).fill(0));
+function createExperience(cells){
+  return {version:EXPERIENCE_VERSION,enabled:true,useMemory:true,visits:Array(cells).fill(0),lastCell:null,known:[],captured:[],
+    weights:experienceMatrix(),eligibility:experienceMatrix(),pending:null,updates:0,episodes:0,totalReward:0,
+    lastReward:0,lastError:0,lastParts:{},trace:[]};
+}
+function experienceFeatures(motor){
+  const v=[...motor.aim,...motor.steer,...motor.walk,...motor.reverse,...motor.fear].map(x=>Math.tanh(x));
+  return [...v,v[0]*v[1],v[8]*v[9],Math.max(...v)];
+}
+function experienceDot(a,b){return a.reduce((sum,v,i)=>sum+v*b[i],0);}
+function experienceReadout(e,motor){
+  const features=experienceFeatures(motor),corrections={},scores={};
+  for(const [i,command] of EXPERIENCE_COMMANDS.entries()){
+    corrections[command]=experienceDot(e.weights[i],features);
+    scores[command]=motor.scores[command]+corrections[command];
+  }
+  return {features,corrections,scores,baseScores:{...motor.scores},active:features.some(v=>v>1e-9)};
+}
+function experienceNoise(text){
+  let n=2166136261;for(const c of text){n^=c.charCodeAt(0);n=Math.imul(n,16777619);}
+  n^=n>>>16;n=Math.imul(n,0x7feb352d);n^=n>>>15;n=Math.imul(n,0x846ca68b);n^=n>>>16;return (n>>>0)/4294967296;
+}
+function experienceChoice(e,head,commands,token,canExplore=true){
+  const legal=commands.filter(c=>c.available),greedy=legal[0];
+  if(!head.active)return {chosen:legal.find(c=>c.command==='wait'),exploratory:false,greedy:'wait'};
+  const exploratory=e.enabled&&canExplore&&experienceNoise(token+':explore')<EXPERIENCE_RULE.epsilon;
+  return {chosen:exploratory?legal[Math.floor(experienceNoise(token+':action')*legal.length)]:greedy,
+    exploratory,greedy:greedy.command};
+}
+function visitExperience(e,cell){
+  if(e.lastCell===cell)return false;
+  const fresh=e.visits[cell]===0;e.visits[cell]++;e.lastCell=cell;return fresh;
+}
+function experienceNovelty(e,cell){return e.useMemory?1/(1+4*e.visits[cell]):1;}
+function addExperienceReward(e,name,value){
+  if(!e.pending||!Number.isFinite(value))return;
+  if(!EXPERIENCE_REWARDS.includes(name))throw Error('Unknown reward component');
+  e.pending.parts[name]=(e.pending.parts[name]??0)+value;
+}
+function beginExperience(e,decision){
+  e.pending={command:decision.command,features:[...decision.learning.features],
+    base:decision.learning.baseScores[decision.command],parts:{}};
+}
+function settleExperience(e,nextValue,tick,terminal=false){
+  const p=e.pending;if(!p)return;
+  const reward=Object.values(p.parts).reduce((a,b)=>a+b,0),row=EXPERIENCE_COMMANDS.indexOf(p.command);
+  const current=p.base+experienceDot(e.weights[row],p.features);
+  const error=reward+(terminal?0:EXPERIENCE_RULE.gamma*nextValue)-current;
+  const active=p.features.some(v=>v>1e-9);
+  if(e.enabled&&active){
+    for(const z of e.eligibility)for(let i=0;i<z.length;i++)z[i]*=EXPERIENCE_RULE.gamma*EXPERIENCE_RULE.lambda;
+    for(let i=0;i<p.features.length;i++)e.eligibility[row][i]+=p.features[i];
+    const normalizer=Math.max(1,experienceDot(p.features,p.features));
+    const rate=EXPERIENCE_RULE.alpha*experienceClamp(error,-EXPERIENCE_RULE.errorLimit,EXPERIENCE_RULE.errorLimit)/normalizer;
+    for(let a=0;a<e.weights.length;a++)for(let i=0;i<EXPERIENCE_FEATURES;i++)
+      e.weights[a][i]=experienceClamp(e.weights[a][i]+rate*e.eligibility[a][i],-EXPERIENCE_RULE.weightLimit,EXPERIENCE_RULE.weightLimit);
+    e.updates++;
+  }else e.eligibility=experienceMatrix();
+  e.totalReward+=reward;e.lastReward=reward;e.lastError=error;e.lastParts={...p.parts};
+  e.trace.push({tick,command:p.command,reward,error,learned:e.enabled&&active,parts:{...p.parts}});
+  if(e.trace.length>40)e.trace.shift();
+  e.pending=null;if(terminal)e.eligibility=experienceMatrix();
+}
+function setExperienceLearning(e,enabled){
+  e.enabled=enabled;e.pending=null;e.eligibility=experienceMatrix();
+}
+function carryExperience(e,cells){
+  const next=createExperience(cells);next.weights=e.weights.map(r=>[...r]);next.updates=e.updates;
+  next.episodes=e.episodes+1;next.enabled=e.enabled;next.useMemory=e.useMemory;return next;
+}
+function copyExperience(e){return structuredClone(e);}
+function validateExperience(e,cells,maxTicks){
+  const finite=(v,lo,hi)=>Number.isFinite(v)&&v>=lo&&v<=hi;
+  const integer=(v,lo,hi)=>Number.isInteger(v)&&finite(v,lo,hi);
+  const features=a=>Array.isArray(a)&&a.length===EXPERIENCE_FEATURES&&a.every(v=>finite(v,0,1));
+  const matrix=(a,limit)=>Array.isArray(a)&&a.length===EXPERIENCE_COMMANDS.length&&a.every(r=>Array.isArray(r)&&r.length===EXPERIENCE_FEATURES&&r.every(v=>finite(v,-limit,limit)));
+  const parts=a=>a&&typeof a==='object'&&!Array.isArray(a)&&Object.entries(a).every(([k,v])=>EXPERIENCE_REWARDS.includes(k)&&finite(v,-1000,1000));
+  if(!e||e.version!==EXPERIENCE_VERSION||typeof e.enabled!=='boolean'||typeof e.useMemory!=='boolean'||
+    !Array.isArray(e.visits)||e.visits.length!==cells||!e.visits.every(v=>integer(v,0,maxTicks+1))||
+    e.visits.reduce((a,b)=>a+b,0)>maxTicks+1||
+    !(e.lastCell===null||integer(e.lastCell,0,cells-1)&&e.visits[e.lastCell]>0)||
+    ![e.known,e.captured].every(a=>Array.isArray(a)&&a.length<=3&&new Set(a).size===a.length&&a.every(k=>['I','II','III'].includes(k)))||
+    !matrix(e.weights,EXPERIENCE_RULE.weightLimit)||!matrix(e.eligibility,3)||
+    !integer(e.updates,0,10000000)||!integer(e.episodes,0,100000)||!finite(e.totalReward,-1000000,1000000)||
+    !finite(e.lastReward,-1000,1000)||!finite(e.lastError,-100000,100000)||!parts(e.lastParts)||
+    !Array.isArray(e.trace)||e.trace.length>40)return false;
+  if(e.pending&&(!EXPERIENCE_COMMANDS.includes(e.pending.command)||!features(e.pending.features)||!finite(e.pending.base,0,100000)||!parts(e.pending.parts)))return false;
+  if(e.pending!==null&&!e.pending)return false;
+  return e.trace.every((t,i)=>t&&integer(t.tick,1,maxTicks)&&EXPERIENCE_COMMANDS.includes(t.command)&&
+    finite(t.reward,-1000,1000)&&finite(t.error,-100000,100000)&&typeof t.learned==='boolean'&&parts(t.parts)&&(i===0||t.tick>=e.trace[i-1].tick));
+}
+
+
 const CONTROLLERS={
+  adaptive:'MaleCNS · память и обучение',
+  'adaptive-disconnected':'Обучение · без связей',
   neural:'MaleCNS · нейронное управление',
   'neural-disconnected':'Нейронное управление · без связей',
   malecns:'MaleCNS + тактика',
@@ -383,7 +502,7 @@ function validateReflex(r,tick){
 function copyReflex(r){return {contract:r.contract,phase:r.phase,remaining:r.remaining,active:r.active,episodes:r.episodes};}
 
 // Pure deterministic simulation: no browser, clock or network dependencies.
-const VERSION=7, W=32, H=22, MAX_TICKS=180, WIN_SCORE=65;
+const VERSION=8, W=32, H=22, MAX_TICKS=180, WIN_SCORE=65;
 const TERRAIN={FLOOR:0,WALL:1,COVER:2};
 const FACTIONS={
   marines:{name:'Space Marines',short:'Astartes',description:'Согласованное продвижение и контроль позиций.',aggression:.62,caution:.67,objective:.85,hp:30,damage:6,range:6},
@@ -443,7 +562,7 @@ function createSimulation(config={}){
   const roles=['scout','assault','support','assault','scout'],names=[['Vega','Castor','Atlas','Pollux','Lynx'],['Ruk','Gor','Zog','Mog','Krag']];
   for(let team=0;team<2;team++)for(let i=0;i<unitCounts[team];i++){
     const faction=team?c.factionB:c.factionA,role=roles[i],f=FACTIONS[faction],r=ROLES[role],id=(team?'B':'A')+'-'+String(i+1).padStart(2,'0');
-    s.units.push({id,name:names[team][i],team,faction,role,x:team?W-4:3,y:6+i*2,px:team?W-4:3,py:6+i*2,hp:f.hp+r.hp,maxHp:f.hp+r.hp,damage:f.damage+r.damage,range:Math.max(1,f.range+r.range),overrides:{},kills:0,damageDone:0,decision:null,heading:team?6:2,brain:createBrain(team?c.controllerB:c.controllerA),reflex:createReflex(),neuralEscapes:0,assignment:terrain.objectives[i%3].id});
+    s.units.push({id,name:names[team][i],team,faction,role,x:team?W-4:3,y:6+i*2,px:team?W-4:3,py:6+i*2,hp:f.hp+r.hp,maxHp:f.hp+r.hp,damage:f.damage+r.damage,range:Math.max(1,f.range+r.range),overrides:{},kills:0,damageDone:0,decision:null,heading:team?6:2,brain:createBrain(team?c.controllerB:c.controllerA),reflex:createReflex(),experience:createExperience(W*H),neuralEscapes:0,assignment:terrain.objectives[i%3].id});
   }
   if(c.scenario==='contact'){
     s.map.fill(0);
@@ -544,9 +663,12 @@ function motorBearing(u,p){
 const MOTOR_VISION='binocular-passages-v2';
 function observeMotor(s,u){
   const p=profile(u),fear=[0,0],targets=[.035,.035],others=aliveUnits(s).filter(e=>e.id!==u.id);
+  const memory=isAdaptiveMode(controllerFor(s,u))?u.experience:null;
   // Engineered binocular scene projection, not reconstructed fly retinal geometry.
-  const project=(pair,pos,strength)=>{
-    const angle=motorBearing(u,pos);if(Math.abs(angle)>Math.PI*.75)return;
+  const project=(pair,pos,strength,recall=false)=>{
+    let angle=motorBearing(u,pos);
+    if(recall)angle=clamp(angle,-Math.PI/2,Math.PI/2);
+    else if(Math.abs(angle)>Math.PI*.75)return;
     const lateral=Math.sin(angle),visibility=Math.cos(angle/2);
     pair[0]=Math.max(pair[0],clamp(strength*visibility*(1-lateral)));
     pair[1]=Math.max(pair[1],clamp(strength*visibility*(1+lateral)));
@@ -558,8 +680,17 @@ function observeMotor(s,u){
       project(fear,e,clamp((e.range+5-d)/(e.range+5))*(.65+.35*(1-u.hp/u.maxHp))*p.caution);
     }else if(d===1)project(fear,e,.8*Math.max(0,Math.cos(motorBearing(u,e)))**2);
   }
-  for(const o of s.objectives)if(o.owner!==u.team&&distance(u,o)<=12&&hasLineOfSight(s,u,o))
-    project(targets,o,p.objective/(1+distance(u,o)/7));
+  for(const o of s.objectives){
+    const d=distance(u,o),visible=d<=12&&hasLineOfSight(s,u,o);
+    if(memory&&d<=1){
+      // Contact with a mission marker is a bilateral sensory cue, not a hold command.
+      targets[0]=Math.max(targets[0],p.objective);targets[1]=Math.max(targets[1],p.objective);
+    }else if((o.owner!==u.team||memory)&&visible)project(targets,o,p.objective/(1+d/7));
+    else if(memory?.useMemory&&memory.known.includes(o.id)){
+      // Recalled landmark bearing can persist behind a wall; enemies are never recalled.
+      project(targets,o,.7*p.objective/(1+d/12),true);
+    }
+  }
   // Static obstacles only repel in the forward hemisphere; side/rear walls
   // are not an approaching threat. The squared cosine fades peripheral input.
   for(const [dx,dy] of DIRS){
@@ -575,13 +706,23 @@ function observeMotor(s,u){
     for(let d=1;d<=4;d++){
       const pos={x:u.x+dx*d,y:u.y+dy*d};
       if(!inside(pos.x,pos.y)||!hasLineOfSight(s,u,pos)||others.some(e=>e.x===pos.x&&e.y===pos.y))break;
-      clear++;
+      clear+=memory?experienceNovelty(memory,key(pos.x,pos.y)):1;
     }
     const strength=.08*clear/4,side=Math.sin(angle);
     open[0]+=strength*(1-side);open[1]+=strength*(1+side);
   }
   // A salient visible object attenuates exploration without losing its bearing.
   const exploration=1-Math.max(...targets);
+  if(memory?.useMemory){
+    // A familiar forward step is a weak aversive memory cue. This is engineered
+    // sensory feedback, not a collision, action veto or anatomical plasticity.
+    const [dx,dy]=[[0,-1],[1,0],[0,1],[-1,0]][Math.floor((u.heading+1)/2)%4];
+    const ahead={x:u.x+dx,y:u.y+dy};
+    if(inside(ahead.x,ahead.y)&&tileAt(s,ahead.x,ahead.y)!==1){
+      const visits=memory.visits[key(ahead.x,ahead.y)];
+      project(fear,ahead,.6*exploration*visits/(1+visits));
+    }
+  }
   for(let side=0;side<2;side++)targets[side]=clamp(targets[side]+exploration*open[side]);
   return [...fear,...targets];
 }
@@ -598,7 +739,9 @@ function selectMotorTarget(s,u,readout=motorReadout(u.brain,profile(u).reactivit
   return {angle,heading:u.heading,target:angle===null?null:candidates[0]?.id??null,candidates};
 }
 function decideMotorUnit(s,u){
-  const mode=controllerFor(s,u),p=profile(u),readout=motorReadout(u.brain,p.reactivity);
+  const mode=controllerFor(s,u),p=profile(u),rawReadout=motorReadout(u.brain,p.reactivity);
+  const head=isAdaptiveMode(mode)?experienceReadout(u.experience,rawReadout):null;
+  const readout=head?{...rawReadout,scores:head.scores}:rawReadout;
   const cardinal=[[0,-1],[1,0],[0,1],[-1,0]][Math.floor((u.heading+1)/2)%4];
   const forward={x:u.x+cardinal[0],y:u.y+cardinal[1]},back={x:u.x-cardinal[0],y:u.y-cardinal[1]};
   const legal=pos=>inside(pos.x,pos.y)&&tileAt(s,pos.x,pos.y)!==1&&!aliveUnits(s).some(v=>v.id!==u.id&&v.x===pos.x&&v.y===pos.y);
@@ -614,9 +757,12 @@ function decideMotorUnit(s,u){
   ].map(c=>({...c,score:readout.scores[c.command],reason:c.command==='wait'?'Ни одна доступная команда не превысила порог ожидания.':
     'Команду выбрали выходные нейроны и открытый двигательный декодер. Тактическая оценка целей и поиск пути не выполняются.'}));
   commands.sort((a,b)=>b.score-a.score);
-  const chosen=commands.find(c=>c.available);
+  const choice=head?experienceChoice(u.experience,head,commands,s.config.seed+':'+u.id+':'+s.tick,s.tick>0):null;
+  const chosen=choice?.chosen??commands.find(c=>c.available);
+  if(head)chosen.reason=choice.exploratory?'Проба доступной команды для обучения; генератор воспроизводится по seed.':
+    'Команда выбрана по выходам MaleCNS и обучаемому слою. Готовый маршрут не назначается.';
   return {...chosen,source:'motor',alternatives:[chosen,...commands.filter(c=>c!==chosen)],counterfactual:null,origin:{x:u.x,y:u.y},
-    evaluatedAt:s.tick,controller:mode,aim,neural:neuralReadout(u.brain,p,mode),motor:readout,
+    evaluatedAt:s.tick,controller:mode,aim,learning:head?{...head,exploratory:choice.exploratory,greedy:choice.greedy}:undefined,neural:neuralReadout(u.brain,p,mode),motor:readout,
     adapterNote:target?'DNa01 задаёт сигнал атаки и смещение прицела. Адаптер выбирает видимого врага с наименьшим угловым отклонением в секторе ±45°; при равенстве — по ID.':
       aim.angle===null?'Нет сигнала прицеливания. Атака недоступна.':'В секторе ±45° нет доступной цели. Команда огня исключена.'};
 }
@@ -687,29 +833,79 @@ function updateObjectives(s,award=true){
     o.owner=owner;o.contested=counts[0]>0&&counts[1]>0;if(award&&owner!==null)s.scores[owner]++;
   }
 }
-// Optional read-only observer sees each choice before it is executed, including units killed later in the tick.
+function prepareExperience(s,u){
+  visitExperience(u.experience,key(u.x,u.y));
+  for(const o of s.objectives)if(!u.experience.known.includes(o.id)&&distance(u,o)<=12&&hasLineOfSight(s,u,o)&&
+    (distance(u,o)<=1||Math.abs(motorBearing(u,o))<=Math.PI*.75))u.experience.known.push(o.id);
+}
+function knownGoalDistance(s,u,pos=u){
+  const goals=s.objectives.filter(o=>u.experience.known.includes(o.id));
+  return goals.length?Math.min(...goals.map(o=>distance(pos,o))):null;
+}
+// The observer receives the actual pre-execution decision. Learning settles the
+// previous transition against this chosen next action (on-policy Sarsa).
 function stepSimulation(s,observeDecision){
-  if(s.finished)return s;s.tick++;s.effects=[];for(const u of s.units){u.px=u.x;u.py=u.y;if(u.hp<=0)u.decision=null;}
+  if(s.finished)return s;s.tick++;s.effects=[];
+  const previousOwners=s.objectives.map(o=>o.owner);
+  for(const u of s.units){u.px=u.x;u.py=u.y;if(u.hp<=0)u.decision=null;}
   const order=aliveUnits(s).map(u=>u.id);for(let i=order.length-1;i>0;i--){const j=Math.floor(random(s)*(i+1));[order[i],order[j]]=[order[j],order[i]];}
   for(const id of order){
-    const u=s.units.find(v=>v.id===id);if(u.hp<=0)continue;stepBrain(u.brain,isMotorMode(controllerFor(s,u))?observeMotor(s,u):observeThreat(s,u),controllerFor(s,u));stepReflex(u.reflex,neuralReadout(u.brain,profile(u),controllerFor(s,u)),!isMotorMode(controllerFor(s,u))&&controllerFor(s,u)!=='utility');const d=decideUnit(s,u);u.decision=d;observeDecision?.(d,u,s);if(d.neuralOverride){u.neuralEscapes++;event(s,'reflex',u.id+' · MaleCNS: короткий отход, сигнал '+d.neural.drive.toFixed(3),u.team);}
+    const u=s.units.find(v=>v.id===id);if(u.hp<=0)continue;
+    const mode=controllerFor(s,u),adaptive=isAdaptiveMode(mode);
+    if(adaptive)prepareExperience(s,u);
+    stepBrain(u.brain,isMotorMode(mode)?observeMotor(s,u):observeThreat(s,u),mode);
+    stepReflex(u.reflex,neuralReadout(u.brain,profile(u),mode),!isMotorMode(mode)&&mode!=='utility');
+    const d=decideUnit(s,u);u.decision=d;
+    const before={x:u.x,y:u.y},goalBefore=adaptive?knownGoalDistance(s,u):null;
+    if(adaptive){
+      settleExperience(u.experience,d.score,s.tick);beginExperience(u.experience,d);
+      addExperienceReward(u.experience,'cost',-.01);
+    }
+    observeDecision?.(d,u,s);
+    if(d.neuralOverride){u.neuralEscapes++;event(s,'reflex',u.id+' · MaleCNS: короткий отход, сигнал '+d.neural.drive.toFixed(3),u.team);}
     if(d.type==='turn'){u.heading=(u.heading+d.turn+8)%8;}
     else if(d.type==='attack'){
       const target=s.units.find(v=>v.id===d.target);if(!target||target.hp<=0||distance(u,target)>u.range||!hasLineOfSight(s,u,target))continue;
       const melee=distance(u,target)===1,hit=random(s)<(melee?.94:.83),damage=hit?Math.max(1,Math.round(u.damage*(covered(s,target)&&!melee?.60:1)*(.85+random(s)*.30))):0;
       const actual=Math.min(target.hp,damage);target.hp=Math.max(0,target.hp-damage);u.damageDone+=actual;
+      if(adaptive)addExperienceReward(u.experience,'damage',.05*actual*(.25+profile(u).aggression));
+      if(isAdaptiveMode(controllerFor(s,target)))addExperienceReward(target.experience,'hurt',-.05*actual*(.25+profile(target).caution));
       s.effects.push({from:{x:u.x,y:u.y},to:{x:target.x,y:target.y},team:u.team,hit,damage:actual});
       event(s,hit?'hit':'miss',u.id+' → '+target.id+(hit?' · −'+actual+' HP':' · промах'),u.team);
-      if(target.hp===0){target.decision=null;u.kills++;event(s,'kill',target.id+' выведен из боя',target.team);}
+      if(target.hp===0){
+        target.decision=null;u.kills++;event(s,'kill',target.id+' выведен из боя',target.team);
+        if(isAdaptiveMode(controllerFor(s,target))){addExperienceReward(target.experience,'outcome',-1);settleExperience(target.experience,0,s.tick,true);}
+      }
     }else if(d.route.length){
       const next=d.route[0];if(tileAt(s,next.x,next.y)!==1&&!aliveUnits(s).some(v=>v.id!==u.id&&v.x===next.x&&v.y===next.y)){u.x=next.x;u.y=next.y;}
     }
+    if(adaptive&&(u.x!==before.x||u.y!==before.y)){
+      const fresh=visitExperience(u.experience,key(u.x,u.y));
+      addExperienceReward(u.experience,fresh?'novelty':'revisit',fresh?.03:-.02);
+      const goalAfter=knownGoalDistance(s,u);
+      if(goalBefore!==null&&goalAfter!==null)addExperienceReward(u.experience,'progress',.04*profile(u).objective*(goalBefore-goalAfter));
+    }
   }
-  updateObjectives(s);const counts=[0,0];for(const u of aliveUnits(s))counts[u.team]++;
+  updateObjectives(s);
+  for(const [i,o] of s.objectives.entries())if(o.owner!==null){
+    const occupants=aliveUnits(s).filter(u=>u.team===o.owner&&distance(u,o)<=1);
+    for(const u of occupants)if(isAdaptiveMode(controllerFor(s,u))){
+      const priority=profile(u).objective/occupants.length;
+      addExperienceReward(u.experience,'hold',.25*priority);
+      if(previousOwners[i]!==o.owner&&!u.experience.captured.includes(o.id)){
+        addExperienceReward(u.experience,'capture',.8*priority);u.experience.captured.push(o.id);
+      }
+    }
+  }
+  const counts=[0,0];for(const u of aliveUnits(s))counts[u.team]++;
   if(counts[0]===0||counts[1]===0||s.scores.some(v=>v>=WIN_SCORE)||s.tick>=MAX_TICKS){
     s.finished=true;
     if(!counts[0]||!counts[1])s.winner=counts[0]?0:counts[1]?1:null;else s.winner=s.scores[0]===s.scores[1]?null:s.scores[0]>s.scores[1]?0:1;
     event(s,'finish',s.winner===null?'Симуляция завершена: ничья':'Победа группы '+(s.winner?'B':'A'),s.winner);
+    for(const u of s.units)if(isAdaptiveMode(controllerFor(s,u))){
+      addExperienceReward(u.experience,'outcome',s.winner===null?0:s.winner===u.team?1:-1);
+      settleExperience(u.experience,0,s.tick,true);
+    }
   }return s;
 }
 function setTerrain(s,x,y,type){
@@ -719,17 +915,28 @@ function setTerrain(s,x,y,type){
   if(!s.units.every(u=>reachable.has(key(u.x,u.y)))||!s.objectives.every(o=>reachable.has(key(o.x,o.y)))){s.map[key(x,y)]=old;return false;}
   updateDecisions(s);return true;
 }
+function repeatWithExperience(previous,config=previous.config){
+  const next=createSimulation(config);
+  for(const u of next.units){
+    const old=previous.units.find(v=>v.id===u.id&&v.faction===u.faction&&v.role===u.role);
+    if(old&&isAdaptiveMode(controllerFor(next,u))&&isAdaptiveMode(controllerFor(previous,old))){
+      u.experience=carryExperience(old.experience,W*H);u.overrides={...old.overrides};
+    }
+  }
+  updateDecisions(next);return next;
+}
 function exportScene(s){return JSON.stringify({format:'malecns-scene',version:VERSION,state:s},null,2);}
 function importScene(text){
   if(typeof text!=='string'||text.length>8_000_000)throw new Error('Слишком большой файл сцены.');
   let data;try{data=JSON.parse(text);}catch{throw new Error('Файл не содержит корректный JSON.');}
   const v=data?.state,invalid=()=>{throw new Error('Неподдерживаемая или повреждённая сцена.');};
-  if(data?.format!=='malecns-scene'||![1,2,3,4,5,6,VERSION].includes(data.version)||!v||!v.config)invalid();
+  if(data?.format!=='malecns-scene'||![1,2,3,4,5,6,7,VERSION].includes(data.version)||!v||!v.config)invalid();
   if(!Array.isArray(v.map)||v.map.length!==W*H||v.map.some(t=>![0,1,2].includes(t)))invalid();
   if(!Number.isInteger(v.tick)||v.tick<0||v.tick>MAX_TICKS||!Number.isInteger(v.rng)||v.rng<0||v.rng>4294967295)invalid();
   if(!Array.isArray(v.scores)||v.scores.length!==2||v.scores.some(n=>!Number.isInteger(n)||n<0||n>MAX_TICKS*3))invalid();
   if(!Object.hasOwn(MAPS,v.config.mapKind)||!Object.hasOwn(FACTIONS,v.config.factionA)||!Object.hasOwn(FACTIONS,v.config.factionB)||typeof v.config.seed!=='string'||v.config.seed.length>64||!Number.isFinite(v.config.density)||v.config.density<8||v.config.density>50)invalid();
   if(data.version>=2&&(!Object.hasOwn(CONTROLLERS,v.config.controllerA)||!Object.hasOwn(CONTROLLERS,v.config.controllerB)))invalid();
+  if(data.version<8&&(isAdaptiveMode(v.config.controllerA)||isAdaptiveMode(v.config.controllerB)))invalid();
   if(data.version<5&&(isMotorMode(v.config.controllerA)||isMotorMode(v.config.controllerB)))invalid();
   if(data.version>=3&&!Object.hasOwn(SCENARIOS,v.config.scenario))invalid();
   const scenario=data.version>=3?v.config.scenario:'battle',sizes=scenarioSizes(scenario);
@@ -750,13 +957,14 @@ function importScene(text){
     if(data.version>=3&&!validateReflex(u.reflex,v.tick))invalid();
     if(data.version>=5&&(!Number.isInteger(u.heading)||u.heading<0||u.heading>7))invalid();
     if(data.version>=2&&isMotorMode(team?v.config.controllerB:v.config.controllerA)!==isMotorBrain(u.brain))invalid();
+    if(data.version>=8&&!validateExperience(u.experience,W*H,v.tick))invalid();
     if(u.hp>0){const k=key(u.x,u.y);if(occupied.has(k))invalid();occupied.add(k);}ids.add(u.id);
   }
   for(const [i,o] of v.objectives.entries())if(!o||o.id!==['I','II','III'][i]||!pos(o)||![null,0,1].includes(o.owner))invalid();
   const config={...v.config,scenario};
   if(data.version===1){config.controllerA='utility';config.controllerB='utility';}
   const s=createSimulation(config);s.map=[...v.map];s.tick=v.tick;s.rng=v.rng;s.scores=[...v.scores];s.finished=v.finished;s.winner=v.winner;
-  s.units=v.units.map(u=>({id:u.id,name:u.name,team:u.team,faction:u.faction,role:u.role,x:u.x,y:u.y,px:u.x,py:u.y,hp:u.hp,maxHp:u.maxHp,damage:u.damage,range:u.range,overrides:{...u.overrides},kills:u.kills,damageDone:u.damageDone,heading:data.version>=5?u.heading:u.team?6:2,decision:null,brain:data.version===1?createBrain():copyBrain(u.brain),reflex:data.version>=3?copyReflex(u.reflex):createReflex(),neuralEscapes:data.version===1?0:u.neuralEscapes,assignment:u.assignment}));
+  s.units=v.units.map(u=>({id:u.id,name:u.name,team:u.team,faction:u.faction,role:u.role,x:u.x,y:u.y,px:u.x,py:u.y,hp:u.hp,maxHp:u.maxHp,damage:u.damage,range:u.range,overrides:{...u.overrides},kills:u.kills,damageDone:u.damageDone,heading:data.version>=5?u.heading:u.team?6:2,decision:null,brain:data.version===1?createBrain():copyBrain(u.brain),reflex:data.version>=3?copyReflex(u.reflex):createReflex(),experience:data.version>=8?copyExperience(u.experience):createExperience(W*H),neuralEscapes:data.version===1?0:u.neuralEscapes,assignment:u.assignment}));
   s.objectives=v.objectives.map(o=>({id:o.id,x:o.x,y:o.y,owner:o.owner,contested:false}));s.events=[];s.effects=[];
   if(data.version<VERSION)s.importNote='Сцена v'+data.version+' обновлена: состояние сохранено, дальнейшее поведение рассчитывается по правилам v'+VERSION+'.';
   updateDecisions(s);return s;
@@ -789,7 +997,7 @@ function compareContact(modes,reactivity){
   });
 }
 const runContactComparison=(reactivity=.5)=>compareContact(['malecns','disconnected','utility'],reactivity);
-const runMotorComparison=(reactivity=.5)=>compareContact(['neural','neural-disconnected','utility'],reactivity);
+const runMotorComparison=(reactivity=.5,adaptive=false)=>compareContact(adaptive?['adaptive','adaptive-disconnected','utility']:['neural','neural-disconnected','utility'],reactivity);
 
 // Isolated causal probes: same board and zero initial activity, only visual input
 // or edge transmission changes. These are 32 neural steps, not combat turns.
@@ -812,8 +1020,8 @@ function runAimComparison(reactivity=.5){
 
 const $=id=>document.getElementById(id),colors=['#86c4d1','#e0a07b'];
 const canvas=$('battlefield'),ctx=canvas.getContext('2d'),reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
-let state=createSimulation({controllerA:'neural',controllerB:'neural'}),initial=exportScene(state),selected='A-01',running=false,timer=null,lastStep=-10000,speed=1,brush='select',hover=null,toastTimer=null,revision=0,threatCache=null,tab='units',dimensions={width:0,height:0,cell:0,ox:0,oy:0};
-let neuralHover=null,comparisonReactivity=.5,comparisonNeural=false;
+let state=createSimulation({controllerA:'adaptive',controllerB:'adaptive'}),initial=exportScene(state),selected='A-01',running=false,timer=null,lastStep=-10000,speed=1,brush='select',hover=null,toastTimer=null,revision=0,threatCache=null,tab='units',dimensions={width:0,height:0,cell:0,ox:0,oy:0};
+let neuralHover=null,comparisonReactivity=.5,comparisonNeural=false,comparisonAdaptive=false;
 const brainCells=brain=>isMotorBrain(brain)?motorDisplay(brain):CONNECTOME.neurons.map((n,i)=>({...n,activity:brain.activity[i]}));
 const t=()=>performance.now();
 const degrees=angle=>(angle>0?'+':'')+(angle*180/Math.PI).toFixed(1)+'°';
@@ -849,10 +1057,16 @@ function advance(){
 function reset(){
   setRunning(false);state=importScene(initial);lastStep=-10000;revision++;threatCache=null;syncConfig();renderUI();toast('Возврат к исходной сцене. Seed и настройки сохранены.');
 }
+function setupConfig(){return {scenario:$('scenario').value,seed:$('seed').value.trim()||'40721',mapKind:$('map-kind').value,density:Number($('density').value),factionA:$('faction-a').value,factionB:$('faction-b').value,controllerA:$('controller-a').value,controllerB:$('controller-b').value};}
 function generate(){
   setRunning(false);
-  state=createSimulation({scenario:$('scenario').value,seed:$('seed').value.trim()||'40721',mapKind:$('map-kind').value,density:Number($('density').value),factionA:$('faction-a').value,factionB:$('faction-b').value,controllerA:$('controller-a').value,controllerB:$('controller-b').value});
+  state=createSimulation(setupConfig());
   initial=exportScene(state);selected='A-01';lastStep=-10000;revision++;threatCache=null;setBrush('select');syncConfig();renderUI();toast('Новое поле создано. Нажми «Запустить» или «Шаг».');
+}
+function repeatExperienced(){
+  setRunning(false);state=repeatWithExperience(state,setupConfig());initial=exportScene(state);
+  selected='A-01';lastStep=-10000;revision++;threatCache=null;setBrush('select');syncConfig();renderUI();
+  toast('Новый бой с выученными коэффициентами. Память карты очищена.');
 }
 function openExperiment(config,reactivity=.5){
   for(const [id,key] of [['scenario','scenario'],['seed','seed'],['map-kind','mapKind'],['faction-a','factionA'],['faction-b','factionB'],['controller-a','controllerA'],['controller-b','controllerB']])$(id).value=config[key];
@@ -867,9 +1081,9 @@ function openAimScene(){
   toast('Две мишени с отключёнными связями. У A — отдельные команды движения и огня.');
 }
 function compareControllers(){
-  const unit=state.units.find(u=>u.id===selected)||state.units[0],reactivity=profile(unit).reactivity,neural=isMotorMode(controllerFor(state,unit)),results=neural?runMotorComparison(reactivity):runContactComparison(reactivity);comparisonReactivity=reactivity;comparisonNeural=neural;
+  const unit=state.units.find(u=>u.id===selected)||state.units[0],reactivity=profile(unit).reactivity,neural=isMotorMode(controllerFor(state,unit)),adaptive=isAdaptiveMode(controllerFor(state,unit)),results=neural?runMotorComparison(reactivity,adaptive):runContactComparison(reactivity);comparisonReactivity=reactivity;comparisonNeural=neural;comparisonAdaptive=adaptive;
   $('compare-neural-column').textContent=neural?'Двигательных команд':'Нейронных отходов';
-  $('compare-description').textContent='12 тактов · один seed · два разведчика Astartes · одинаковые входные условия. Чувствительность A: '+(reactivity*2).toFixed(2)+'×. Текущий бой сохранён.';
+  $('compare-description').textContent=(adaptive?'С чистым опытом · ':'')+'12 тактов · один seed · два разведчика Astartes · одинаковые входные условия. Чувствительность A: '+(reactivity*2).toFixed(2)+'×. Текущий бой сохранён.';
   $('compare-results').innerHTML=results.map(r=>'<tr><th scope="row">'+escape(r.label)+'</th><td>'+escape(r.firstAction)+'</td><td>'+(neural?r.motorCommands:r.neuralEscapes)+'</td><td>'+r.damageDone+'</td><td>'+r.hp+'</td></tr>').join('');
   $('compare-timeline').innerHTML=results.map(r=>'<div class="comparison-run"><strong>'+escape(r.label)+'</strong><div class="comparison-ticks">'+r.timeline.map(t=>'<span class="action-'+(t.override?'reflex':t.action)+'" title="Такт '+t.tick+': '+escape(t.label)+'; выход цепи угрозы '+t.rawDrive.toFixed(3)+'">'+(t.override?'↙':t.action==='attack'?'×':t.action==='dead'?'—':t.action==='move'?'→':t.action==='retreat'?'↙':t.action==='turn'?'↶':'·')+'</span>').join('')+'</div></div>').join('');
   $('compare-aim-section').hidden=!neural;
@@ -881,6 +1095,7 @@ function compareControllers(){
 }
 function selectUnit(id){selected=id;threatCache=null;renderInspector();renderRoster();}
 function updateTransport(){
+  $('repeat-experience').disabled=!state.units.some(u=>isAdaptiveMode(controllerFor(state,u)));
   $('play').innerHTML=icon(running?'pause':'play')+'<span>'+(running?'Пауза':'Запустить')+'</span>';
   $('play').disabled=state.finished;$('step').disabled=running||state.finished;
   $('status-text').textContent=state.finished?'ЭКСПЕРИМЕНТ ЗАВЕРШЁН':running?'СИМУЛЯЦИЯ ИДЁТ':state.tick?'НА ПАУЗЕ':'ГОТОВ К ЗАПУСКУ';
@@ -926,7 +1141,7 @@ function renderInspector(){
       $('route-budget').textContent='Маршрут: '+safety.steps+' кл. · доступно '+safety.budget+'. На каждом шаге оценка угрозы не растёт.';
     }
   }
-  $('candidate-kind').textContent=d?.source==='motor'?'выход сети':'utility';
+  $('candidate-kind').textContent=d?.learning?'сеть + опыт':d?.source==='motor'?'выход сети':'utility';
   $('candidate-kind').title=d?.source==='motor'?'Сигнал двигательного декодера, не вероятность':'Условная полезность действия, не вероятность';
   $('profile-explainer').textContent=d?.source==='motor'?'Агрессия, осторожность и миссия меняют входные сигналы со следующего такта. Чувствительность усиливает выходные команды.':'Меняй приоритеты выбранного юнита.';
   const options=d?.alternatives||[],max=Math.max(1,...options.map(a=>a.score));
@@ -937,16 +1152,35 @@ function renderInspector(){
   renderBrain(u);
 }
 
+function renderExperience(u,adaptive){
+  $('experience-panel').hidden=!adaptive;if(!adaptive)return;
+  const e=u.experience,decision=u.decision;
+  $('experience-status').textContent=e.enabled?'Опыт обновляется после действий.':'Обучение заморожено; используются сохранённые коэффициенты.';
+  $('experience-cells').textContent=e.visits.filter(v=>v>0).length;
+  $('experience-goals').textContent=e.known.join(', ')||'Пока не замечены';
+  $('experience-updates').textContent=e.updates;$('experience-episode').textContent=e.episodes+1;
+  $('experience-reward').textContent=(e.lastReward>0?'+':'')+e.lastReward.toFixed(3);
+  $('experience-total').textContent=e.totalReward.toFixed(3);
+  const names={capture:'захват',hold:'контроль',damage:'урон врагу',hurt:'полученный урон',novelty:'новая клетка',revisit:'повтор пути',progress:'приближение к точке',cost:'затрата такта',outcome:'исход'};
+  $('experience-parts').textContent=Object.entries(e.lastParts).map(([k,v])=>names[k]+': '+(v>0?'+':'')+v.toFixed(3)).join(' · ')||'Обратная связь появится после первого действия.';
+  const learning=decision?.learning;
+  $('experience-choice').textContent=learning?'Последнее решение: '+(learning.exploratory?'исследовательская проба':'выбор по оценкам')+
+    '. Поправка опыта: '+learning.corrections[decision.command].toFixed(3)+'.':'Нет действующего решения.';
+  $('learning-enabled').checked=e.enabled;$('memory-enabled').checked=e.useMemory;
+  $('learning-enabled').disabled=u.hp<=0;$('memory-enabled').disabled=u.hp<=0;
+}
 function renderBrain(u){
-  const mode=controllerFor(state,u),full=isMotorMode(mode),b=u.brain,n=neuralReadout(b,profile(u),mode),cells=brainCells(b),motor=full?motorReadout(b,profile(u).reactivity):null;
-  $('brain-mode').textContent=full?'NEURAL':mode==='malecns'?'REFLEX':mode==='utility'?'UTILITY':'CONTROL';
-  $('brain-summary').textContent=full?(mode==='neural-disconnected'?'11 436 нейронов; все связи отключены. Входы стимулируются, выходы не получают сигнал.':'11 436 нейронов · 1 687 031 связь. Команды выбираются по выходам сети; тактический планировщик отключён.'):mode==='utility'?'Сеть не участвует. Действия выбирает тактический алгоритм.':mode==='disconnected'?'Входы работают, все связи отключены. Контроль вклада графа.':'319 нейронов · 21 288 связей. Короткий рефлекс поверх тактики.';
+  const mode=controllerFor(state,u),full=isMotorMode(mode),adaptive=isAdaptiveMode(mode),b=u.brain,n=neuralReadout(b,profile(u),mode),cells=brainCells(b),motor=full?(u.decision?.motor??motorReadout(b,profile(u).reactivity)):null;
+  renderExperience(u,adaptive);
+  $('brain-mode').textContent=adaptive?'ADAPTIVE':full?'NEURAL':mode==='malecns'?'REFLEX':mode==='utility'?'UTILITY':'CONTROL';
+  $('brain-summary').textContent=full?((mode==='neural-disconnected'||mode==='adaptive-disconnected')?'11 436 нейронов; все связи отключены. Входы стимулируются, выходы не получают сигнал.':adaptive?'11 436 нейронов · фиксированные связи. Выходы читает обучаемый слой команд; память хранится отдельно.':'11 436 нейронов · 1 687 031 связь. Команды выбираются по выходам сети; тактический планировщик отключён.'):mode==='utility'?'Сеть не участвует. Действия выбирает тактический алгоритм.':mode==='disconnected'?'Входы работают, все связи отключены. Контроль вклада графа.':'319 нейронов · 21 288 связей. Короткий рефлекс поверх тактики.';
   $('brain-input').textContent=b.inputs.map(v=>v.toFixed(3)).join(' / ');
   $('brain-output').textContent=b.outputs.map(v=>v.toFixed(3)).join(' / ');
   const strongest=full?Math.max(motor.scores.fire,motor.scores.advance,motor.scores.left,motor.scores.right,motor.scores.reverse):n.drive;
   $('brain-drive').style.width=clamp(strongest/(full?2:.5))*100+'%';
   $('brain-threshold-marker').style.left=(full?.06/2:clamp(n.threshold/.5))*100+'%';
-  $('brain-threshold').textContent=full?'Порог команды 0.060 · сигнал '+strongest.toFixed(3):'Порог '+n.threshold.toFixed(3)+' · сигнал '+n.drive.toFixed(3);
+  $('brain-threshold-marker').hidden=adaptive;
+  $('brain-threshold').textContent=adaptive?'Оценка выбранной команды '+(u.decision?.score??0).toFixed(3):full?'Порог команды 0.060 · сигнал '+strongest.toFixed(3):'Порог '+n.threshold.toFixed(3)+' · сигнал '+n.drive.toFixed(3);
   $('brain-steps').textContent=b.steps+' шагов';
   $('motor-panel').hidden=!full;$('reflex-phases').hidden=full;$('reflex-meta').hidden=full;
   if(full){
@@ -964,7 +1198,7 @@ function renderBrain(u){
     $('motor-reverse').textContent=motor.raw.reverse.map(v=>v.toFixed(4)).join(' / ');
     $('motor-heading').textContent=['С','СВ','В','ЮВ','Ю','ЮЗ','З','СЗ'][u.heading];
     $('motor-adapter').textContent=u.decision?.adapterNote||'Выходы сети переводятся в игровые команды.';
-    $('brain-status').textContent=u.hp<=0?'Юнит выведен из боя; сеть остановлена.':mode==='neural-disconnected'?'Связи отключены. Без сигнала выходных нейронов юнит остаётся на месте.':'Самостоятельный выбор команды через двигательный декодер. Ограничитель короткого рефлекса не используется.';
+    $('brain-status').textContent=u.hp<=0?'Юнит выведен из боя; сеть остановлена.':(mode==='neural-disconnected'||mode==='adaptive-disconnected')?'Связи отключены. Без сигнала выходных нейронов юнит остаётся на месте.':adaptive?'MaleCNS и обучаемый слой команд. Награды меняют добавленные коэффициенты; исходный граф фиксирован.':'Самостоятельный выбор команды через двигательный декодер. Ограничитель короткого рефлекса не используется.';
   }else{
     const gate=u.reflex;
     for(const el of document.querySelectorAll('[data-reflex-phase]'))el.classList.toggle('active',mode!=='utility'&&el.dataset.reflexPhase===gate.phase);
@@ -1053,6 +1287,13 @@ function draw(now){
     }
   }
   const unit=state.units.find(u=>u.id===selected);
+  if($('show-memory').checked&&unit&&isAdaptiveMode(controllerFor(state,unit))){
+    for(let k=0;k<unit.experience.visits.length;k++){
+      const visits=unit.experience.visits[k];if(!visits)continue;
+      ctx.fillStyle='rgba(200,223,155,'+Math.min(.55,.12+visits*.09)+')';
+      ctx.fillRect(ox+(k%W)*c+1,oy+Math.floor(k/W)*c+1,c-2,c-2);
+    }
+  }
   if($('show-threat').checked&&unit){
     if(!threatCache||threatCache.key!==revision+':'+selected){const tiles=[];for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(state.map[y*W+x]!==1){const danger=threatAt(state,{x,y},unit.team);if(danger)tiles.push({x,y,danger});}threatCache={key:revision+':'+selected,tiles};}
     for(const p of threatCache.tiles){ctx.fillStyle='rgba(231,119,80,'+Math.min(.46,p.danger/65)+')';ctx.fillRect(ox+p.x*c+1,oy+p.y*c+1,c-2,c-2);}
@@ -1117,13 +1358,17 @@ $('neural-canvas').addEventListener('pointermove',e=>{
 });
 $('neural-canvas').addEventListener('pointerleave',()=>{neuralHover=null;$('neuron-detail').textContent='Наведи на ячейку: тип, body ID и активность.';});
 $('generate').addEventListener('click',generate);
+$('repeat-experience').addEventListener('click',repeatExperienced);
+$('learning-enabled').addEventListener('change',()=>{const u=state.units.find(v=>v.id===selected);setExperienceLearning(u.experience,$('learning-enabled').checked);u.decision=decideUnit(state,u);if(state.tick===0)initial=exportScene(state);renderInspector();});
+$('memory-enabled').addEventListener('change',()=>{const u=state.units.find(v=>v.id===selected);u.experience.useMemory=$('memory-enabled').checked;if(state.tick===0)initial=exportScene(state);renderInspector();});
+$('forget-experience').addEventListener('click',()=>{const u=state.units.find(v=>v.id===selected);u.experience=createExperience(W*H);u.decision=decideUnit(state,u);if(state.tick===0)initial=exportScene(state);renderInspector();toast('Память и опыт '+u.id+' сброшены.');});
 $('scenario').addEventListener('change',syncScenarioControls);
 $('contact-demo').addEventListener('click',()=>openContactScene());
 $('neural-demo').addEventListener('click',()=>openContactScene(.5,'neural'));
 $('aim-demo').addEventListener('click',openAimScene);
 $('compare-btn').addEventListener('click',()=>{setRunning(false);compareControllers();});
 $('close-compare').addEventListener('click',()=>$('compare-dialog').close());
-$('compare-open-scene').addEventListener('click',()=>{$('compare-dialog').close();openContactScene(comparisonReactivity,comparisonNeural?'neural':'malecns');});
+$('compare-open-scene').addEventListener('click',()=>{$('compare-dialog').close();openContactScene(comparisonReactivity,comparisonAdaptive?'adaptive':comparisonNeural?'neural':'malecns');});
 $('random-seed').addEventListener('click',()=>{$('seed').value=String(crypto.getRandomValues(new Uint32Array(1))[0]%999999);$('setup-hint').textContent='Новый seed выбран. Нажми «Создать поле».';});
 $('density').addEventListener('input',()=>{$('density-value').value=$('density').value;});
 for(const id of ['faction-a','faction-b'])$(id).addEventListener('change',updateFactionNotes);

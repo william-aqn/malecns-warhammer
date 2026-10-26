@@ -2,6 +2,8 @@ import {isMotorMode,isMotorBrain,createMotorBrain,stepMotorBrain,validateMotorBr
 import {CONNECTOME,CONNECTOME_SHA256} from './data/malecns-escape.mjs';
 export {CONNECTOME,CONNECTOME_SHA256};
 export const CONTROLLERS={
+  adaptive:'MaleCNS · память и обучение',
+  'adaptive-disconnected':'Обучение · без связей',
   neural:'MaleCNS · нейронное управление',
   'neural-disconnected':'Нейронное управление · без связей',
   malecns:'MaleCNS + тактика',

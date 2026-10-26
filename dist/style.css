@@ -67,3 +67,5 @@ select:disabled,input:disabled{opacity:.55}
 .motor-panel[hidden],.reflex-phases[hidden]{display:none}.comparison-ticks .action-turn{background:#35514a;color:#b4ded2}.comparison-ticks .action-retreat{background:#3b3d2b;color:#d7d4a9}
 
 .aim-table{width:100%;border-collapse:collapse;font:10px/1.6 var(--mono);margin:10px 0}.aim-table th,.aim-table td{padding:5px 4px;text-align:right;border-bottom:1px solid var(--line)}.aim-table th{font-size:8px;font-weight:400;color:var(--muted)}.aim-table th:first-child,.aim-table td:first-child{text-align:left}.aim-selected{color:#e6d69b;background:#e6d69b0c}.aim-explainer{font-size:9px;line-height:1.65;color:var(--muted);margin:10px 0}.aim-explainer summary{cursor:pointer;color:var(--accent)}
+
+.experience-switches{display:flex;flex-wrap:wrap;gap:8px 16px;margin:10px 0;font-size:11px}.experience-switches label{display:flex;align-items:center;gap:6px}#experience-panel{border-bottom:1px solid var(--line);margin-bottom:14px;padding-bottom:12px}#experience-parts,#experience-choice{overflow-wrap:anywhere}.layers{flex-wrap:wrap}

@@ -175,3 +175,17 @@ engineering choice, not a biological claim about locomotor inhibition.
 No path planner, learned weights, visit memory or trained tactical policy was
 added. All enabled commands still compete through neural output scores;
 disconnecting edges at zero initial activity produces no movement.
+
+## Engineered experience modules in 0.8
+
+The fixed anatomical CSR, contact counts, normalization, neural dynamics and
+model SHA-256 remain unchanged. Per-unit visitation counts and remembered mission
+landmarks modify the four engineered sensory channels. Familiar forward cells
+can provide an aversive memory stimulus; this is not measured biological looming.
+
+An additional 6-by-13 linear action-value readout learns from normalized MaleCNS
+output features using a bounded semi-gradient Sarsa(lambda) update with accumulating
+traces. Its weights, reward function, exploration, spatial memory and landmark
+recall are application code. Neither anatomical synaptic plasticity nor biological
+memory is reconstructed. No hidden tactical planner provides its action scores.
+See docs/experience.md for coefficients, causal controls and limitations.

@@ -1,0 +1,1187 @@
+{
+  "version": "0.8.0",
+  "model": "2e00fbe4528b5ba23cbbcdb40aa94ee26772d1bf7c6b8ce7cfe14888029f3d89",
+  "baseDecoder": "visual-motor-v3",
+  "features": 13,
+  "learning": {
+    "alpha": 0.12,
+    "gamma": 0.9,
+    "lambda": 0.65,
+    "epsilon": 0.08,
+    "weightLimit": 3,
+    "errorLimit": 2
+  },
+  "scope": "Complete games, up to 180 ticks. Three cold-start seeds with online learning, one memory-only frozen-head ablation, and one same-seed replay carrying the first game coefficients. Parameters were not optimized for wins. This small diagnostic set cannot establish general tactical strength; scores across games also depend on differing casualties and random-number consumption.",
+  "observation": "Decisions captured before execution. Late means tick >=120; edge means x<=1, x>=30, y<=1 or y>=20. An earlier terminal result is not evidence that all surviving agents would avoid orbiting if the game continued.",
+  "baseline": {
+    "version": "0.7.0",
+    "sourceCommit": "aa2f9ac",
+    "scope": "Unmodified fixed neural controllers, both teams, default seed 40721, full 180-tick game.",
+    "seed": "40721",
+    "tick": 180,
+    "scores": [
+      2,
+      7
+    ],
+    "winner": 1,
+    "alive": 3,
+    "attacks": 53,
+    "waits": 0,
+    "late": {
+      "activations": 183,
+      "edge": 183,
+      "attacks": 0
+    },
+    "units": [
+      {
+        "id": "A-01",
+        "hp": 0,
+        "position": [
+          0,
+          15
+        ],
+        "cells": 33,
+        "updates": 0,
+        "reward": null,
+        "known": [],
+        "captured": [],
+        "coefficientNorm": 0
+      },
+      {
+        "id": "A-02",
+        "hp": 34,
+        "position": [
+          0,
+          21
+        ],
+        "cells": 132,
+        "updates": 0,
+        "reward": null,
+        "known": [],
+        "captured": [],
+        "coefficientNorm": 0
+      },
+      {
+        "id": "A-03",
+        "hp": 0,
+        "position": [
+          6,
+          16
+        ],
+        "cells": 13,
+        "updates": 0,
+        "reward": null,
+        "known": [],
+        "captured": [],
+        "coefficientNorm": 0
+      },
+      {
+        "id": "A-04",
+        "hp": 0,
+        "position": [
+          22,
+          0
+        ],
+        "cells": 57,
+        "updates": 0,
+        "reward": null,
+        "known": [],
+        "captured": [],
+        "coefficientNorm": 0
+      },
+      {
+        "id": "A-05",
+        "hp": 0,
+        "position": [
+          8,
+          0
+        ],
+        "cells": 48,
+        "updates": 0,
+        "reward": null,
+        "known": [],
+        "captured": [],
+        "coefficientNorm": 0
+      },
+      {
+        "id": "B-01",
+        "hp": 16,
+        "position": [
+          14,
+          21
+        ],
+        "cells": 140,
+        "updates": 0,
+        "reward": null,
+        "known": [],
+        "captured": [],
+        "coefficientNorm": 0
+      },
+      {
+        "id": "B-02",
+        "hp": 0,
+        "position": [
+          4,
+          16
+        ],
+        "cells": 32,
+        "updates": 0,
+        "reward": null,
+        "known": [],
+        "captured": [],
+        "coefficientNorm": 0
+      },
+      {
+        "id": "B-03",
+        "hp": 2,
+        "position": [
+          31,
+          0
+        ],
+        "cells": 144,
+        "updates": 0,
+        "reward": null,
+        "known": [],
+        "captured": [],
+        "coefficientNorm": 0
+      },
+      {
+        "id": "B-04",
+        "hp": 0,
+        "position": [
+          7,
+          21
+        ],
+        "cells": 31,
+        "updates": 0,
+        "reward": null,
+        "known": [],
+        "captured": [],
+        "coefficientNorm": 0
+      },
+      {
+        "id": "B-05",
+        "hp": 0,
+        "position": [
+          0,
+          16
+        ],
+        "cells": 56,
+        "updates": 0,
+        "reward": null,
+        "known": [],
+        "captured": [],
+        "coefficientNorm": 0
+      }
+    ]
+  },
+  "runs": [
+    {
+      "label": "learning-40721",
+      "seed": "40721",
+      "tick": 85,
+      "scores": [
+        0,
+        17
+      ],
+      "winner": 1,
+      "alive": 3,
+      "attacks": 49,
+      "waits": 10,
+      "late": {
+        "activations": 0,
+        "edge": 0,
+        "attacks": 0
+      },
+      "units": [
+        {
+          "id": "A-01",
+          "hp": 0,
+          "position": [
+            22,
+            11
+          ],
+          "cells": 37,
+          "updates": 48,
+          "reward": -0.8825000000000003,
+          "known": [
+            "I",
+            "II",
+            "III"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.25653436654489187
+        },
+        {
+          "id": "A-02",
+          "hp": 0,
+          "position": [
+            23,
+            7
+          ],
+          "cells": 63,
+          "updates": 85,
+          "reward": 0.4432000000000005,
+          "known": [
+            "II",
+            "III"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.30953393379659416
+        },
+        {
+          "id": "A-03",
+          "hp": 0,
+          "position": [
+            6,
+            15
+          ],
+          "cells": 13,
+          "updates": 40,
+          "reward": -2.3935000000000004,
+          "known": [
+            "I",
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.2752849623190866
+        },
+        {
+          "id": "A-04",
+          "hp": 0,
+          "position": [
+            13,
+            11
+          ],
+          "cells": 12,
+          "updates": 20,
+          "reward": -0.11160000000000014,
+          "known": [
+            "I",
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.14458606431501125
+        },
+        {
+          "id": "A-05",
+          "hp": 0,
+          "position": [
+            9,
+            8
+          ],
+          "cells": 13,
+          "updates": 21,
+          "reward": -1.29,
+          "known": [
+            "II",
+            "I"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.20362684424039015
+        },
+        {
+          "id": "B-01",
+          "hp": 28,
+          "position": [
+            19,
+            7
+          ],
+          "cells": 47,
+          "updates": 85,
+          "reward": 2.773,
+          "known": [
+            "III",
+            "II"
+          ],
+          "captured": [
+            "II"
+          ],
+          "coefficientNorm": 0.28646058187543516
+        },
+        {
+          "id": "B-02",
+          "hp": 10,
+          "position": [
+            14,
+            0
+          ],
+          "cells": 63,
+          "updates": 85,
+          "reward": 4.7180000000000035,
+          "known": [
+            "II",
+            "III",
+            "I"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.14537225629489026
+        },
+        {
+          "id": "B-03",
+          "hp": 0,
+          "position": [
+            23,
+            15
+          ],
+          "cells": 30,
+          "updates": 44,
+          "reward": 2.5448000000000017,
+          "known": [
+            "II",
+            "III"
+          ],
+          "captured": [
+            "II",
+            "III"
+          ],
+          "coefficientNorm": 0.18711421181812862
+        },
+        {
+          "id": "B-04",
+          "hp": 0,
+          "position": [
+            15,
+            20
+          ],
+          "cells": 24,
+          "updates": 36,
+          "reward": 0.24099999999999988,
+          "known": [
+            "III",
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.18924804765076614
+        },
+        {
+          "id": "B-05",
+          "hp": 5,
+          "position": [
+            29,
+            20
+          ],
+          "cells": 49,
+          "updates": 85,
+          "reward": 3.150799999999999,
+          "known": [
+            "III",
+            "II"
+          ],
+          "captured": [
+            "III"
+          ],
+          "coefficientNorm": 0.24326862481567965
+        }
+      ],
+      "exploratory": 55
+    },
+    {
+      "label": "learning-experience-check-29",
+      "seed": "experience-check-29",
+      "tick": 125,
+      "scores": [
+        18,
+        13
+      ],
+      "winner": 0,
+      "alive": 2,
+      "attacks": 42,
+      "waits": 10,
+      "late": {
+        "activations": 17,
+        "edge": 11,
+        "attacks": 1
+      },
+      "units": [
+        {
+          "id": "A-01",
+          "hp": 19,
+          "position": [
+            27,
+            11
+          ],
+          "cells": 66,
+          "updates": 125,
+          "reward": 6.419500000000008,
+          "known": [
+            "I",
+            "II",
+            "III"
+          ],
+          "captured": [
+            "I",
+            "II"
+          ],
+          "coefficientNorm": 0.28270725714020495
+        },
+        {
+          "id": "A-02",
+          "hp": 0,
+          "position": [
+            30,
+            12
+          ],
+          "cells": 48,
+          "updates": 68,
+          "reward": 2.4533000000000014,
+          "known": [
+            "I",
+            "III"
+          ],
+          "captured": [
+            "I"
+          ],
+          "coefficientNorm": 0.23341874492914824
+        },
+        {
+          "id": "A-03",
+          "hp": 0,
+          "position": [
+            21,
+            12
+          ],
+          "cells": 21,
+          "updates": 29,
+          "reward": 0.3025,
+          "known": [
+            "I",
+            "II",
+            "III"
+          ],
+          "captured": [
+            "II"
+          ],
+          "coefficientNorm": 0.19154922761243792
+        },
+        {
+          "id": "A-04",
+          "hp": 34,
+          "position": [
+            31,
+            9
+          ],
+          "cells": 93,
+          "updates": 125,
+          "reward": 3.887100000000002,
+          "known": [
+            "I",
+            "II",
+            "III"
+          ],
+          "captured": [
+            "I"
+          ],
+          "coefficientNorm": 0.31270898094827093
+        },
+        {
+          "id": "A-05",
+          "hp": 0,
+          "position": [
+            13,
+            21
+          ],
+          "cells": 26,
+          "updates": 37,
+          "reward": -1.0700000000000003,
+          "known": [],
+          "captured": [],
+          "coefficientNorm": 0.245108440540763
+        },
+        {
+          "id": "B-01",
+          "hp": 0,
+          "position": [
+            31,
+            11
+          ],
+          "cells": 53,
+          "updates": 78,
+          "reward": 1.235599999999999,
+          "known": [
+            "II",
+            "III"
+          ],
+          "captured": [
+            "III"
+          ],
+          "coefficientNorm": 0.3048983580709195
+        },
+        {
+          "id": "B-02",
+          "hp": 0,
+          "position": [
+            29,
+            0
+          ],
+          "cells": 32,
+          "updates": 46,
+          "reward": 0.25649999999999995,
+          "known": [
+            "II",
+            "III"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.16052247084377044
+        },
+        {
+          "id": "B-03",
+          "hp": 0,
+          "position": [
+            18,
+            10
+          ],
+          "cells": 11,
+          "updates": 13,
+          "reward": -0.42359999999999987,
+          "known": [
+            "II",
+            "III"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.14535812250554805
+        },
+        {
+          "id": "B-04",
+          "hp": 0,
+          "position": [
+            31,
+            4
+          ],
+          "cells": 38,
+          "updates": 56,
+          "reward": -0.542,
+          "known": [
+            "III",
+            "II"
+          ],
+          "captured": [
+            "III"
+          ],
+          "coefficientNorm": 0.3068794729890777
+        },
+        {
+          "id": "B-05",
+          "hp": 0,
+          "position": [
+            30,
+            6
+          ],
+          "cells": 93,
+          "updates": 124,
+          "reward": 1.4420000000000002,
+          "known": [
+            "III",
+            "I",
+            "II"
+          ],
+          "captured": [
+            "III"
+          ],
+          "coefficientNorm": 0.38542450536156575
+        }
+      ],
+      "exploratory": 61
+    },
+    {
+      "label": "learning-experience-check-61",
+      "seed": "experience-check-61",
+      "tick": 138,
+      "scores": [
+        17,
+        15
+      ],
+      "winner": 1,
+      "alive": 2,
+      "attacks": 61,
+      "waits": 18,
+      "late": {
+        "activations": 56,
+        "edge": 56,
+        "attacks": 6
+      },
+      "units": [
+        {
+          "id": "A-01",
+          "hp": 0,
+          "position": [
+            11,
+            21
+          ],
+          "cells": 42,
+          "updates": 72,
+          "reward": 0.7875000000000028,
+          "known": [
+            "I"
+          ],
+          "captured": [
+            "I"
+          ],
+          "coefficientNorm": 0.36351799660428424
+        },
+        {
+          "id": "A-02",
+          "hp": 0,
+          "position": [
+            9,
+            1
+          ],
+          "cells": 91,
+          "updates": 137,
+          "reward": 2.68615,
+          "known": [
+            "I",
+            "II",
+            "III"
+          ],
+          "captured": [
+            "I",
+            "II",
+            "III"
+          ],
+          "coefficientNorm": 0.4081610599491248
+        },
+        {
+          "id": "A-03",
+          "hp": 0,
+          "position": [
+            27,
+            17
+          ],
+          "cells": 64,
+          "updates": 107,
+          "reward": 0.7175000000000025,
+          "known": [
+            "I",
+            "III"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.37313048442730284
+        },
+        {
+          "id": "A-04",
+          "hp": 0,
+          "position": [
+            14,
+            21
+          ],
+          "cells": 22,
+          "updates": 31,
+          "reward": -1.2800000000000002,
+          "known": [
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.20854342069447035
+        },
+        {
+          "id": "A-05",
+          "hp": 0,
+          "position": [
+            16,
+            21
+          ],
+          "cells": 21,
+          "updates": 30,
+          "reward": -0.8450000000000002,
+          "known": [
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.21463659327711157
+        },
+        {
+          "id": "B-01",
+          "hp": 0,
+          "position": [
+            16,
+            21
+          ],
+          "cells": 50,
+          "updates": 69,
+          "reward": 0.2527999999999999,
+          "known": [
+            "III",
+            "II"
+          ],
+          "captured": [
+            "II"
+          ],
+          "coefficientNorm": 0.40137930690272033
+        },
+        {
+          "id": "B-02",
+          "hp": 0,
+          "position": [
+            31,
+            0
+          ],
+          "cells": 42,
+          "updates": 62,
+          "reward": -0.7980000000000002,
+          "known": [
+            "III",
+            "II"
+          ],
+          "captured": [
+            "III"
+          ],
+          "coefficientNorm": 0.3958882859396677
+        },
+        {
+          "id": "B-03",
+          "hp": 9,
+          "position": [
+            4,
+            0
+          ],
+          "cells": 93,
+          "updates": 138,
+          "reward": 6.749600000000002,
+          "known": [
+            "III",
+            "II",
+            "I"
+          ],
+          "captured": [
+            "III",
+            "II"
+          ],
+          "coefficientNorm": 0.2368799100159074
+        },
+        {
+          "id": "B-04",
+          "hp": 10,
+          "position": [
+            17,
+            21
+          ],
+          "cells": 78,
+          "updates": 138,
+          "reward": 6.193500000000002,
+          "known": [
+            "II",
+            "III"
+          ],
+          "captured": [
+            "II",
+            "III"
+          ],
+          "coefficientNorm": 0.27353541923595687
+        },
+        {
+          "id": "B-05",
+          "hp": 0,
+          "position": [
+            14,
+            0
+          ],
+          "cells": 29,
+          "updates": 34,
+          "reward": -0.7144,
+          "known": [
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.1855996541298119
+        }
+      ],
+      "exploratory": 63
+    },
+    {
+      "label": "memory-without-learning-40721",
+      "seed": "40721",
+      "tick": 180,
+      "scores": [
+        7,
+        15
+      ],
+      "winner": 1,
+      "alive": 5,
+      "attacks": 41,
+      "waits": 0,
+      "late": {
+        "activations": 305,
+        "edge": 78,
+        "attacks": 0
+      },
+      "units": [
+        {
+          "id": "A-01",
+          "hp": 0,
+          "position": [
+            29,
+            21
+          ],
+          "cells": 48,
+          "updates": 0,
+          "reward": -0.5250000000000002,
+          "known": [
+            "I",
+            "II",
+            "III"
+          ],
+          "captured": [],
+          "coefficientNorm": 0
+        },
+        {
+          "id": "A-02",
+          "hp": 0,
+          "position": [
+            12,
+            21
+          ],
+          "cells": 23,
+          "updates": 0,
+          "reward": -0.4596,
+          "known": [
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0
+        },
+        {
+          "id": "A-03",
+          "hp": 0,
+          "position": [
+            6,
+            7
+          ],
+          "cells": 7,
+          "updates": 0,
+          "reward": -1.5775000000000001,
+          "known": [
+            "I"
+          ],
+          "captured": [],
+          "coefficientNorm": 0
+        },
+        {
+          "id": "A-04",
+          "hp": 0,
+          "position": [
+            10,
+            8
+          ],
+          "cells": 12,
+          "updates": 0,
+          "reward": -1.2976,
+          "known": [
+            "I",
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0
+        },
+        {
+          "id": "A-05",
+          "hp": 25,
+          "position": [
+            11,
+            10
+          ],
+          "cells": 115,
+          "updates": 0,
+          "reward": 4.242500000000014,
+          "known": [
+            "I",
+            "II",
+            "III"
+          ],
+          "captured": [
+            "I",
+            "II"
+          ],
+          "coefficientNorm": 0
+        },
+        {
+          "id": "B-01",
+          "hp": 25,
+          "position": [
+            12,
+            13
+          ],
+          "cells": 35,
+          "updates": 0,
+          "reward": 0.734999999999999,
+          "known": [
+            "III",
+            "II",
+            "I"
+          ],
+          "captured": [
+            "I"
+          ],
+          "coefficientNorm": 0
+        },
+        {
+          "id": "B-02",
+          "hp": 1,
+          "position": [
+            6,
+            7
+          ],
+          "cells": 24,
+          "updates": 0,
+          "reward": 3.150500000000031,
+          "known": [
+            "II",
+            "III",
+            "I"
+          ],
+          "captured": [],
+          "coefficientNorm": 0
+        },
+        {
+          "id": "B-03",
+          "hp": 7,
+          "position": [
+            25,
+            20
+          ],
+          "cells": 59,
+          "updates": 0,
+          "reward": 2.8488000000000153,
+          "known": [
+            "II",
+            "III"
+          ],
+          "captured": [
+            "II",
+            "III"
+          ],
+          "coefficientNorm": 0
+        },
+        {
+          "id": "B-04",
+          "hp": 0,
+          "position": [
+            8,
+            21
+          ],
+          "cells": 29,
+          "updates": 0,
+          "reward": 0.7729999999999999,
+          "known": [
+            "III",
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0
+        },
+        {
+          "id": "B-05",
+          "hp": 23,
+          "position": [
+            19,
+            18
+          ],
+          "cells": 72,
+          "updates": 0,
+          "reward": 2.4098999999999977,
+          "known": [
+            "III",
+            "II"
+          ],
+          "captured": [
+            "II",
+            "III"
+          ],
+          "coefficientNorm": 0
+        }
+      ],
+      "exploratory": 0
+    },
+    {
+      "label": "second-battle-with-experience-40721",
+      "seed": "40721",
+      "tick": 51,
+      "scores": [
+        0,
+        1
+      ],
+      "winner": 1,
+      "alive": 5,
+      "attacks": 32,
+      "waits": 28,
+      "late": {
+        "activations": 0,
+        "edge": 0,
+        "attacks": 0
+      },
+      "units": [
+        {
+          "id": "A-01",
+          "hp": 0,
+          "position": [
+            18,
+            21
+          ],
+          "cells": 36,
+          "updates": 96,
+          "reward": -0.8300000000000001,
+          "known": [
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.38432587262009477
+        },
+        {
+          "id": "A-02",
+          "hp": 0,
+          "position": [
+            7,
+            0
+          ],
+          "cells": 17,
+          "updates": 124,
+          "reward": -1.0216,
+          "known": [
+            "I"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.4000309908652658
+        },
+        {
+          "id": "A-03",
+          "hp": 0,
+          "position": [
+            0,
+            17
+          ],
+          "cells": 19,
+          "updates": 91,
+          "reward": -2.588,
+          "known": [],
+          "captured": [],
+          "coefficientNorm": 0.5213141118028513
+        },
+        {
+          "id": "A-04",
+          "hp": 0,
+          "position": [
+            6,
+            14
+          ],
+          "cells": 13,
+          "updates": 52,
+          "reward": -1.6280000000000001,
+          "known": [
+            "I",
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.350214262751026
+        },
+        {
+          "id": "A-05",
+          "hp": 0,
+          "position": [
+            9,
+            0
+          ],
+          "cells": 22,
+          "updates": 52,
+          "reward": -1.7400000000000004,
+          "known": [
+            "I",
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.35073199466323807
+        },
+        {
+          "id": "B-01",
+          "hp": 28,
+          "position": [
+            22,
+            9
+          ],
+          "cells": 27,
+          "updates": 136,
+          "reward": 1.2855999999999996,
+          "known": [
+            "III",
+            "II",
+            "I"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.33724647104433025
+        },
+        {
+          "id": "B-02",
+          "hp": 21,
+          "position": [
+            0,
+            16
+          ],
+          "cells": 37,
+          "updates": 136,
+          "reward": 4.950500000000002,
+          "known": [
+            "II",
+            "III",
+            "I"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.20019658583407213
+        },
+        {
+          "id": "B-03",
+          "hp": 7,
+          "position": [
+            0,
+            0
+          ],
+          "cells": 39,
+          "updates": 95,
+          "reward": 3.9099999999999993,
+          "known": [
+            "II",
+            "III",
+            "I"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.17276694058880127
+        },
+        {
+          "id": "B-04",
+          "hp": 13,
+          "position": [
+            17,
+            21
+          ],
+          "cells": 30,
+          "updates": 87,
+          "reward": 2.8685,
+          "known": [
+            "III",
+            "II"
+          ],
+          "captured": [
+            "III"
+          ],
+          "coefficientNorm": 0.269229357069747
+        },
+        {
+          "id": "B-05",
+          "hp": 28,
+          "position": [
+            20,
+            4
+          ],
+          "cells": 36,
+          "updates": 136,
+          "reward": 1.3043999999999998,
+          "known": [
+            "III",
+            "II"
+          ],
+          "captured": [],
+          "coefficientNorm": 0.2548102760936973
+        }
+      ],
+      "exploratory": 37
+    }
+  ]
+}

@@ -27,7 +27,7 @@ function compareContact(modes,reactivity){
   });
 }
 export const runContactComparison=(reactivity=.5)=>compareContact(['malecns','disconnected','utility'],reactivity);
-export const runMotorComparison=(reactivity=.5)=>compareContact(['neural','neural-disconnected','utility'],reactivity);
+export const runMotorComparison=(reactivity=.5,adaptive=false)=>compareContact(adaptive?['adaptive','adaptive-disconnected','utility']:['neural','neural-disconnected','utility'],reactivity);
 
 // Isolated causal probes: same board and zero initial activity, only visual input
 // or edge transmission changes. These are 32 neural steps, not combat turns.

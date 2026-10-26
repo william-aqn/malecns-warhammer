@@ -2,7 +2,8 @@ import {MOTOR_MODEL,MOTOR_PACKED,MOTOR_SHA256} from './data/malecns-motor.mjs';
 export {MOTOR_MODEL,MOTOR_SHA256};
 export const MOTOR_STEPS=8;
 export const MOTOR_DECODER='visual-motor-v3';
-export const isMotorMode=mode=>mode==='neural'||mode==='neural-disconnected';
+export const isAdaptiveMode=mode=>mode==='adaptive'||mode==='adaptive-disconnected';
+export const isMotorMode=mode=>mode==='neural'||mode==='neural-disconnected'||isAdaptiveMode(mode);
 export const isMotorBrain=brain=>brain?.model===MOTOR_SHA256;
 const motorBytes=Uint8Array.from(atob(MOTOR_PACKED),c=>c.charCodeAt(0));
 const motorView=new DataView(motorBytes.buffer),motorN=MOTOR_MODEL.counts.neurons,motorE=MOTOR_MODEL.counts.edges;
@@ -26,7 +27,7 @@ export function stepMotorBrain(brain,inputs,mode,steps=MOTOR_STEPS){
     for(const i of MOTOR_MODEL.inputs[channel])stimulus[i]+=.8*value;
   for(let step=0;step<steps;step++){
     sums.fill(0);
-    if(mode==='neural')for(let row=0;row<motorN;row++)for(let e=motorOffsets[row];e<motorOffsets[row+1];e++)sums[row]+=motorWeights[e]*activity[motorSources[e]];
+    if(mode==='neural'||mode==='adaptive')for(let row=0;row<motorN;row++)for(let e=motorOffsets[row];e<motorOffsets[row+1];e++)sums[row]+=motorWeights[e]*activity[motorSources[e]];
     for(let i=0;i<motorN;i++)activity[i]=.5*activity[i]+.5*Math.tanh(sums[i]+stimulus[i]);
   }
   brain.activity=Array.from(activity);brain.steps+=steps;brain.inputs=inputs.slice(0,2);brain.targets=inputs.slice(2);
