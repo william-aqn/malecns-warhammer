@@ -55,3 +55,34 @@ test('Annotated receptor channels are selective, unmapped cells stay undriven an
 test('World import rejects NaN, invalid geometry and malformed sensory fields',()=>{
   const s=worldSnapshot(createWorld());s.body.x=NaN;assert.throws(()=>validateWorld(s));const t=worldSnapshot(createWorld());t.fields.temperature=[1];assert.throws(()=>validateWorld(t));const u=worldSnapshot(createWorld());u.walls[9*u.width+5]=1;assert.throws(()=>validateWorld(u));
 });
+
+test('Entering an odor emitter changes olfactory input without painting either retinal field',()=>{
+  const p=ports(),w=createWorld('odor-probe','open'),odor=w.objects.find(o=>o.kind==='odor');
+  w.body.x=odor.x;w.body.y=odor.y;w.fields['odor:ORN_DM1']=new Float32Array(w.width*w.height).fill(.7);
+  const reference=structuredClone(w);reference.objects=reference.objects.filter(o=>o.kind!=='odor');reference.fields['odor:ORN_DM1'].fill(0);
+  const clean=structuredClone(p.sample(reference)),smelled=structuredClone(p.sample(w));
+  assert.ok(smelled.stimulus[1]>.6);assert.equal(clean.stimulus[1],0);
+  assert.deepEqual(smelled.pixels,clean.pixels);
+  assert.equal(smelled.stimulus[0],clean.stimulus[0]);
+  odor.spectrum=[1,0,0];odor.power=0;
+  assert.deepEqual(p.sample(w).pixels,clean.pixels);
+});
+test('Nonvisual emitter markers cannot occlude a visible target, including legacy scenes',()=>{
+  const w=createWorld('markers','open');const target={id:'target',kind:'light',x:9,y:9,radius:.8,height:1.5,spectrum:[.1,.2,.9],power:1};w.objects=[target];
+  const expected=raySpectrum(w,0,0);
+  for(const kind of ['odor','sound','taste','climate']){
+    const marker={id:'marker',kind,x:7,y:9,radius:.6,height:1.8,spectrum:[1,0,0],power:1};
+    w.objects=[marker,target];assert.deepEqual(raySpectrum(w,0,0),expected,kind+' must not block vision');
+    marker.x=w.body.x;marker.y=w.body.y;assert.deepEqual(raySpectrum(w,0,0),expected,kind+' must not engulf the eye');
+  }
+});
+
+test('Optical appearance is explicit and independent of an emitter channel; invalid flags are rejected',()=>{
+  const w=createWorld('visible-emitter','open'),source=w.objects.find(o=>o.kind==='odor');w.objects=[source];source.x=8;source.y=9;source.height=1.5;
+  const background=raySpectrum(w,0,0);
+  source.visual=true;assert.deepEqual(raySpectrum(w,0,0).spectrum,source.spectrum);assert.notDeepEqual(raySpectrum(w,0,0),background);
+  const restored=validateWorld(worldSnapshot(w));assert.equal(restored.objects[0].visual,true);assert.deepEqual(raySpectrum(restored,0,0),raySpectrum(w,0,0));
+  source.visual=false;assert.deepEqual(raySpectrum(w,0,0),background);
+  const legacy=worldSnapshot(w);delete legacy.objects[0].visual;assert.deepEqual(raySpectrum(validateWorld(legacy),0,0),background);
+  source.visual='false';assert.throws(()=>validateWorld(worldSnapshot(w)),/Invalid arena source/);
+});

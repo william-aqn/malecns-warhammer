@@ -9,11 +9,11 @@ export function createWorld(seed='40721',preset='arena'){
   if(preset==='arena')for(let y=3;y<15;y++)if(y!==8&&y!==9)walls[y*width+12]=1;
   if(preset==='random')for(let k=0;k<30;k++){const x=7+Math.floor(random()*14),y=2+Math.floor(random()*14);walls[y*width+x]=1;}
   const objects=[
-    {id:'light',kind:'light',x:9,y:6,radius:.6,height:1.6,spectrum:[.15,.9,.25],power:1,motion:true},
-    {id:'odor',kind:'odor',x:16,y:9,radius:.55,height:.8,spectrum:[.25,.35,.9],power:1,channel:'ORN_DM1'},
-    {id:'sound',kind:'sound',x:7,y:14,radius:.4,height:1.2,spectrum:[.6,.3,.4],power:1,frequency:2},
-    {id:'taste',kind:'taste',x:6,y:9,radius:.65,height:.05,spectrum:[.25,.5,.4],power:1},
-    {id:'climate',kind:'climate',x:18,y:5,radius:.6,height:.6,spectrum:[.5,.3,.5],power:1}
+    {id:'light',kind:'light',visual:true,x:9,y:6,radius:.6,height:1.6,spectrum:[.15,.9,.25],power:1,motion:true},
+    {id:'odor',kind:'odor',visual:false,x:16,y:9,radius:.55,height:.8,spectrum:[.25,.35,.9],power:1,channel:'ORN_DM1'},
+    {id:'sound',kind:'sound',visual:false,x:7,y:14,radius:.4,height:1.2,spectrum:[.6,.3,.4],power:1,frequency:2},
+    {id:'taste',kind:'taste',visual:false,x:6,y:9,radius:.65,height:.05,spectrum:[.25,.5,.4],power:1},
+    {id:'climate',kind:'climate',visual:false,x:18,y:5,radius:.6,height:.6,spectrum:[.5,.3,.5],power:1}
   ];
   for(const o of objects)walls[Math.floor(o.y)*width+Math.floor(o.x)]=0;
   return {version:WORLD_VERSION,seed:String(seed),width,height,walls,objects,time:0,light:1,wind:[.2,0],fields:{},
@@ -93,7 +93,9 @@ export function raySpectrum(world,azimuth,elevation){
     if(z<=0){const checker=(Math.floor(x)+Math.floor(y))%2===0; spectrum=checker?[.12,.22,.16]:[.04,.1,.08];distance=t;break;}
     if(wall(world,x,y)&&z<2){const stripe=(Math.floor(x*3)+Math.floor(y*3)+Math.floor(z*4))%2===0;spectrum=stripe?[.18,.27,.23]:[.05,.09,.08];distance=t;break;}
     let hit=false;
-    for(const o of world.objects)if(z>=0&&z<=o.height&&Math.hypot(x-o.x,y-o.y)<o.radius){spectrum=o.spectrum.map(v=>v*(o.kind==='light'?o.power:1));distance=t;hit=true;break;}
+    // Emitter markers and field overlays are observer aids, not optical geometry.
+    // Legacy scenes without this flag use the same kind-based default.
+    for(const o of world.objects)if((o.visual??(o.kind==='light'))&&z>=0&&z<=o.height&&Math.hypot(x-o.x,y-o.y)<o.radius){spectrum=o.spectrum.map(v=>v*(o.kind==='light'?o.power:1));distance=t;hit=true;break;}
     if(hit)break;
   }
   // Only photons reach neural sensory ports: depth is diagnostic UI data.
@@ -102,7 +104,7 @@ export function raySpectrum(world,azimuth,elevation){
 export function validateWorld(input){
   const s=structuredClone(input),finite=(v,a,b)=>Number.isFinite(v)&&v>=a&&v<=b,arr=(a,n,lo,hi)=>Array.isArray(a)&&a.length===n&&a.every(v=>finite(v,lo,hi));
   if(s?.version!==WORLD_VERSION||!Number.isInteger(s.width)||s.width<8||s.width>64||!Number.isInteger(s.height)||s.height<8||s.height>64||!arr(s.walls,s.width*s.height,0,1)||!s.walls.every(Number.isInteger)||!finite(s.time,0,1e8)||!finite(s.light,0,2)||!arr(s.wind,2,-1,1)||typeof s.seed!=='string'||s.seed.length>64||!Array.isArray(s.objects)||s.objects.length>32)throw Error('Invalid arena');
-  const ids=new Set();for(const o of s.objects){if(typeof o.id!=='string'||ids.has(o.id)||!['light','odor','sound','taste','climate'].includes(o.kind)||!finite(o.x,0,s.width-1)||!finite(o.y,0,s.height-1)||wall(s,o.x,o.y)||!finite(o.radius,.05,2)||!finite(o.height,0,3)||!finite(o.power,0,1)||!arr(o.spectrum,3,0,1)||o.kind==='odor'&&(typeof o.channel!=='string'||o.channel.length>64)||o.kind==='sound'&&!finite(o.frequency,.1,5)||o.motion!==undefined&&typeof o.motion!=='boolean')throw Error('Invalid arena source');ids.add(o.id);}
+  const ids=new Set();for(const o of s.objects){if(typeof o.id!=='string'||ids.has(o.id)||!['light','odor','sound','taste','climate'].includes(o.kind)||!finite(o.x,0,s.width-1)||!finite(o.y,0,s.height-1)||wall(s,o.x,o.y)||!finite(o.radius,.05,2)||!finite(o.height,0,3)||!finite(o.power,0,1)||!arr(o.spectrum,3,0,1)||o.kind==='odor'&&(typeof o.channel!=='string'||o.channel.length>64)||o.kind==='sound'&&!finite(o.frequency,.1,5)||o.motion!==undefined&&typeof o.motion!=='boolean'||o.visual!==undefined&&typeof o.visual!=='boolean')throw Error('Invalid arena source');ids.add(o.id);}
   const b=s.body;if(!b||!finite(b.x,0,s.width)||!finite(b.y,0,s.height)||!finite(b.radius,.1,.5)||!finite(b.z,.1,1.5)||!finite(b.heading,-Math.PI,Math.PI)||!arr(b.velocity,2,-5,5)||!finite(b.omega,-5,5)||!finite(b.collision,0,1)||!arr(b.phase,6,0,2*Math.PI)||!arr(b.joints,6,-1,1)||!arr(b.jointVelocity,6,-20,20)||!arr(b.loads,6,0,1)||!clearBody(s,b.x,b.y))throw Error('Invalid body');
   if(!s.fields||typeof s.fields!=='object'||Array.isArray(s.fields)||Object.keys(s.fields).length>64)throw Error('Invalid fields');
   for(const [key,a] of Object.entries(s.fields)){if(!['temperature','humidity'].includes(key)&&!key.startsWith('odor:')||key.length>70||!arr(Array.from(a),s.width*s.height,0,1))throw Error('Invalid sensory field');s.fields[key]=Float32Array.from(a);}
