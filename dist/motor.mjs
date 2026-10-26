@@ -1,6 +1,7 @@
 import {MOTOR_MODEL,MOTOR_PACKED,MOTOR_SHA256} from './data/malecns-motor.mjs';
 export {MOTOR_MODEL,MOTOR_SHA256};
 export const MOTOR_STEPS=8;
+export const MOTOR_DECODER='visual-motor-v2';
 export const isMotorMode=mode=>mode==='neural'||mode==='neural-disconnected';
 export const isMotorBrain=brain=>brain?.model===MOTOR_SHA256;
 const motorBytes=Uint8Array.from(atob(MOTOR_PACKED),c=>c.charCodeAt(0));
@@ -40,15 +41,20 @@ export function stepMotorBrain(brain,inputs,mode,steps=MOTOR_STEPS){
 export function motorReadout(brain,reactivity=.5){
   const gain=2*reactivity,cal=MOTOR_MODEL.calibration;
   const raw={
+    aim:['L','R'].map(side=>motorMean(brain.activity,'DNa01'+side)),
     steer:['L','R'].map(side=>motorMean(brain.activity,'DNa02'+side)),
     walk:['L','R'].map(side=>motorMean(brain.activity,'DNp09'+side)),
     reverse:['L','R'].map(side=>motorMean(brain.activity,'MDN'+side)),
     escape:escapePair(brain.activity)
   };
   const steer=raw.steer.map((v,i)=>gain*v/cal.target['DNa02'+['L','R'][i]]);
+  // DNa01 supplies an engineered aim/fire readout, not a biological attack label.
+  const aim=raw.aim.map((v,i)=>gain*v/cal.target['DNa01'+['L','R'][i]]);
+  const aimTotal=aim[0]+aim[1],aimAngle=aimTotal>1e-9?Math.atan2(aim[1]-aim[0],aimTotal):null;
   const fear=raw.escape.map((v,i)=>gain*v/(['DNp01','DNp02','DNp04','DNp11'].reduce((sum,type)=>sum+cal.threat[type+['L','R'][i]],0)/4));
   const walk=raw.walk.map((v,i)=>gain*v/cal.target['DNp09'+['L','R'][i]]),reverse=raw.reverse.map((v,i)=>gain*v/cal.threat['MDN'+['L','R'][i]]);
-  return {raw,steer,fear,walk,reverse,gain,scores:{
+  return {decoder:MOTOR_DECODER,raw,aim,aimAngle,steer,fear,walk,reverse,gain,scores:{
+    fire:aimTotal/2,
     advance:Math.min((steer[0]+steer[1])/2,(walk[0]+walk[1])/2),
     left:Math.max(0,steer[0]-steer[1])*2+fear[1],
     right:Math.max(0,steer[1]-steer[0])*2+fear[0],

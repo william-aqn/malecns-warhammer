@@ -1,5 +1,5 @@
 {
-  "version": "0.5.0",
+  "version": "0.6.0",
   "model": "6a1452434783f8e3e9ebdb82fc36e3c56071b85e1575c755af55a1f84b89a477",
   "reflex": {
     "contract": "bounded-escape-v1",
@@ -78,6 +78,7 @@
   ],
   "motor": {
     "model": "2e00fbe4528b5ba23cbbcdb40aa94ee26772d1bf7c6b8ce7cfe14888029f3d89",
+    "decoder": "visual-motor-v2",
     "counts": {
       "neurons": 11436,
       "edges": 1687031,
@@ -85,6 +86,7 @@
     },
     "stepsPerActivation": 8,
     "scope": "One fixed 1v1 contact scene, 12 ticks at most, with neural/disconnected/utility A against utility B; same factions, seed and initial state. Lateral stimuli are separate zero-start probes. Command decoding, sensory projection and target binding are engineered. No claim of tactical superiority or biological behavior.",
+    "aimProbeScope": "Four isolated zero-start probes on an identical board. LC10 0.6/0.4 versus 0.4/0.6, disconnected edges and zero input; 32 neural steps each. B-01 at 3 cells, B-02 at 6, symmetric bearings. Fire and advance are independent outputs; legal targets are resolved by angular error, with ID ties.",
     "contact": [
       {
         "mode": "neural",
@@ -485,6 +487,164 @@
         ]
       }
     ],
+    "aimProbes": [
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          0,
+          0.6,
+          0.4
+        ],
+        "label": "L 0.6 / R 0.4",
+        "reactivity": 0.5,
+        "steps": 32,
+        "command": "fire",
+        "action": "attack",
+        "target": "B-01",
+        "preferredTarget": "B-01",
+        "angle": -0.013607614764048344,
+        "fire": 0.9777328855228332,
+        "advance": 0.9595885077781627,
+        "candidates": [
+          {
+            "id": "B-01",
+            "x": 12,
+            "y": 9,
+            "bearing": -0.46364760900080615,
+            "error": 0.4500399942367578,
+            "alignment": 0.7134956413126876,
+            "distance": 3
+          },
+          {
+            "id": "B-02",
+            "x": 14,
+            "y": 12,
+            "bearing": 0.46364760900080615,
+            "error": 0.4772552237648545,
+            "alignment": 0.6961698880855792,
+            "distance": 6
+          }
+        ]
+      },
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          0,
+          0.4,
+          0.6
+        ],
+        "label": "L 0.4 / R 0.6",
+        "reactivity": 0.5,
+        "steps": 32,
+        "command": "fire",
+        "action": "attack",
+        "target": "B-02",
+        "preferredTarget": "B-02",
+        "angle": 0.013220741816567344,
+        "fire": 1.0025339852283923,
+        "advance": 0.994560274368407,
+        "candidates": [
+          {
+            "id": "B-02",
+            "x": 14,
+            "y": 12,
+            "bearing": 0.46364760900080615,
+            "error": 0.4504268671842388,
+            "alignment": 0.7132493503449271,
+            "distance": 6
+          },
+          {
+            "id": "B-01",
+            "x": 12,
+            "y": 9,
+            "bearing": -0.46364760900080615,
+            "error": 0.4768683508173735,
+            "alignment": 0.6964161790533397,
+            "distance": 3
+          }
+        ]
+      },
+      {
+        "mode": "neural-disconnected",
+        "inputs": [
+          0,
+          0,
+          0.6,
+          0.4
+        ],
+        "label": "L 0.6 / R 0.4 · без связей",
+        "reactivity": 0.5,
+        "steps": 32,
+        "command": "wait",
+        "action": "hold",
+        "target": null,
+        "preferredTarget": null,
+        "angle": null,
+        "fire": 0,
+        "advance": 0,
+        "candidates": [
+          {
+            "id": "B-01",
+            "x": 12,
+            "y": 9,
+            "bearing": -0.46364760900080615,
+            "error": null,
+            "alignment": 0,
+            "distance": 3
+          },
+          {
+            "id": "B-02",
+            "x": 14,
+            "y": 12,
+            "bearing": 0.46364760900080615,
+            "error": null,
+            "alignment": 0,
+            "distance": 6
+          }
+        ]
+      },
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "label": "Без стимула",
+        "reactivity": 0.5,
+        "steps": 32,
+        "command": "wait",
+        "action": "hold",
+        "target": null,
+        "preferredTarget": null,
+        "angle": null,
+        "fire": 0,
+        "advance": 0,
+        "candidates": [
+          {
+            "id": "B-01",
+            "x": 12,
+            "y": 9,
+            "bearing": -0.46364760900080615,
+            "error": null,
+            "alignment": 0,
+            "distance": 3
+          },
+          {
+            "id": "B-02",
+            "x": 14,
+            "y": 12,
+            "bearing": 0.46364760900080615,
+            "error": null,
+            "alignment": 0,
+            "distance": 6
+          }
+        ]
+      }
+    ],
     "probes": [
       {
         "mode": "neural",
@@ -495,6 +655,10 @@
           0
         ],
         "outputs": {
+          "aim": [
+            0.005055285058915615,
+            0.003934197127819061
+          ],
           "steer": [
             0.021189268678426743,
             0.010350811295211315
@@ -513,13 +677,14 @@
           ]
         },
         "scores": {
+          "fire": 0.7164159542991066,
           "advance": 0.6180331426365481,
           "left": 0.98038507777324,
           "right": 0.023198424264015458,
           "reverse": 0.0044214547409296865,
           "wait": 0.06
         },
-        "milliseconds": 185
+        "milliseconds": 186
       },
       {
         "mode": "neural",
@@ -530,6 +695,10 @@
           1
         ],
         "outputs": {
+          "aim": [
+            0.004990814253687859,
+            0.0054896557703614235
+          ],
           "steer": [
             0.01168820820748806,
             0.021565554663538933
@@ -548,13 +717,14 @@
           ]
         },
         "scores": {
+          "fire": 0.8397599422822726,
           "advance": 0.7883006501360149,
           "left": 0.03199674133144854,
           "right": 0.9854876336476176,
           "reverse": 0.004499592255786266,
           "wait": 0.06
         },
-        "milliseconds": 182
+        "milliseconds": 183
       },
       {
         "mode": "neural",
@@ -565,6 +735,10 @@
           0
         ],
         "outputs": {
+          "aim": [
+            0.0014073139755055308,
+            0.0027089386712759733
+          ],
           "steer": [
             0.0017177576664835215,
             0.0013502149377018213
@@ -583,13 +757,14 @@
           ]
         },
         "scores": {
+          "fire": 0.33258698810413356,
           "advance": 0.07225573239992811,
           "left": 0.08481795220257722,
           "right": 1.4605258778841443,
           "reverse": 0.06012760418477653,
           "wait": 0.06
         },
-        "milliseconds": 182
+        "milliseconds": 183
       },
       {
         "mode": "neural",
@@ -600,6 +775,10 @@
           0
         ],
         "outputs": {
+          "aim": [
+            0.0024857197422534227,
+            0.0016271730419248343
+          ],
           "steer": [
             0.0011035716161131859,
             0.002018534578382969
@@ -618,6 +797,7 @@
           ]
         },
         "scores": {
+          "fire": 0.32691156336996546,
           "advance": 0.07400684521525469,
           "left": 1.466828062797568,
           "right": 0.13672248921980407,
@@ -635,6 +815,10 @@
           0
         ],
         "outputs": {
+          "aim": [
+            0,
+            0
+          ],
           "steer": [
             0,
             0
@@ -653,13 +837,14 @@
           ]
         },
         "scores": {
+          "fire": 0,
           "advance": 0,
           "left": 0,
           "right": 0,
           "reverse": 0,
           "wait": 0.06
         },
-        "milliseconds": 180
+        "milliseconds": 181
       },
       {
         "mode": "neural-disconnected",
@@ -670,6 +855,10 @@
           0
         ],
         "outputs": {
+          "aim": [
+            0,
+            0
+          ],
           "steer": [
             0,
             0
@@ -688,6 +877,7 @@
           ]
         },
         "scores": {
+          "fire": 0,
           "advance": 0,
           "left": 0,
           "right": 0,
@@ -705,6 +895,10 @@
           1
         ],
         "outputs": {
+          "aim": [
+            0,
+            0
+          ],
           "steer": [
             0,
             0
@@ -723,6 +917,7 @@
           ]
         },
         "scores": {
+          "fire": 0,
           "advance": 0,
           "left": 0,
           "right": 0,
@@ -740,6 +935,10 @@
           0
         ],
         "outputs": {
+          "aim": [
+            0,
+            0
+          ],
           "steer": [
             0,
             0
@@ -758,6 +957,7 @@
           ]
         },
         "scores": {
+          "fire": 0,
           "advance": 0,
           "left": 0,
           "right": 0,
@@ -775,6 +975,10 @@
           0
         ],
         "outputs": {
+          "aim": [
+            0,
+            0
+          ],
           "steer": [
             0,
             0
@@ -793,6 +997,7 @@
           ]
         },
         "scores": {
+          "fire": 0,
           "advance": 0,
           "left": 0,
           "right": 0,
@@ -810,6 +1015,10 @@
           0
         ],
         "outputs": {
+          "aim": [
+            0,
+            0
+          ],
           "steer": [
             0,
             0
@@ -828,6 +1037,7 @@
           ]
         },
         "scores": {
+          "fire": 0,
           "advance": 0,
           "left": 0,
           "right": 0,
@@ -1367,7 +1577,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 129
+      "milliseconds": 137
     },
     {
       "suite": "historical",
@@ -1419,7 +1629,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 39
+      "milliseconds": 38
     },
     {
       "suite": "historical",
@@ -1445,7 +1655,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 1,
-      "milliseconds": 90
+      "milliseconds": 91
     },
     {
       "suite": "historical",
@@ -1471,7 +1681,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 42
+      "milliseconds": 44
     },
     {
       "suite": "historical",
@@ -1497,7 +1707,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 39
+      "milliseconds": 40
     },
     {
       "suite": "historical",
@@ -1523,7 +1733,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 71
+      "milliseconds": 72
     },
     {
       "suite": "historical",
@@ -1575,7 +1785,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 29
+      "milliseconds": 28
     },
     {
       "suite": "historical",
@@ -1601,7 +1811,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 98
+      "milliseconds": 96
     },
     {
       "suite": "historical",
@@ -1627,7 +1837,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 33
+      "milliseconds": 32
     },
     {
       "suite": "historical",
@@ -1679,7 +1889,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 81
+      "milliseconds": 78
     },
     {
       "suite": "historical",
@@ -1757,7 +1967,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 63
+      "milliseconds": 64
     },
     {
       "suite": "historical",
@@ -1809,7 +2019,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 30
+      "milliseconds": 31
     },
     {
       "suite": "historical",
@@ -1887,7 +2097,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 24
+      "milliseconds": 25
     },
     {
       "suite": "historical",
@@ -1913,7 +2123,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 69
+      "milliseconds": 70
     },
     {
       "suite": "historical",
@@ -2017,7 +2227,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 34
+      "milliseconds": 35
     },
     {
       "suite": "historical",
@@ -2069,7 +2279,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 72
+      "milliseconds": 73
     },
     {
       "suite": "historical",
@@ -2095,7 +2305,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 34
+      "milliseconds": 36
     },
     {
       "suite": "historical",
@@ -2121,7 +2331,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 32
     },
     {
       "suite": "historical",
@@ -2147,7 +2357,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 1,
-      "milliseconds": 95
+      "milliseconds": 97
     },
     {
       "suite": "historical",
@@ -2173,7 +2383,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 42
+      "milliseconds": 44
     },
     {
       "suite": "historical",
@@ -2199,7 +2409,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 39
+      "milliseconds": 41
     },
     {
       "suite": "historical",
@@ -2225,7 +2435,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 76
+      "milliseconds": 78
     },
     {
       "suite": "historical",
@@ -2251,7 +2461,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 43
+      "milliseconds": 45
     },
     {
       "suite": "historical",
@@ -2277,7 +2487,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 39
+      "milliseconds": 40
     },
     {
       "suite": "additional",
@@ -2303,7 +2513,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 67
+      "milliseconds": 68
     },
     {
       "suite": "additional",
@@ -2329,7 +2539,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 33
     },
     {
       "suite": "additional",
@@ -2355,7 +2565,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 29
+      "milliseconds": 30
     },
     {
       "suite": "additional",
@@ -2381,7 +2591,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 75
+      "milliseconds": 76
     },
     {
       "suite": "additional",
@@ -2407,7 +2617,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 33
     },
     {
       "suite": "additional",
@@ -2433,7 +2643,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 29
+      "milliseconds": 30
     },
     {
       "suite": "additional",
@@ -2485,7 +2695,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 35
+      "milliseconds": 36
     },
     {
       "suite": "additional",
@@ -2511,7 +2721,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 32
     },
     {
       "suite": "additional",
@@ -2537,7 +2747,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 83
+      "milliseconds": 85
     },
     {
       "suite": "additional",
@@ -2563,7 +2773,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 34
+      "milliseconds": 35
     },
     {
       "suite": "additional",
@@ -2589,7 +2799,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 32
     },
     {
       "suite": "additional",
@@ -2615,7 +2825,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 104
+      "milliseconds": 105
     },
     {
       "suite": "additional",
@@ -2641,7 +2851,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 35
+      "milliseconds": 36
     },
     {
       "suite": "additional",
@@ -2667,7 +2877,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 32
     },
     {
       "suite": "additional",
@@ -2693,7 +2903,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 85
+      "milliseconds": 88
     },
     {
       "suite": "additional",
@@ -2745,7 +2955,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 32
     },
     {
       "suite": "additional",
@@ -2771,7 +2981,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 78
+      "milliseconds": 80
     },
     {
       "suite": "additional",
@@ -2797,7 +3007,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 30
+      "milliseconds": 31
     },
     {
       "suite": "additional",
@@ -2823,7 +3033,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 27
+      "milliseconds": 28
     },
     {
       "suite": "additional",
@@ -2849,7 +3059,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 76
+      "milliseconds": 78
     },
     {
       "suite": "additional",
@@ -2875,7 +3085,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 29
+      "milliseconds": 31
     },
     {
       "suite": "additional",
@@ -2901,7 +3111,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 26
+      "milliseconds": 28
     },
     {
       "suite": "additional",
@@ -2927,7 +3137,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 1,
-      "milliseconds": 63
+      "milliseconds": 66
     },
     {
       "suite": "additional",
@@ -2953,7 +3163,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 30
+      "milliseconds": 33
     },
     {
       "suite": "additional",
@@ -2979,7 +3189,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 28
+      "milliseconds": 31
     },
     {
       "suite": "additional",
@@ -3005,7 +3215,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 68
+      "milliseconds": 70
     },
     {
       "suite": "additional",
@@ -3031,7 +3241,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 34
     },
     {
       "suite": "additional",
@@ -3057,7 +3267,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 28
+      "milliseconds": 30
     },
     {
       "suite": "additional",
@@ -3083,7 +3293,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 76
+      "milliseconds": 80
     },
     {
       "suite": "additional",
@@ -3109,7 +3319,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 30
+      "milliseconds": 32
     },
     {
       "suite": "additional",
@@ -3161,7 +3371,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 62
+      "milliseconds": 64
     },
     {
       "suite": "additional",
@@ -3187,7 +3397,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 32
     },
     {
       "suite": "additional",
@@ -3213,8 +3423,8 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 27
+      "milliseconds": 29
     }
   ],
-  "totalMilliseconds": 5050
+  "totalMilliseconds": 5678
 }

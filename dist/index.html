@@ -27,7 +27,7 @@
 </defs></svg>
 <header class="topbar">
   <a href="./" class="brand" aria-label="Malecns, главная"><span class="brandmark"><span></span><span></span><span></span></span><strong>malecns<span>.</span></strong><span class="brand-divider"></span><span class="brand-sub">WARHAMMER<br><b>BEHAVIOR LAB</b></span></a>
-  <div class="header-right"><span class="version"><i></i> PROTOTYPE 0.5</span><button class="text-btn" id="about-btn"><svg><use href="#i-device"/></svg>От экрана к столу</button></div>
+  <div class="header-right"><span class="version"><i></i> PROTOTYPE 0.6</span><button class="text-btn" id="about-btn"><svg><use href="#i-device"/></svg>От экрана к столу</button></div>
 </header>
 <main>
   <div class="page-heading"><div><div class="eyebrow">ЭКСПЕРИМЕНТАЛЬНЫЙ ПОЛИГОН / 001</div><h1>У каждой армии — свой характер<span>.</span></h1><p>Создавай поле боя. Меняй поведение. Наблюдай за решениями.</p></div><span class="heading-tag">TACTICAL SANDBOX <span>↗</span></span></div>
@@ -35,7 +35,7 @@
     <aside class="setup panel">
       <div class="panel-title"><span class="section-number">01</span><h2>Сценарий</h2><span class="tiny-tag">SETUP</span></div>
       <section class="form-section">
-        <div class="section-label">ЭКСПЕРИМЕНТ</div><label for="scenario">Сцена</label><select id="scenario"></select><div class="experiment-actions"><button id="neural-demo" class="small-link">Нейронное управление ↗</button><button id="contact-demo" class="small-link">Тест рефлекса ↗</button><button id="compare-btn" class="small-link">Сравнить режимы</button></div><div class="section-label">ПОЛЕ БОЯ</div>
+        <div class="section-label">ЭКСПЕРИМЕНТ</div><label for="scenario">Сцена</label><select id="scenario"></select><div class="experiment-actions"><button id="aim-demo" class="small-link">Тест прицеливания ↗</button><button id="neural-demo" class="small-link">Нейронное управление ↗</button><button id="contact-demo" class="small-link">Тест рефлекса ↗</button><button id="compare-btn" class="small-link">Сравнить режимы</button></div><div class="section-label">ПОЛЕ БОЯ</div>
         <label for="map-kind">Ландшафт</label><select id="map-kind"><option value="ruins">Разрушенный форпост</option><option value="industrial">Промышленная зона</option><option value="badlands">Каменистое плато</option></select>
         <label for="seed">Seed карты <span class="muted">↳ повторяемый мир</span></label><div class="input-row"><input id="seed" type="text" maxlength="64" value="40721" autocomplete="off" spellcheck="false"><button id="random-seed" class="icon-btn" title="Случайный seed" aria-label="Случайный seed"><svg><use href="#i-shuffle"/></svg></button></div>
         <label for="density" class="range-label">Насыщенность <output id="density-value">28</output></label><input id="density" type="range" min="8" max="50" value="28"><div class="range-ends"><span>Открыто</span><span>Плотная застройка</span></div>
@@ -87,6 +87,9 @@
   <p id="brain-status" role="status"></p><div id="reflex-phases" class="reflex-phases" aria-label="Состояние игрового рефлекса"><span data-reflex-phase="ready">Готов</span><span data-reflex-phase="responding">Реакция</span><span data-reflex-phase="cooldown">Пауза</span><span data-reflex-phase="waiting">Ожидание</span></div><p class="neuron-detail" id="reflex-meta"></p>
   <div id="motor-panel" class="motor-panel" hidden>
     <div class="neural-metrics"><span>Цель L / R<strong id="motor-targets"></strong></span><span>Взгляд<strong id="motor-heading"></strong></span></div>
+    <div class="neural-metrics"><span>DNa01 · сигнал L / R<strong id="motor-aim-signal"></strong></span><span>Смещение прицела<strong id="motor-aim-angle"></strong></span></div>
+    <div id="aim-candidates"></div><p id="aim-caption"></p>
+    <details class="aim-explainer"><summary>Как сигнал выбирает цель</summary><p>L/R — активность DNa01, делённая на симметричный эталон. Смещение: atan2(R − L, R + L), до ±45°. Сигнал атаки: (L + R) / 2. Адаптер сопоставляет направление с видимыми целями; расстояние определяет только доступность выстрела. Это наш игровой декодер, не биологическое назначение DNa01.</p><p>Жёлтый пунктир на поле — прицел при последнем расчёте решения. Рамка — его предпочтительная цель. При точном равенстве сигналов команд порядок: огонь, вперёд, влево, вправо, назад, ожидание.</p></details>
     <dl><div><dt>DNa02 · поворот L / R</dt><dd id="motor-steer"></dd></div><div><dt>DNp09 · движение L / R</dt><dd id="motor-walk"></dd></div><div><dt>MDN · назад L / R</dt><dd id="motor-reverse"></dd></div></dl>
     <p id="motor-adapter"></p><p>Зрение, фоновый стимул и двигательный декодер заданы программой. Это экспериментальный контроллер без обучения стратегии боя.</p>
   </div><p class="neuron-detail" id="neural-sampling"></p><canvas id="neural-canvas" width="580" height="220" role="img" aria-label="Активность 319 нейронов выбранного юнита. Яркость соответствует активности; выделены выходные нейроны."></canvas>
@@ -114,6 +117,7 @@
   <div class="comparison-table-wrap"><table class="comparison-table"><thead><tr><th>Управление A</th><th>Первое действие</th><th id="compare-neural-column">Нейронных отходов</th><th>Нанесённый урон</th><th>Осталось HP</th></tr></thead><tbody id="compare-results"></tbody></table></div>
   <div id="compare-timeline"></div><p class="comparison-key">↙ отход · × атака · → движение · ↶ поворот · · удержание / обычный отход · — выведен из боя</p>
   <p class="comparison-note">Это фиксированная контактная сцена. Она проверяет влияние цепи на действия, а общую силу тактики нужно оценивать на разных картах. При разных действиях дальнейшие события боя расходятся.</p>
+  <section id="compare-aim-section" hidden><h3>Влияет ли сигнал на выбор цели?</h3><p class="comparison-note">Отдельная проба: то же поле и нулевое начальное состояние, 32 шага сети. B-01 слева на расстоянии 3 клеток, B-02 справа на расстоянии 6; углы симметричны. Меняются только входы LC10 или наличие связей. Текущая партия не меняется.</p><div class="comparison-table-wrap"><table class="comparison-table"><thead><tr><th>Вход L / R</th><th>Прицел</th><th>Цель атаки</th><th>Команда</th></tr></thead><tbody id="compare-aim-results"></tbody></table></div></section>
   <button id="compare-open-scene" class="primary">Открыть тестовую сцену</button>
 </dialog>
 <script type="module" src="app.mjs"></script>

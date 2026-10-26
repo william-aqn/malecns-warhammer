@@ -1,13 +1,14 @@
 import {isMotorMode,isMotorBrain,motorReadout,motorDisplay} from './motor.mjs';
 import {SCENARIOS,W,H,FACTIONS,ROLES,MAPS,MAX_TICKS,WIN_SCORE,createSimulation,stepSimulation,controllerFor,profile,decideUnit,updateDecisions,aliveUnits,threatAt,distance,hasLineOfSight,setTerrain,exportScene,importScene,clamp} from './engine.mjs';
 import {CONNECTOME,CONTROLLERS,neuralReadout} from './neural.mjs';
-import {contactConfig,runContactComparison,runMotorComparison} from './experiments.mjs';
+import {contactConfig,aimConfig,runContactComparison,runMotorComparison,runAimComparison} from './experiments.mjs';
 const $=id=>document.getElementById(id),colors=['#86c4d1','#e0a07b'];
 const canvas=$('battlefield'),ctx=canvas.getContext('2d'),reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let state=createSimulation({controllerA:'neural',controllerB:'neural'}),initial=exportScene(state),selected='A-01',running=false,timer=null,lastStep=-10000,speed=1,brush='select',hover=null,toastTimer=null,revision=0,threatCache=null,tab='units',dimensions={width:0,height:0,cell:0,ox:0,oy:0};
 let neuralHover=null,comparisonReactivity=.5,comparisonNeural=false;
 const brainCells=brain=>isMotorBrain(brain)?motorDisplay(brain):CONNECTOME.neurons.map((n,i)=>({...n,activity:brain.activity[i]}));
 const t=()=>performance.now();
+const degrees=angle=>(angle>0?'+':'')+(angle*180/Math.PI).toFixed(1)+'°';
 const icon=name=>'<svg aria-hidden="true"><use href="#i-'+name+'"/></svg>';
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function toast(message){$('toast').textContent=message;$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),3200);}
@@ -23,7 +24,7 @@ function syncConfig(){
   $('controller-a').value=state.config.controllerA;$('controller-b').value=state.config.controllerB;
   $('faction-a').value=state.config.factionA;$('faction-b').value=state.config.factionB;updateFactionNotes();
 }
-function syncScenarioControls(){const contact=$('scenario').value==='contact';$('map-kind').disabled=contact;$('density').disabled=contact;}
+function syncScenarioControls(){const fixed=$('scenario').value!=='battle';$('map-kind').disabled=fixed;$('density').disabled=fixed;}
 function updateFactionNotes(){for(const id of ['a','b'])$('faction-'+id+'-note').textContent=FACTIONS[$('faction-'+id).value].description;}
 function setRunning(value){
   running=value&&!state.finished;if(timer)clearTimeout(timer);timer=null;
@@ -45,10 +46,17 @@ function generate(){
   state=createSimulation({scenario:$('scenario').value,seed:$('seed').value.trim()||'40721',mapKind:$('map-kind').value,density:Number($('density').value),factionA:$('faction-a').value,factionB:$('faction-b').value,controllerA:$('controller-a').value,controllerB:$('controller-b').value});
   initial=exportScene(state);selected='A-01';lastStep=-10000;revision++;threatCache=null;setBrush('select');syncConfig();renderUI();toast('Новое поле создано. Нажми «Запустить» или «Шаг».');
 }
-function openContactScene(reactivity=.5,controller='malecns'){
-  const config=contactConfig(controller);
+function openExperiment(config,reactivity=.5){
   for(const [id,key] of [['scenario','scenario'],['seed','seed'],['map-kind','mapKind'],['faction-a','factionA'],['faction-b','factionB'],['controller-a','controllerA'],['controller-b','controllerB']])$(id).value=config[key];
-  $('density').value=config.density;generate();state.units[0].overrides.reactivity=reactivity;updateDecisions(state);initial=exportScene(state);renderUI();toast(isMotorMode(controller)?'Нейронное управление у A. Нажми «Шаг» и смотри команды сети.':'Тест рефлекса: нажми «Шаг». Затем сравни режимы.');
+  $('density').value=config.density;generate();state.units[0].overrides.reactivity=reactivity;updateDecisions(state);initial=exportScene(state);renderUI();
+}
+function openContactScene(reactivity=.5,controller='malecns'){
+  openExperiment(contactConfig(controller),reactivity);
+  toast(isMotorMode(controller)?'Нейронное управление у A. Нажми «Шаг» и смотри команды сети.':'Тест рефлекса: нажми «Шаг». Затем сравни режимы.');
+}
+function openAimScene(){
+  openExperiment(aimConfig());
+  toast('Две мишени с отключёнными связями. У A — отдельные команды движения и огня.');
 }
 function compareControllers(){
   const unit=state.units.find(u=>u.id===selected)||state.units[0],reactivity=profile(unit).reactivity,neural=isMotorMode(controllerFor(state,unit)),results=neural?runMotorComparison(reactivity):runContactComparison(reactivity);comparisonReactivity=reactivity;comparisonNeural=neural;
@@ -56,6 +64,11 @@ function compareControllers(){
   $('compare-description').textContent='12 тактов · один seed · два разведчика Astartes · одинаковые входные условия. Чувствительность A: '+(reactivity*2).toFixed(2)+'×. Текущий бой сохранён.';
   $('compare-results').innerHTML=results.map(r=>'<tr><th scope="row">'+escape(r.label)+'</th><td>'+escape(r.firstAction)+'</td><td>'+(neural?r.motorCommands:r.neuralEscapes)+'</td><td>'+r.damageDone+'</td><td>'+r.hp+'</td></tr>').join('');
   $('compare-timeline').innerHTML=results.map(r=>'<div class="comparison-run"><strong>'+escape(r.label)+'</strong><div class="comparison-ticks">'+r.timeline.map(t=>'<span class="action-'+(t.override?'reflex':t.action)+'" title="Такт '+t.tick+': '+escape(t.label)+'; выход цепи угрозы '+t.rawDrive.toFixed(3)+'">'+(t.override?'↙':t.action==='attack'?'×':t.action==='dead'?'—':t.action==='move'?'→':t.action==='retreat'?'↙':t.action==='turn'?'↶':'·')+'</span>').join('')+'</div></div>').join('');
+  $('compare-aim-section').hidden=!neural;
+  if(neural){
+    const probes=runAimComparison(reactivity);
+    $('compare-aim-results').innerHTML=probes.map(p=>'<tr><th scope="row">'+escape(p.label)+'</th><td>'+(p.angle===null?'—':degrees(p.angle))+'</td><td>'+escape(p.target||'—')+'</td><td>'+escape(p.command==='fire'?'Огонь':p.command==='wait'?'Ожидание':p.command)+'</td></tr>').join('');
+  }
   $('compare-dialog').showModal();
 }
 function selectUnit(id){selected=id;threatCache=null;renderInspector();renderRoster();}
@@ -68,13 +81,13 @@ function updateTransport(){
 }
 function renderUI(){
   $('migration-note').hidden=!state.importNote;$('migration-note').textContent=state.importNote||'';
-  const contact=state.config.scenario==='contact';
-  $('team-size-a').textContent=$('team-size-b').textContent=(contact?'01 юнит':'05 юнитов');$('roster-count').textContent=state.units.length;
-  $('mission-title').textContent=contact?'Реакция на близкую угрозу.':'Три точки. Один победитель.';
-  $('mission-description').textContent=contact?'Два разведчика в зоне огня. Сравни команды и поведение сети со связями и без них.':'Занимай сектора I, II и III. Каждый удерживаемый сектор приносит 1 очко за такт.';
+  const contact=state.config.scenario==='contact',aim=state.config.scenario==='aim';
+  for(const [team,id] of [[0,'team-size-a'],[1,'team-size-b']])$(id).textContent=String(state.units.filter(u=>u.team===team).length).padStart(2,'0')+' ед.';$('roster-count').textContent=state.units.length;
+  $('mission-title').textContent=aim?'Две цели. Один прицел.':contact?'Реакция на близкую угрозу.':'Три точки. Один победитель.';
+  $('mission-description').textContent=aim?'A выбирает движение или огонь; две мишени B не передают сигналы по связям. Сравни направление прицела с расположением целей.':contact?'Два разведчика в зоне огня. Сравни команды и поведение сети со связями и без них.':'Занимай сектора I, II и III. Каждый удерживаемый сектор приносит 1 очко за такт.';
   $('score-a').textContent=String(state.scores[0]).padStart(2,'0');$('score-b').textContent=String(state.scores[1]).padStart(2,'0');$('tick-value').textContent=String(state.tick).padStart(3,'0');
   $('name-a').textContent=FACTIONS[state.config.factionA].short;$('name-b').textContent=FACTIONS[state.config.factionB].short;
-  $('map-name').textContent=state.config.scenario==='contact'?'CONTACT TEST':{ruins:'FORPOST',industrial:'INDUSTRIAL',badlands:'BADLANDS'}[state.config.mapKind];
+  $('map-name').textContent=aim?'AIM TEST':contact?'CONTACT TEST':{ruins:'FORPOST',industrial:'INDUSTRIAL',badlands:'BADLANDS'}[state.config.mapKind];
   $('seed-display').textContent='SEED '+state.config.seed.slice(0,14);
   $('objective-indicators').innerHTML=state.objectives.map(o=>'<span title="Точка '+o.id+(o.contested?' оспаривается':o.owner===null?' свободна':': группа '+(o.owner?'B':'A'))+'" style="'+(o.owner!==null?'color:'+colors[o.owner]+';border-color:'+colors[o.owner]+';background:'+colors[o.owner]+'18':'')+'"><i>'+o.id+'</i></span>').join('');
   $('result-overlay').hidden=!state.finished;
@@ -122,7 +135,7 @@ function renderBrain(u){
   $('brain-summary').textContent=full?(mode==='neural-disconnected'?'11 436 нейронов; все связи отключены. Входы стимулируются, выходы не получают сигнал.':'11 436 нейронов · 1 687 031 связь. Команды выбираются по выходам сети; тактический планировщик отключён.'):mode==='utility'?'Сеть не участвует. Действия выбирает тактический алгоритм.':mode==='disconnected'?'Входы работают, все связи отключены. Контроль вклада графа.':'319 нейронов · 21 288 связей. Короткий рефлекс поверх тактики.';
   $('brain-input').textContent=b.inputs.map(v=>v.toFixed(3)).join(' / ');
   $('brain-output').textContent=b.outputs.map(v=>v.toFixed(3)).join(' / ');
-  const strongest=full?Math.max(motor.scores.advance,motor.scores.left,motor.scores.right,motor.scores.reverse):n.drive;
+  const strongest=full?Math.max(motor.scores.fire,motor.scores.advance,motor.scores.left,motor.scores.right,motor.scores.reverse):n.drive;
   $('brain-drive').style.width=clamp(strongest/(full?2:.5))*100+'%';
   $('brain-threshold-marker').style.left=(full?.06/2:clamp(n.threshold/.5))*100+'%';
   $('brain-threshold').textContent=full?'Порог команды 0.060 · сигнал '+strongest.toFixed(3):'Порог '+n.threshold.toFixed(3)+' · сигнал '+n.drive.toFixed(3);
@@ -130,6 +143,14 @@ function renderBrain(u){
   $('motor-panel').hidden=!full;$('reflex-phases').hidden=full;$('reflex-meta').hidden=full;
   if(full){
     $('motor-targets').textContent=b.targets.map(v=>v.toFixed(3)).join(' / ');
+    $('motor-aim-signal').textContent=motor.raw.aim.map(v=>v.toFixed(4)).join(' / ');
+    const aim=u.decision?.aim;
+    $('motor-aim-angle').textContent=aim?.angle==null?'Нет сигнала':degrees(aim.angle);
+    $('aim-caption').textContent=aim?'Расчёт решения, такт '+u.decision.evaluatedAt+'. Приоритет прицела: '+(aim.target||'нет')+'. Огонь выполняется, только если выигрывает команда атаки.':'Нет действующего решения.';
+    $('aim-candidates').innerHTML=aim?.candidates.length?
+      '<table class="aim-table"><thead><tr><th>Цель</th><th>Угол</th><th>Отклонение</th></tr></thead><tbody>'+
+      aim.candidates.map(c=>'<tr'+(c.id===aim.target?' class="aim-selected"':'')+'><td>'+escape(c.id)+'</td><td>'+degrees(c.bearing)+'</td><td>'+(c.error===null?'—':degrees(c.error))+'</td></tr>').join('')+'</tbody></table>':
+      '<p>Нет видимых врагов в секторе ±45° и радиусе оружия.</p>';
     $('motor-steer').textContent=motor.raw.steer.map(v=>v.toFixed(4)).join(' / ');
     $('motor-walk').textContent=motor.raw.walk.map(v=>v.toFixed(4)).join(' / ');
     $('motor-reverse').textContent=motor.raw.reverse.map(v=>v.toFixed(4)).join(' / ');
@@ -241,6 +262,13 @@ function draw(now){
     for(const n of u.decision.route){const v=center(n);ctx.lineTo(v.x,v.y);}ctx.stroke();ctx.setLineDash([]);
     if(u.id===selected){const end=center(u.decision.route.at(-1));ctx.strokeStyle=colors[u.team]+'a0';ctx.strokeRect(end.x-3,end.y-3,6,6);}
   }
+  if(unit?.hp>0&&unit.decision?.aim?.angle!=null&&$('show-paths').checked){
+    const aim=unit.decision.aim,p=center(unit.decision.origin),angle=aim.heading*Math.PI/4+aim.angle;
+    ctx.strokeStyle='#e6d69b';ctx.lineWidth=1.4;ctx.setLineDash([6,4]);ctx.beginPath();ctx.moveTo(p.x,p.y);
+    ctx.lineTo(p.x+Math.sin(angle)*c*2.5,p.y-Math.cos(angle)*c*2.5);ctx.stroke();ctx.setLineDash([]);
+    const target=aim.candidates.find(e=>e.id===aim.target);
+    if(target){const q=center(target);ctx.strokeRect(q.x-c*.47,q.y-c*.47,c*.94,c*.94);}
+  }
   if(unit?.hp>0&&brush==='select'){
     const p=point(unit);ctx.strokeStyle=colors[unit.team]+'17';ctx.lineWidth=1;ctx.setLineDash([2,5]);poly([[p.x,p.y-unit.range*c],[p.x+unit.range*c,p.y],[p.x,p.y+unit.range*c],[p.x-unit.range*c,p.y]],null,colors[unit.team]+'19');ctx.setLineDash([]);
   }
@@ -284,6 +312,7 @@ $('generate').addEventListener('click',generate);
 $('scenario').addEventListener('change',syncScenarioControls);
 $('contact-demo').addEventListener('click',()=>openContactScene());
 $('neural-demo').addEventListener('click',()=>openContactScene(.5,'neural'));
+$('aim-demo').addEventListener('click',openAimScene);
 $('compare-btn').addEventListener('click',()=>{setRunning(false);compareControllers();});
 $('close-compare').addEventListener('click',()=>$('compare-dialog').close());
 $('compare-open-scene').addEventListener('click',()=>{$('compare-dialog').close();openContactScene(comparisonReactivity,comparisonNeural?'neural':'malecns');});

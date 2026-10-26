@@ -2,7 +2,7 @@ import {isMotorMode,isMotorBrain,motorReadout} from './motor.mjs';
 import {REFLEX_BURST,createReflex,stepReflex,reflexAllows,validateReflex,copyReflex} from './reflex.mjs';
 import {CONTROLLERS,createBrain,stepBrain,neuralReadout,validateBrain,copyBrain} from './neural.mjs';
 // Pure deterministic simulation: no browser, clock or network dependencies.
-export const VERSION=5, W=32, H=22, MAX_TICKS=180, WIN_SCORE=65;
+export const VERSION=6, W=32, H=22, MAX_TICKS=180, WIN_SCORE=65;
 export const TERRAIN={FLOOR:0,WALL:1,COVER:2};
 export const FACTIONS={
   marines:{name:'Space Marines',short:'Astartes',description:'Согласованное продвижение и контроль позиций.',aggression:.62,caution:.67,objective:.85,hp:30,damage:6,range:6},
@@ -16,7 +16,8 @@ export const ROLES={
   scout:{name:'Разведчик',symbol:'◇',aggression:-.12,caution:.04,objective:.18,range:0,damage:-1,hp:-5}
 };
 export const MAPS={ruins:'Разрушенный форпост',industrial:'Промышленная зона',badlands:'Каменистое плато'};
-export const SCENARIOS={battle:'Контроль точек · 5 на 5',contact:'Тест рефлекса · 1 на 1'};
+export const SCENARIOS={battle:'Контроль точек · 5 на 5',contact:'Тест рефлекса · 1 на 1',aim:'Выбор цели · 1 на 2'};
+const scenarioSizes=scenario=>scenario==='contact'?[1,1]:scenario==='aim'?[1,2]:[5,5];
 const DIRS=[[1,0],[0,1],[-1,0],[0,-1]];
 export const clamp=(n,lo=0,hi=1)=>Math.min(hi,Math.max(lo,n));
 export const distance=(a,b)=>Math.abs(a.x-b.x)+Math.abs(a.y-b.y);
@@ -57,9 +58,9 @@ export function makeMap(seed,kind='ruins',density=28){
 export function createSimulation(config={}){
   const c={scenario:Object.hasOwn(SCENARIOS,config.scenario)?config.scenario:'battle',seed:String(config.seed??'40721').slice(0,64),mapKind:Object.hasOwn(MAPS,config.mapKind)?config.mapKind:'ruins',density:clamp(Number(config.density)||28,8,50),factionA:Object.hasOwn(FACTIONS,config.factionA)?config.factionA:'marines',factionB:Object.hasOwn(FACTIONS,config.factionB)?config.factionB:'orks',controllerA:Object.hasOwn(CONTROLLERS,config.controllerA)?config.controllerA:'malecns',controllerB:Object.hasOwn(CONTROLLERS,config.controllerB)?config.controllerB:'malecns'};
   const terrain=makeMap(c.seed,c.mapKind,c.density),s={version:VERSION,config:c,...terrain,units:[],tick:0,rng:hash(c.seed+':combat'),scores:[0,0],events:[],effects:[],finished:false,winner:null};
-  const unitCount=c.scenario==='contact'?1:5;
+  const unitCounts=scenarioSizes(c.scenario);
   const roles=['scout','assault','support','assault','scout'],names=[['Vega','Castor','Atlas','Pollux','Lynx'],['Ruk','Gor','Zog','Mog','Krag']];
-  for(let team=0;team<2;team++)for(let i=0;i<unitCount;i++){
+  for(let team=0;team<2;team++)for(let i=0;i<unitCounts[team];i++){
     const faction=team?c.factionB:c.factionA,role=roles[i],f=FACTIONS[faction],r=ROLES[role],id=(team?'B':'A')+'-'+String(i+1).padStart(2,'0');
     s.units.push({id,name:names[team][i],team,faction,role,x:team?W-4:3,y:6+i*2,px:team?W-4:3,py:6+i*2,hp:f.hp+r.hp,maxHp:f.hp+r.hp,damage:f.damage+r.damage,range:Math.max(1,f.range+r.range),overrides:{},kills:0,damageDone:0,decision:null,heading:team?6:2,brain:createBrain(team?c.controllerB:c.controllerA),reflex:createReflex(),neuralEscapes:0,assignment:terrain.objectives[i%3].id});
   }
@@ -71,6 +72,14 @@ export function createSimulation(config={}){
       u.overrides={aggression:.4,caution:1,objective:0};
     }
     for(const p of [{x:9,y:11},{x:9,y:12},{x:15,y:9},{x:15,y:8}])s.map[key(p.x,p.y)]=2;
+  }
+  if(c.scenario==='aim'){
+    s.map.fill(0);
+    const positions=[[10,10],[11,9],[15,10]];
+    for(const [i,u] of s.units.entries()){
+      [u.x,u.y]=positions[i];u.px=u.x;u.py=u.y;
+      u.overrides=i?{aggression:.4,caution:1,objective:0}:{aggression:1,caution:0,objective:0};
+    }
   }
   updateDecisions(s);return s;
 }
@@ -172,28 +181,40 @@ export function observeMotor(s,u){
   for(const [dx,dy] of DIRS){const pos={x:u.x+dx,y:u.y+dy};if(tileAt(s,pos.x,pos.y)===1)project(fear,pos,.9);}
   return [...fear,...targets];
 }
+// Decode a continuous aim direction from the network. Geometry only resolves
+// that direction to a legal target: no distance, HP, cover or utility ranking.
+export function selectMotorTarget(s,u,readout=motorReadout(u.brain,profile(u).reactivity)){
+  const angle=readout.aimAngle;
+  const candidates=aliveUnits(s).filter(e=>e.team!==u.team&&distance(u,e)<=u.range&&
+    Math.abs(motorBearing(u,e))<=Math.PI/4+1e-9&&hasLineOfSight(s,u,e)).map(e=>{
+      const bearing=motorBearing(u,e),error=angle===null?null:Math.abs(bearing-angle);
+      return {id:e.id,x:e.x,y:e.y,bearing,error,alignment:error===null?0:1-error/(Math.PI/2)};
+    });
+  candidates.sort((a,b)=>(angle===null?0:a.error-b.error)||(a.id<b.id?-1:a.id>b.id?1:0));
+  return {angle,heading:u.heading,target:angle===null?null:candidates[0]?.id??null,candidates};
+}
 export function decideMotorUnit(s,u){
   const mode=controllerFor(s,u),p=profile(u),readout=motorReadout(u.brain,p.reactivity);
   const cardinal=[[0,-1],[1,0],[0,1],[-1,0]][Math.floor((u.heading+1)/2)%4];
   const forward={x:u.x+cardinal[0],y:u.y+cardinal[1]},back={x:u.x-cardinal[0],y:u.y-cardinal[1]};
   const legal=pos=>inside(pos.x,pos.y)&&tileAt(s,pos.x,pos.y)!==1&&!aliveUnits(s).some(v=>v.id!==u.id&&v.x===pos.x&&v.y===pos.y);
-  // Facing comes from the neural command. The body adapter resolves the nearest
-  // visible enemy within that firing sector; it does not assign strategic targets.
-  const target=aliveUnits(s).filter(e=>e.team!==u.team&&distance(u,e)<=u.range&&Math.abs(motorBearing(u,e))<=Math.PI/4+1e-9&&hasLineOfSight(s,u,e))
-    .sort((a,b)=>distance(u,a)-distance(u,b)||a.id.localeCompare(b.id))[0];
+  const aim=selectMotorTarget(s,u,readout),target=s.units.find(e=>e.id===aim.target);
+  // Exact score ties use this documented order; firing and advancing are distinct.
   const commands=[
-    {command:'advance',type:target?'attack':'move',label:target?'Нейронная команда · огонь по '+target.id:'Нейронная команда · вперёд',target:target?.id,destination:target?{x:target.x,y:target.y}:forward,route:target?[]:[forward],available:!!target||legal(forward)},
+    {command:'fire',type:'attack',label:target?'Нейронная команда · огонь по '+target.id:'Нейронная команда · огонь',target:target?.id,destination:target?{x:target.x,y:target.y}:undefined,route:[],available:!!target},
+    {command:'advance',type:'move',label:'Нейронная команда · вперёд',destination:forward,route:[forward],available:legal(forward)},
     {command:'left',type:'turn',label:'Нейронная команда · поворот влево',turn:-1,route:[],available:true},
     {command:'right',type:'turn',label:'Нейронная команда · поворот вправо',turn:1,route:[],available:true},
     {command:'reverse',type:'retreat',label:'Нейронная команда · назад',destination:back,route:[back],available:legal(back)},
     {command:'wait',type:'hold',label:'Нет двигательной команды',route:[],available:true}
-  ].map(c=>({...c,score:readout.scores[c.command],reason:c.command==='wait'?'Выходные сигналы ниже порога двигательного адаптера.':
+  ].map(c=>({...c,score:readout.scores[c.command],reason:c.command==='wait'?'Ни одна доступная команда не превысила порог ожидания.':
     'Команду выбрали выходные нейроны и открытый двигательный декодер. Тактическая оценка целей и поиск пути не выполняются.'}));
   commands.sort((a,b)=>b.score-a.score);
   const chosen=commands.find(c=>c.available);
   return {...chosen,source:'motor',alternatives:[chosen,...commands.filter(c=>c!==chosen)],counterfactual:null,origin:{x:u.x,y:u.y},
-    evaluatedAt:s.tick,controller:mode,neural:neuralReadout(u.brain,p,mode),motor:readout,
-    adapterNote:target?'Цель в направлении взгляда: ближайший видимый враг в секторе ±45°. Это правило игрового адаптера.':'Правила мира исключают движение в стену или занятую клетку.'};
+    evaluatedAt:s.tick,controller:mode,aim,neural:neuralReadout(u.brain,p,mode),motor:readout,
+    adapterNote:target?'DNa01 задаёт сигнал атаки и смещение прицела. Адаптер выбирает видимого врага с наименьшим угловым отклонением в секторе ±45°; при равенстве — по ID.':
+      aim.angle===null?'Нет сигнала прицеливания. Атака недоступна.':'В секторе ±45° нет доступной цели. Команда огня исключена.'};
 }
 
 export function decideUnit(s,u){
@@ -299,7 +320,7 @@ export function importScene(text){
   if(typeof text!=='string'||text.length>8_000_000)throw new Error('Слишком большой файл сцены.');
   let data;try{data=JSON.parse(text);}catch{throw new Error('Файл не содержит корректный JSON.');}
   const v=data?.state,invalid=()=>{throw new Error('Неподдерживаемая или повреждённая сцена.');};
-  if(data?.format!=='malecns-scene'||![1,2,3,4,VERSION].includes(data.version)||!v||!v.config)invalid();
+  if(data?.format!=='malecns-scene'||![1,2,3,4,5,VERSION].includes(data.version)||!v||!v.config)invalid();
   if(!Array.isArray(v.map)||v.map.length!==W*H||v.map.some(t=>![0,1,2].includes(t)))invalid();
   if(!Number.isInteger(v.tick)||v.tick<0||v.tick>MAX_TICKS||!Number.isInteger(v.rng)||v.rng<0||v.rng>4294967295)invalid();
   if(!Array.isArray(v.scores)||v.scores.length!==2||v.scores.some(n=>!Number.isInteger(n)||n<0||n>MAX_TICKS*3))invalid();
@@ -307,19 +328,20 @@ export function importScene(text){
   if(data.version>=2&&(!Object.hasOwn(CONTROLLERS,v.config.controllerA)||!Object.hasOwn(CONTROLLERS,v.config.controllerB)))invalid();
   if(data.version<5&&(isMotorMode(v.config.controllerA)||isMotorMode(v.config.controllerB)))invalid();
   if(data.version>=3&&!Object.hasOwn(SCENARIOS,v.config.scenario))invalid();
-  const scenario=data.version>=3?v.config.scenario:'battle',perTeam=scenario==='contact'?1:5;
-  if(!Array.isArray(v.units)||v.units.length!==perTeam*2||!Array.isArray(v.objectives)||v.objectives.length!==3)invalid();
+  const scenario=data.version>=3?v.config.scenario:'battle',sizes=scenarioSizes(scenario);
+  if(data.version<6&&scenario==='aim')invalid();
+  if(!Array.isArray(v.units)||v.units.length!==sizes[0]+sizes[1]||!Array.isArray(v.objectives)||v.objectives.length!==3)invalid();
   if(typeof v.finished!=='boolean'||![null,0,1].includes(v.winner))invalid();
   const pos=p=>Number.isInteger(p.x)&&Number.isInteger(p.y)&&inside(p.x,p.y)&&v.map[key(p.x,p.y)]!==1;
   const ids=new Set(),occupied=new Set();
   for(const [i,u] of v.units.entries()){
-    const team=Math.floor(i/perTeam),id=(team?'B':'A')+'-'+String(i%perTeam+1).padStart(2,'0');
+    const team=i<sizes[0]?0:1,id=(team?'B':'A')+'-'+String(i-(team?sizes[0]:0)+1).padStart(2,'0');
     if(!u||u.id!==id||ids.has(u.id)||u.team!==team||!Object.hasOwn(FACTIONS,u.faction)||!Object.hasOwn(ROLES,u.role)||!pos(u))invalid();
     if(u.faction!==(team?v.config.factionB:v.config.factionA)||typeof u.name!=='string'||u.name.length>40||!u.overrides||typeof u.overrides!=='object'||Array.isArray(u.overrides))invalid();
     const f=FACTIONS[u.faction],r=ROLES[u.role];
     if(u.maxHp!==f.hp+r.hp||u.damage!==f.damage+r.damage||u.range!==Math.max(1,f.range+r.range)||!Number.isFinite(u.hp)||u.hp<0||u.hp>u.maxHp)invalid();
     for(const k of Object.keys(u.overrides))if(!['aggression','caution','objective','reactivity'].includes(k)||!Number.isFinite(u.overrides[k])||u.overrides[k]<0||u.overrides[k]>1)invalid();
-    if(!Number.isInteger(u.kills)||u.kills<0||u.kills>perTeam||!Number.isFinite(u.damageDone)||u.damageDone<0||u.damageDone>1000||!['I','II','III'].includes(u.assignment))invalid();
+    if(!Number.isInteger(u.kills)||u.kills<0||u.kills>sizes[1-team]||!Number.isFinite(u.damageDone)||u.damageDone<0||u.damageDone>1000||!['I','II','III'].includes(u.assignment))invalid();
     if(data.version>=2&&(!validateBrain(u.brain,v.tick)||!Number.isInteger(u.neuralEscapes)||u.neuralEscapes<0||u.neuralEscapes>v.tick))invalid();
     if(data.version>=3&&!validateReflex(u.reflex,v.tick))invalid();
     if(data.version>=5&&(!Number.isInteger(u.heading)||u.heading<0||u.heading>7))invalid();

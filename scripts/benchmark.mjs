@@ -3,8 +3,8 @@ import {performance} from 'node:perf_hooks';
 import {createSimulation,stepSimulation,threatAt,MAX_TICKS} from '../dist/engine.mjs';
 import {CONNECTOME_SHA256,createBrain,stepBrain} from '../dist/neural.mjs';
 import {REFLEX_CONTRACT,REFLEX_BURST,REFLEX_COOLDOWN,REFLEX_RELEASE} from '../dist/reflex.mjs';
-import {MOTOR_MODEL,MOTOR_SHA256,MOTOR_STEPS,motorReadout} from '../dist/motor.mjs';
-import {runContactComparison,runMotorComparison} from '../dist/experiments.mjs';
+import {MOTOR_MODEL,MOTOR_SHA256,MOTOR_STEPS,MOTOR_DECODER,motorReadout} from '../dist/motor.mjs';
+import {runContactComparison,runMotorComparison,runAimComparison} from '../dist/experiments.mjs';
 // Frozen before evaluation. Historical seeds are reported separately from new seeds.
 const suites={
   historical:['40721','104','orbit','ruins-7','control-5','tabletop'],
@@ -58,10 +58,13 @@ for(const mode of ['neural','neural-disconnected'])for(const inputs of [[0,0,1,0
 }
 const motorContact=runMotorComparison();
 if(motorContact[0].motorCommands===0||motorContact[1].motorCommands!==0||motorContact[1].maxDrive!==0)throw Error('Motor lesion control failed');
-const motor={model:MOTOR_SHA256,counts:MOTOR_MODEL.counts,stepsPerActivation:MOTOR_STEPS,
+const aimProbes=runAimComparison();
+if(aimProbes[0].target!=='B-01'||aimProbes[1].target!=='B-02'||aimProbes.slice(2).some(p=>p.command!=='wait'))throw Error('Causal aim probe failed');
+const motor={model:MOTOR_SHA256,decoder:MOTOR_DECODER,counts:MOTOR_MODEL.counts,stepsPerActivation:MOTOR_STEPS,
   scope:'One fixed 1v1 contact scene, 12 ticks at most, with neural/disconnected/utility A against utility B; same factions, seed and initial state. Lateral stimuli are separate zero-start probes. Command decoding, sensory projection and target binding are engineered. No claim of tactical superiority or biological behavior.',
-  contact:motorContact,probes:motorProbes};
-const report={version:'0.5.0',model:CONNECTOME_SHA256,reflex:{contract:REFLEX_CONTRACT,burst:REFLEX_BURST,cooldown:REFLEX_COOLDOWN,release:REFLEX_RELEASE},
+  aimProbeScope:'Four isolated zero-start probes on an identical board. LC10 0.6/0.4 versus 0.4/0.6, disconnected edges and zero input; 32 neural steps each. B-01 at 3 cells, B-02 at 6, symmetric bearings. Fire and advance are independent outputs; legal targets are resolved by angular error, with ID ties.',
+  contact:motorContact,aimProbes,probes:motorProbes};
+const report={version:'0.6.0',model:CONNECTOME_SHA256,reflex:{contract:REFLEX_CONTRACT,burst:REFLEX_BURST,cooldown:REFLEX_COOLDOWN,release:REFLEX_RELEASE},
   scope:'12 fixed seeds × 2 test-team assignments × 3 modes. Same factions (marines), defaults, terrain and starting combat seed. Six seeds are historical and six additional. After action divergence the RNG consumption also diverges. No optimizer or training. Diagnostic sample, not a general-strength or biological-validity claim.',
   checks:{riskIncreaseSteps:runs.reduce((sum,r)=>sum+r.riskIncreaseSteps,0),nonImprovingRoutes:runs.reduce((sum,r)=>sum+r.nonImprovingRoutes,0),overBudgetRoutes:runs.reduce((sum,r)=>sum+r.overBudgetRoutes,0)},
   observation:'All decisions are recorded immediately before execution, including later casualties. changedActions compares only the next physical action to utility on that same board. Risk is a static sum of visible enemy base damage, with ranged cover reduction; it does not predict enemy turns, hit rolls or survival.',
@@ -69,4 +72,4 @@ const report={version:'0.5.0',model:CONNECTOME_SHA256,reflex:{contract:REFLEX_CO
 if(Object.values(report.checks).some(value=>value!==0)||runs.some(r=>r.reflexDecisions!==r.neuralEscapes))throw new Error('Reflex route or observation invariant failed');
 await mkdir(new URL('../data/',import.meta.url),{recursive:true});
 await writeFile(new URL('../data/benchmark.json',import.meta.url),JSON.stringify(report,null,2)+'\n');
-console.table(summary);console.log(JSON.stringify({battles:runs.length,milliseconds:report.totalMilliseconds,report:'data/benchmark.json'}));
+console.table(summary);console.table(aimProbes.map(p=>({input:p.label,command:p.command,target:p.target,aimDegrees:p.angle===null?null:Number((p.angle*180/Math.PI).toFixed(3))})));console.log(JSON.stringify({battles:runs.length,milliseconds:report.totalMilliseconds,report:'data/benchmark.json'}));

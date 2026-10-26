@@ -138,3 +138,23 @@ No transmitter signs, inhibition, spikes, full retinal model, morphology,
 learning, validated fly behavior or full CNS are simulated. The larger number
 of anatomical connections does not establish biological fidelity or strategic
 competence. Each game unit has independent computed activity over the same graph.
+
+## Aim and fire decoder in 0.6
+
+Anatomical data, selected cells, positive contact counts, normalization, dynamics
+and calibration remain byte-identical to 0.5. DNa01, already retained in the
+graph, is now read by the engineered visual-motor-v2 adapter.
+
+Normalized DNa01 L/R produce an independent fire score (L + R) / 2 and an aim
+offset atan2(R - L, R + L), bounded to +/-45 degrees. A total at most 1e-9 means
+no aim. Legal visible targets in weapon range and the body's +/-45-degree sector
+are ranked by angular deviation from that direction; exact ties use ID.
+Distance, health, damage and cover do not score targets. Exact action-score ties
+use fire, advance, left, right, reverse, wait order. Advance stays a movement
+command even when a target is present.
+
+These are new game-interface rules, not a claim that DNa01 biologically encodes
+weapons, target identity or attack decisions. A causal probe holds the board and
+initial activity fixed and changes only LC10 input balance, showing a different
+attacked target; edge removal and zero stimulus are controls. No brain training,
+new anatomy or inferred transmitter signs were introduced.

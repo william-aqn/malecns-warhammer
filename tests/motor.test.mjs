@@ -129,7 +129,7 @@ test('unit neural memory is independent and inspection consumes neither steps no
   assert.deepEqual(s.units.map(u=>JSON.stringify(u.brain)),before);assert.equal(s.rng,rng);
 });
 
-test('v5 saves preserve motor activity, headings and exact subsequent actions',()=>{
+test('v6 saves preserve motor activity, headings and exact subsequent actions',()=>{
   for(const mode of ['neural','neural-disconnected']){
     const a=contact(mode);stepSimulation(a);stepSimulation(a);const b=importScene(exportScene(a));
     assert.equal(b.version,VERSION);assert.deepEqual(b.units.map(u=>[u.heading,u.brain]),a.units.map(u=>[u.heading,u.brain]));
@@ -160,7 +160,7 @@ test('v4 scenes retain legacy model and state with default facing and an explici
   const a=contact('malecns');stepSimulation(a);const raw=JSON.parse(exportScene(a));raw.version=4;raw.state.version=4;
   for(const u of raw.state.units)delete u.heading;
   const b=importScene(JSON.stringify(raw));
-  assert.equal(b.version,5);assert.ok(b.importNote.includes('v4'));assert.ok(b.importNote.includes('v5'));
+  assert.equal(b.version,VERSION);assert.ok(b.importNote.includes('v4'));assert.ok(b.importNote.includes('v'+VERSION));
   assert.deepEqual(b.units.map(u=>[u.x,u.y,u.hp,u.brain,u.reflex]),a.units.map(u=>[u.x,u.y,u.hp,u.brain,u.reflex]));
   assert.deepEqual(b.units.map(u=>u.heading),[2,6]);
 });
