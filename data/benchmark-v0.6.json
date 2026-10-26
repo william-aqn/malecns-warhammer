@@ -1,0 +1,3430 @@
+{
+  "version": "0.6.0",
+  "model": "6a1452434783f8e3e9ebdb82fc36e3c56071b85e1575c755af55a1f84b89a477",
+  "reflex": {
+    "contract": "bounded-escape-v1",
+    "burst": 2,
+    "cooldown": 5,
+    "release": 0.65
+  },
+  "scope": "12 fixed seeds × 2 test-team assignments × 3 modes. Same factions (marines), defaults, terrain and starting combat seed. Six seeds are historical and six additional. After action divergence the RNG consumption also diverges. No optimizer or training. Diagnostic sample, not a general-strength or biological-validity claim.",
+  "checks": {
+    "riskIncreaseSteps": 0,
+    "nonImprovingRoutes": 0,
+    "overBudgetRoutes": 0
+  },
+  "observation": "All decisions are recorded immediately before execution, including later casualties. changedActions compares only the next physical action to utility on that same board. Risk is a static sum of visible enemy base damage, with ranged cover reduction; it does not predict enemy turns, hit rolls or survival.",
+  "summary": [
+    {
+      "suite": "historical",
+      "mode": "malecns",
+      "games": 12,
+      "wins": 3,
+      "draws": 0,
+      "meanReflexMoves": 6.42,
+      "meanChangedActions": 6,
+      "maxConsecutiveReflexMoves": 2
+    },
+    {
+      "suite": "historical",
+      "mode": "disconnected",
+      "games": 12,
+      "wins": 6,
+      "draws": 0,
+      "meanReflexMoves": 0,
+      "meanChangedActions": 0,
+      "maxConsecutiveReflexMoves": 0
+    },
+    {
+      "suite": "historical",
+      "mode": "utility",
+      "games": 12,
+      "wins": 6,
+      "draws": 0,
+      "meanReflexMoves": 0,
+      "meanChangedActions": 0,
+      "maxConsecutiveReflexMoves": 0
+    },
+    {
+      "suite": "additional",
+      "mode": "malecns",
+      "games": 12,
+      "wins": 2,
+      "draws": 0,
+      "meanReflexMoves": 7.33,
+      "meanChangedActions": 7,
+      "maxConsecutiveReflexMoves": 2
+    },
+    {
+      "suite": "additional",
+      "mode": "disconnected",
+      "games": 12,
+      "wins": 6,
+      "draws": 0,
+      "meanReflexMoves": 0,
+      "meanChangedActions": 0,
+      "maxConsecutiveReflexMoves": 0
+    },
+    {
+      "suite": "additional",
+      "mode": "utility",
+      "games": 12,
+      "wins": 6,
+      "draws": 0,
+      "meanReflexMoves": 0,
+      "meanChangedActions": 0,
+      "maxConsecutiveReflexMoves": 0
+    }
+  ],
+  "motor": {
+    "model": "2e00fbe4528b5ba23cbbcdb40aa94ee26772d1bf7c6b8ce7cfe14888029f3d89",
+    "decoder": "visual-motor-v2",
+    "counts": {
+      "neurons": 11436,
+      "edges": 1687031,
+      "contacts": 10931415
+    },
+    "stepsPerActivation": 8,
+    "scope": "One fixed 1v1 contact scene, 12 ticks at most, with neural/disconnected/utility A against utility B; same factions, seed and initial state. Lateral stimuli are separate zero-start probes. Command decoding, sensory projection and target binding are engineered. No claim of tactical superiority or biological behavior.",
+    "aimProbeScope": "Four isolated zero-start probes on an identical board. LC10 0.6/0.4 versus 0.4/0.6, disconnected edges and zero input; 32 neural steps each. B-01 at 3 cells, B-02 at 6, symmetric bearings. Fire and advance are independent outputs; legal targets are resolved by angular error, with ID ties.",
+    "contact": [
+      {
+        "mode": "neural",
+        "label": "MaleCNS · нейронное управление",
+        "reactivity": 0.5,
+        "firstAction": "Нейронная команда · назад",
+        "firstType": "retreat",
+        "neuralEscapes": 0,
+        "motorCommands": 12,
+        "episodes": 0,
+        "damageDone": 0,
+        "hp": 15,
+        "ticks": 12,
+        "maxDrive": 0.13837194629013538,
+        "timeline": [
+          {
+            "tick": 1,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.11978080682456493,
+            "phase": "ready",
+            "heading": 2,
+            "x": 9,
+            "y": 10,
+            "hp": 20
+          },
+          {
+            "tick": 2,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.13837194629013538,
+            "phase": "ready",
+            "heading": 2,
+            "x": 8,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 3,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.12295274250209332,
+            "phase": "ready",
+            "heading": 2,
+            "x": 7,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 4,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.10279429890215397,
+            "phase": "ready",
+            "heading": 2,
+            "x": 6,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 5,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.10030175745487213,
+            "phase": "ready",
+            "heading": 2,
+            "x": 5,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 6,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.10014268197119236,
+            "phase": "ready",
+            "heading": 2,
+            "x": 4,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 7,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.10013033077120781,
+            "phase": "ready",
+            "heading": 2,
+            "x": 3,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 8,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.11848608963191509,
+            "phase": "ready",
+            "heading": 2,
+            "x": 2,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 9,
+            "action": "retreat",
+            "label": "Нейронная команда · назад",
+            "command": "reverse",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.10252157039940357,
+            "phase": "ready",
+            "heading": 2,
+            "x": 1,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 10,
+            "action": "move",
+            "label": "Нейронная команда · вперёд",
+            "command": "advance",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.06474672257900238,
+            "phase": "ready",
+            "heading": 2,
+            "x": 2,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 11,
+            "action": "move",
+            "label": "Нейронная команда · вперёд",
+            "command": "advance",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.04022345785051584,
+            "phase": "ready",
+            "heading": 2,
+            "x": 3,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 12,
+            "action": "turn",
+            "label": "Нейронная команда · поворот вправо",
+            "command": "right",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.06781446561217308,
+            "phase": "ready",
+            "heading": 3,
+            "x": 3,
+            "y": 10,
+            "hp": 15
+          }
+        ]
+      },
+      {
+        "mode": "neural-disconnected",
+        "label": "Нейронное управление · без связей",
+        "reactivity": 0.5,
+        "firstAction": "Нет двигательной команды",
+        "firstType": "hold",
+        "neuralEscapes": 0,
+        "motorCommands": 0,
+        "episodes": 0,
+        "damageDone": 0,
+        "hp": 0,
+        "ticks": 6,
+        "maxDrive": 0,
+        "timeline": [
+          {
+            "tick": 1,
+            "action": "hold",
+            "label": "Нет двигательной команды",
+            "command": "wait",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 20
+          },
+          {
+            "tick": 2,
+            "action": "hold",
+            "label": "Нет двигательной команды",
+            "command": "wait",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 3,
+            "action": "hold",
+            "label": "Нет двигательной команды",
+            "command": "wait",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 4,
+            "action": "hold",
+            "label": "Нет двигательной команды",
+            "command": "wait",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 9
+          },
+          {
+            "tick": 5,
+            "action": "hold",
+            "label": "Нет двигательной команды",
+            "command": "wait",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 4
+          },
+          {
+            "tick": 6,
+            "action": "hold",
+            "label": "Нет двигательной команды",
+            "command": "wait",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 0
+          }
+        ]
+      },
+      {
+        "mode": "utility",
+        "label": "Только тактика",
+        "reactivity": 0.5,
+        "firstAction": "Огонь · B-01",
+        "firstType": "attack",
+        "neuralEscapes": 0,
+        "motorCommands": 0,
+        "episodes": 0,
+        "damageDone": 5,
+        "hp": 0,
+        "ticks": 7,
+        "maxDrive": 0,
+        "timeline": [
+          {
+            "tick": 1,
+            "action": "attack",
+            "label": "Огонь · B-01",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 10,
+            "hp": 20
+          },
+          {
+            "tick": 2,
+            "action": "retreat",
+            "label": "Снизить угрозу",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 11,
+            "hp": 14
+          },
+          {
+            "tick": 3,
+            "action": "retreat",
+            "label": "Снизить угрозу",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 10,
+            "y": 12,
+            "hp": 8
+          },
+          {
+            "tick": 4,
+            "action": "retreat",
+            "label": "Снизить угрозу",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 9,
+            "y": 12,
+            "hp": 8
+          },
+          {
+            "tick": 5,
+            "action": "hold",
+            "label": "Остаться в укрытии",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 9,
+            "y": 12,
+            "hp": 5
+          },
+          {
+            "tick": 6,
+            "action": "hold",
+            "label": "Остаться в укрытии",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 9,
+            "y": 12,
+            "hp": 2
+          },
+          {
+            "tick": 7,
+            "action": "hold",
+            "label": "Остаться в укрытии",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0,
+            "phase": "ready",
+            "heading": 2,
+            "x": 9,
+            "y": 12,
+            "hp": 0
+          }
+        ]
+      }
+    ],
+    "aimProbes": [
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          0,
+          0.6,
+          0.4
+        ],
+        "label": "L 0.6 / R 0.4",
+        "reactivity": 0.5,
+        "steps": 32,
+        "command": "fire",
+        "action": "attack",
+        "target": "B-01",
+        "preferredTarget": "B-01",
+        "angle": -0.013607614764048344,
+        "fire": 0.9777328855228332,
+        "advance": 0.9595885077781627,
+        "candidates": [
+          {
+            "id": "B-01",
+            "x": 12,
+            "y": 9,
+            "bearing": -0.46364760900080615,
+            "error": 0.4500399942367578,
+            "alignment": 0.7134956413126876,
+            "distance": 3
+          },
+          {
+            "id": "B-02",
+            "x": 14,
+            "y": 12,
+            "bearing": 0.46364760900080615,
+            "error": 0.4772552237648545,
+            "alignment": 0.6961698880855792,
+            "distance": 6
+          }
+        ]
+      },
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          0,
+          0.4,
+          0.6
+        ],
+        "label": "L 0.4 / R 0.6",
+        "reactivity": 0.5,
+        "steps": 32,
+        "command": "fire",
+        "action": "attack",
+        "target": "B-02",
+        "preferredTarget": "B-02",
+        "angle": 0.013220741816567344,
+        "fire": 1.0025339852283923,
+        "advance": 0.994560274368407,
+        "candidates": [
+          {
+            "id": "B-02",
+            "x": 14,
+            "y": 12,
+            "bearing": 0.46364760900080615,
+            "error": 0.4504268671842388,
+            "alignment": 0.7132493503449271,
+            "distance": 6
+          },
+          {
+            "id": "B-01",
+            "x": 12,
+            "y": 9,
+            "bearing": -0.46364760900080615,
+            "error": 0.4768683508173735,
+            "alignment": 0.6964161790533397,
+            "distance": 3
+          }
+        ]
+      },
+      {
+        "mode": "neural-disconnected",
+        "inputs": [
+          0,
+          0,
+          0.6,
+          0.4
+        ],
+        "label": "L 0.6 / R 0.4 · без связей",
+        "reactivity": 0.5,
+        "steps": 32,
+        "command": "wait",
+        "action": "hold",
+        "target": null,
+        "preferredTarget": null,
+        "angle": null,
+        "fire": 0,
+        "advance": 0,
+        "candidates": [
+          {
+            "id": "B-01",
+            "x": 12,
+            "y": 9,
+            "bearing": -0.46364760900080615,
+            "error": null,
+            "alignment": 0,
+            "distance": 3
+          },
+          {
+            "id": "B-02",
+            "x": 14,
+            "y": 12,
+            "bearing": 0.46364760900080615,
+            "error": null,
+            "alignment": 0,
+            "distance": 6
+          }
+        ]
+      },
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "label": "Без стимула",
+        "reactivity": 0.5,
+        "steps": 32,
+        "command": "wait",
+        "action": "hold",
+        "target": null,
+        "preferredTarget": null,
+        "angle": null,
+        "fire": 0,
+        "advance": 0,
+        "candidates": [
+          {
+            "id": "B-01",
+            "x": 12,
+            "y": 9,
+            "bearing": -0.46364760900080615,
+            "error": null,
+            "alignment": 0,
+            "distance": 3
+          },
+          {
+            "id": "B-02",
+            "x": 14,
+            "y": 12,
+            "bearing": 0.46364760900080615,
+            "error": null,
+            "alignment": 0,
+            "distance": 6
+          }
+        ]
+      }
+    ],
+    "probes": [
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "outputs": {
+          "aim": [
+            0.005055285058915615,
+            0.003934197127819061
+          ],
+          "steer": [
+            0.021189268678426743,
+            0.010350811295211315
+          ],
+          "walk": [
+            0.0024873525835573673,
+            0.0017243800684809685
+          ],
+          "reverse": [
+            0.005905200028792024,
+            0.00667645619250834
+          ],
+          "escape": [
+            0.0035899626091122627,
+            0.000592132615565788
+          ]
+        },
+        "scores": {
+          "fire": 0.7164159542991066,
+          "advance": 0.6180331426365481,
+          "left": 0.98038507777324,
+          "right": 0.023198424264015458,
+          "reverse": 0.0044214547409296865,
+          "wait": 0.06
+        },
+        "milliseconds": 186
+      },
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "outputs": {
+          "aim": [
+            0.004990814253687859,
+            0.0054896557703614235
+          ],
+          "steer": [
+            0.01168820820748806,
+            0.021565554663538933
+          ],
+          "walk": [
+            0.0008879912784323096,
+            0.0270650926977396
+          ],
+          "reverse": [
+            0.0069834638852626085,
+            0.005631628446280956
+          ],
+          "escape": [
+            0.0006330119576887228,
+            0.004713594680652022
+          ]
+        },
+        "scores": {
+          "fire": 0.8397599422822726,
+          "advance": 0.7883006501360149,
+          "left": 0.03199674133144854,
+          "right": 0.9854876336476176,
+          "reverse": 0.004499592255786266,
+          "wait": 0.06
+        },
+        "milliseconds": 183
+      },
+      {
+        "mode": "neural",
+        "inputs": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "outputs": {
+          "aim": [
+            0.0014073139755055308,
+            0.0027089386712759733
+          ],
+          "steer": [
+            0.0017177576664835215,
+            0.0013502149377018213
+          ],
+          "walk": [
+            0.013309916481375694,
+            0.0010823437478393316
+          ],
+          "reverse": [
+            0.0013256637030281126,
+            0.001447036222089082
+          ],
+          "escape": [
+            0.2260167859494686,
+            0.008052443736232817
+          ]
+        },
+        "scores": {
+          "fire": 0.33258698810413356,
+          "advance": 0.07225573239992811,
+          "left": 0.08481795220257722,
+          "right": 1.4605258778841443,
+          "reverse": 0.06012760418477653,
+          "wait": 0.06
+        },
+        "milliseconds": 183
+      },
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "outputs": {
+          "aim": [
+            0.0024857197422534227,
+            0.0016271730419248343
+          ],
+          "steer": [
+            0.0011035716161131859,
+            0.002018534578382969
+          ],
+          "walk": [
+            0.0015027185436338186,
+            0.006745907478034496
+          ],
+          "reverse": [
+            0.001478851423598826,
+            0.0013861744664609432
+          ],
+          "escape": [
+            0.007080072071403265,
+            0.216085534542799
+          ]
+        },
+        "scores": {
+          "fire": 0.32691156336996546,
+          "advance": 0.07400684521525469,
+          "left": 1.466828062797568,
+          "right": 0.13672248921980407,
+          "reverse": 0.05032675461489517,
+          "wait": 0.06
+        },
+        "milliseconds": 182
+      },
+      {
+        "mode": "neural",
+        "inputs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "outputs": {
+          "aim": [
+            0,
+            0
+          ],
+          "steer": [
+            0,
+            0
+          ],
+          "walk": [
+            0,
+            0
+          ],
+          "reverse": [
+            0,
+            0
+          ],
+          "escape": [
+            0,
+            0
+          ]
+        },
+        "scores": {
+          "fire": 0,
+          "advance": 0,
+          "left": 0,
+          "right": 0,
+          "reverse": 0,
+          "wait": 0.06
+        },
+        "milliseconds": 181
+      },
+      {
+        "mode": "neural-disconnected",
+        "inputs": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "outputs": {
+          "aim": [
+            0,
+            0
+          ],
+          "steer": [
+            0,
+            0
+          ],
+          "walk": [
+            0,
+            0
+          ],
+          "reverse": [
+            0,
+            0
+          ],
+          "escape": [
+            0,
+            0
+          ]
+        },
+        "scores": {
+          "fire": 0,
+          "advance": 0,
+          "left": 0,
+          "right": 0,
+          "reverse": 0,
+          "wait": 0.06
+        },
+        "milliseconds": 2
+      },
+      {
+        "mode": "neural-disconnected",
+        "inputs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "outputs": {
+          "aim": [
+            0,
+            0
+          ],
+          "steer": [
+            0,
+            0
+          ],
+          "walk": [
+            0,
+            0
+          ],
+          "reverse": [
+            0,
+            0
+          ],
+          "escape": [
+            0,
+            0
+          ]
+        },
+        "scores": {
+          "fire": 0,
+          "advance": 0,
+          "left": 0,
+          "right": 0,
+          "reverse": 0,
+          "wait": 0.06
+        },
+        "milliseconds": 2
+      },
+      {
+        "mode": "neural-disconnected",
+        "inputs": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "outputs": {
+          "aim": [
+            0,
+            0
+          ],
+          "steer": [
+            0,
+            0
+          ],
+          "walk": [
+            0,
+            0
+          ],
+          "reverse": [
+            0,
+            0
+          ],
+          "escape": [
+            0,
+            0
+          ]
+        },
+        "scores": {
+          "fire": 0,
+          "advance": 0,
+          "left": 0,
+          "right": 0,
+          "reverse": 0,
+          "wait": 0.06
+        },
+        "milliseconds": 2
+      },
+      {
+        "mode": "neural-disconnected",
+        "inputs": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "outputs": {
+          "aim": [
+            0,
+            0
+          ],
+          "steer": [
+            0,
+            0
+          ],
+          "walk": [
+            0,
+            0
+          ],
+          "reverse": [
+            0,
+            0
+          ],
+          "escape": [
+            0,
+            0
+          ]
+        },
+        "scores": {
+          "fire": 0,
+          "advance": 0,
+          "left": 0,
+          "right": 0,
+          "reverse": 0,
+          "wait": 0.06
+        },
+        "milliseconds": 1
+      },
+      {
+        "mode": "neural-disconnected",
+        "inputs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "outputs": {
+          "aim": [
+            0,
+            0
+          ],
+          "steer": [
+            0,
+            0
+          ],
+          "walk": [
+            0,
+            0
+          ],
+          "reverse": [
+            0,
+            0
+          ],
+          "escape": [
+            0,
+            0
+          ]
+        },
+        "scores": {
+          "fire": 0,
+          "advance": 0,
+          "left": 0,
+          "right": 0,
+          "reverse": 0,
+          "wait": 0.06
+        },
+        "milliseconds": 1
+      }
+    ]
+  },
+  "contact": [
+    {
+      "mode": "malecns",
+      "label": "MaleCNS + тактика",
+      "reactivity": 0.5,
+      "firstAction": "Рефлекс MaleCNS · отход",
+      "firstType": "retreat",
+      "neuralEscapes": 2,
+      "motorCommands": 0,
+      "episodes": 1,
+      "damageDone": 9,
+      "hp": 15,
+      "ticks": 12,
+      "maxDrive": 0.11389687284827232,
+      "timeline": [
+        {
+          "tick": 1,
+          "action": "retreat",
+          "label": "Рефлекс MaleCNS · отход",
+          "command": null,
+          "reflex": true,
+          "override": true,
+          "rawDrive": 0.06991070974618196,
+          "phase": "responding",
+          "heading": 2,
+          "x": 10,
+          "y": 11,
+          "hp": 20
+        },
+        {
+          "tick": 2,
+          "action": "retreat",
+          "label": "Рефлекс MaleCNS · отход",
+          "command": null,
+          "reflex": true,
+          "override": true,
+          "rawDrive": 0.11389687284827232,
+          "phase": "responding",
+          "heading": 2,
+          "x": 9,
+          "y": 11,
+          "hp": 15
+        },
+        {
+          "tick": 3,
+          "action": "attack",
+          "label": "Огонь · B-01",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0.11367381550371647,
+          "phase": "cooldown",
+          "heading": 2,
+          "x": 9,
+          "y": 11,
+          "hp": 15
+        },
+        {
+          "tick": 4,
+          "action": "attack",
+          "label": "Огонь · B-01",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0.10953488200902939,
+          "phase": "cooldown",
+          "heading": 2,
+          "x": 9,
+          "y": 11,
+          "hp": 15
+        },
+        {
+          "tick": 5,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0.09789489768445492,
+          "phase": "cooldown",
+          "heading": 2,
+          "x": 9,
+          "y": 11,
+          "hp": 15
+        },
+        {
+          "tick": 6,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0.07977417949587107,
+          "phase": "cooldown",
+          "heading": 2,
+          "x": 9,
+          "y": 11,
+          "hp": 15
+        },
+        {
+          "tick": 7,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0.07121071498841047,
+          "phase": "waiting",
+          "heading": 2,
+          "x": 9,
+          "y": 11,
+          "hp": 15
+        },
+        {
+          "tick": 8,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0.06932204030454159,
+          "phase": "waiting",
+          "heading": 2,
+          "x": 9,
+          "y": 11,
+          "hp": 15
+        },
+        {
+          "tick": 9,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0.06893261428922415,
+          "phase": "waiting",
+          "heading": 2,
+          "x": 9,
+          "y": 11,
+          "hp": 15
+        },
+        {
+          "tick": 10,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0.0688491826876998,
+          "phase": "waiting",
+          "heading": 2,
+          "x": 9,
+          "y": 11,
+          "hp": 15
+        },
+        {
+          "tick": 11,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0.0688302842900157,
+          "phase": "waiting",
+          "heading": 2,
+          "x": 9,
+          "y": 11,
+          "hp": 15
+        },
+        {
+          "tick": 12,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0.06882580369710922,
+          "phase": "waiting",
+          "heading": 2,
+          "x": 9,
+          "y": 11,
+          "hp": 15
+        }
+      ]
+    },
+    {
+      "mode": "disconnected",
+      "label": "Контроль: связи отключены",
+      "reactivity": 0.5,
+      "firstAction": "Огонь · B-01",
+      "firstType": "attack",
+      "neuralEscapes": 0,
+      "motorCommands": 0,
+      "episodes": 0,
+      "damageDone": 5,
+      "hp": 0,
+      "ticks": 7,
+      "maxDrive": 0,
+      "timeline": [
+        {
+          "tick": 1,
+          "action": "attack",
+          "label": "Огонь · B-01",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 10,
+          "y": 10,
+          "hp": 20
+        },
+        {
+          "tick": 2,
+          "action": "retreat",
+          "label": "Снизить угрозу",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 10,
+          "y": 11,
+          "hp": 14
+        },
+        {
+          "tick": 3,
+          "action": "retreat",
+          "label": "Снизить угрозу",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 10,
+          "y": 12,
+          "hp": 8
+        },
+        {
+          "tick": 4,
+          "action": "retreat",
+          "label": "Снизить угрозу",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 9,
+          "y": 12,
+          "hp": 8
+        },
+        {
+          "tick": 5,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 9,
+          "y": 12,
+          "hp": 5
+        },
+        {
+          "tick": 6,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 9,
+          "y": 12,
+          "hp": 2
+        },
+        {
+          "tick": 7,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 9,
+          "y": 12,
+          "hp": 0
+        }
+      ]
+    },
+    {
+      "mode": "utility",
+      "label": "Только тактика",
+      "reactivity": 0.5,
+      "firstAction": "Огонь · B-01",
+      "firstType": "attack",
+      "neuralEscapes": 0,
+      "motorCommands": 0,
+      "episodes": 0,
+      "damageDone": 5,
+      "hp": 0,
+      "ticks": 7,
+      "maxDrive": 0,
+      "timeline": [
+        {
+          "tick": 1,
+          "action": "attack",
+          "label": "Огонь · B-01",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 10,
+          "y": 10,
+          "hp": 20
+        },
+        {
+          "tick": 2,
+          "action": "retreat",
+          "label": "Снизить угрозу",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 10,
+          "y": 11,
+          "hp": 14
+        },
+        {
+          "tick": 3,
+          "action": "retreat",
+          "label": "Снизить угрозу",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 10,
+          "y": 12,
+          "hp": 8
+        },
+        {
+          "tick": 4,
+          "action": "retreat",
+          "label": "Снизить угрозу",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 9,
+          "y": 12,
+          "hp": 8
+        },
+        {
+          "tick": 5,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 9,
+          "y": 12,
+          "hp": 5
+        },
+        {
+          "tick": 6,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 9,
+          "y": 12,
+          "hp": 2
+        },
+        {
+          "tick": 7,
+          "action": "hold",
+          "label": "Остаться в укрытии",
+          "command": null,
+          "reflex": false,
+          "override": false,
+          "rawDrive": 0,
+          "phase": "ready",
+          "heading": 2,
+          "x": 9,
+          "y": 12,
+          "hp": 0
+        }
+      ]
+    }
+  ],
+  "probes": [
+    {
+      "mode": "malecns",
+      "inputs": [
+        1,
+        0
+      ],
+      "outputs": [
+        0.21377331390976906,
+        0.00046727233285537295
+      ]
+    },
+    {
+      "mode": "malecns",
+      "inputs": [
+        0,
+        1
+      ],
+      "outputs": [
+        0.0001529737655801,
+        0.20322156697511673
+      ]
+    },
+    {
+      "mode": "malecns",
+      "inputs": [
+        0.5,
+        0.5
+      ],
+      "outputs": [
+        0.14108394272625446,
+        0.1327900905162096
+      ]
+    },
+    {
+      "mode": "malecns",
+      "inputs": [
+        0,
+        0
+      ],
+      "outputs": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "disconnected",
+      "inputs": [
+        1,
+        0
+      ],
+      "outputs": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "disconnected",
+      "inputs": [
+        0,
+        1
+      ],
+      "outputs": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "disconnected",
+      "inputs": [
+        0.5,
+        0.5
+      ],
+      "outputs": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "disconnected",
+      "inputs": [
+        0,
+        0
+      ],
+      "outputs": [
+        0,
+        0
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "suite": "historical",
+      "seed": "40721",
+      "testTeam": 0,
+      "mode": "malecns",
+      "tick": 65,
+      "scores": [
+        43,
+        65
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 2,
+      "attacks": 15,
+      "damageDone": 84,
+      "neuralEscapes": 6,
+      "episodes": 6,
+      "changedActions": 6,
+      "blockedReflexDecisions": 6,
+      "reflexDecisions": 6,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 137
+    },
+    {
+      "suite": "historical",
+      "seed": "40721",
+      "testTeam": 0,
+      "mode": "disconnected",
+      "tick": 53,
+      "scores": [
+        64,
+        24
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 4,
+      "attacks": 26,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 47
+    },
+    {
+      "suite": "historical",
+      "seed": "40721",
+      "testTeam": 0,
+      "mode": "utility",
+      "tick": 53,
+      "scores": [
+        64,
+        24
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 4,
+      "attacks": 26,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 38
+    },
+    {
+      "suite": "historical",
+      "seed": "40721",
+      "testTeam": 1,
+      "mode": "malecns",
+      "tick": 57,
+      "scores": [
+        66,
+        46
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 1,
+      "attacks": 17,
+      "damageDone": 91,
+      "neuralEscapes": 4,
+      "episodes": 5,
+      "changedActions": 3,
+      "blockedReflexDecisions": 5,
+      "reflexDecisions": 4,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 1,
+      "milliseconds": 91
+    },
+    {
+      "suite": "historical",
+      "seed": "40721",
+      "testTeam": 1,
+      "mode": "disconnected",
+      "tick": 53,
+      "scores": [
+        64,
+        24
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 5,
+      "damageDone": 34,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 44
+    },
+    {
+      "suite": "historical",
+      "seed": "40721",
+      "testTeam": 1,
+      "mode": "utility",
+      "tick": 53,
+      "scores": [
+        64,
+        24
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 5,
+      "damageDone": 34,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 40
+    },
+    {
+      "suite": "historical",
+      "seed": "104",
+      "testTeam": 0,
+      "mode": "malecns",
+      "tick": 39,
+      "scores": [
+        16,
+        60
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 0,
+      "attacks": 0,
+      "damageDone": 0,
+      "neuralEscapes": 8,
+      "episodes": 5,
+      "changedActions": 7,
+      "blockedReflexDecisions": 2,
+      "reflexDecisions": 8,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 72
+    },
+    {
+      "suite": "historical",
+      "seed": "104",
+      "testTeam": 0,
+      "mode": "disconnected",
+      "tick": 38,
+      "scores": [
+        21,
+        53
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 0,
+      "attacks": 1,
+      "damageDone": 0,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 31
+    },
+    {
+      "suite": "historical",
+      "seed": "104",
+      "testTeam": 0,
+      "mode": "utility",
+      "tick": 38,
+      "scores": [
+        21,
+        53
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 0,
+      "attacks": 1,
+      "damageDone": 0,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 28
+    },
+    {
+      "suite": "historical",
+      "seed": "104",
+      "testTeam": 1,
+      "mode": "malecns",
+      "tick": 50,
+      "scores": [
+        29,
+        66
+      ],
+      "winner": 1,
+      "win": true,
+      "survivors": 4,
+      "attacks": 18,
+      "damageDone": 118,
+      "neuralEscapes": 8,
+      "episodes": 7,
+      "changedActions": 6,
+      "blockedReflexDecisions": 5,
+      "reflexDecisions": 8,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 96
+    },
+    {
+      "suite": "historical",
+      "seed": "104",
+      "testTeam": 1,
+      "mode": "disconnected",
+      "tick": 38,
+      "scores": [
+        21,
+        53
+      ],
+      "winner": 1,
+      "win": true,
+      "survivors": 5,
+      "attacks": 27,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 32
+    },
+    {
+      "suite": "historical",
+      "seed": "104",
+      "testTeam": 1,
+      "mode": "utility",
+      "tick": 38,
+      "scores": [
+        21,
+        53
+      ],
+      "winner": 1,
+      "win": true,
+      "survivors": 5,
+      "attacks": 27,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 29
+    },
+    {
+      "suite": "historical",
+      "seed": "orbit",
+      "testTeam": 0,
+      "mode": "malecns",
+      "tick": 41,
+      "scores": [
+        55,
+        32
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 3,
+      "attacks": 23,
+      "damageDone": 145,
+      "neuralEscapes": 6,
+      "episodes": 6,
+      "changedActions": 6,
+      "blockedReflexDecisions": 5,
+      "reflexDecisions": 6,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 78
+    },
+    {
+      "suite": "historical",
+      "seed": "orbit",
+      "testTeam": 0,
+      "mode": "disconnected",
+      "tick": 47,
+      "scores": [
+        59,
+        34
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 3,
+      "attacks": 24,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 35
+    },
+    {
+      "suite": "historical",
+      "seed": "orbit",
+      "testTeam": 0,
+      "mode": "utility",
+      "tick": 47,
+      "scores": [
+        59,
+        34
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 3,
+      "attacks": 24,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 32
+    },
+    {
+      "suite": "historical",
+      "seed": "orbit",
+      "testTeam": 1,
+      "mode": "malecns",
+      "tick": 40,
+      "scores": [
+        61,
+        10
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 1,
+      "damageDone": 8,
+      "neuralEscapes": 6,
+      "episodes": 5,
+      "changedActions": 5,
+      "blockedReflexDecisions": 4,
+      "reflexDecisions": 6,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 64
+    },
+    {
+      "suite": "historical",
+      "seed": "orbit",
+      "testTeam": 1,
+      "mode": "disconnected",
+      "tick": 47,
+      "scores": [
+        59,
+        34
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 20,
+      "damageDone": 70,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 34
+    },
+    {
+      "suite": "historical",
+      "seed": "orbit",
+      "testTeam": 1,
+      "mode": "utility",
+      "tick": 47,
+      "scores": [
+        59,
+        34
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 20,
+      "damageDone": 70,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 31
+    },
+    {
+      "suite": "historical",
+      "seed": "ruins-7",
+      "testTeam": 0,
+      "mode": "malecns",
+      "tick": 45,
+      "scores": [
+        66,
+        19
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 5,
+      "attacks": 20,
+      "damageDone": 135,
+      "neuralEscapes": 11,
+      "episodes": 7,
+      "changedActions": 11,
+      "blockedReflexDecisions": 3,
+      "reflexDecisions": 11,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 97
+    },
+    {
+      "suite": "historical",
+      "seed": "ruins-7",
+      "testTeam": 0,
+      "mode": "disconnected",
+      "tick": 34,
+      "scores": [
+        51,
+        18
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 5,
+      "attacks": 27,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 28
+    },
+    {
+      "suite": "historical",
+      "seed": "ruins-7",
+      "testTeam": 0,
+      "mode": "utility",
+      "tick": 34,
+      "scores": [
+        51,
+        18
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 5,
+      "attacks": 27,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 25
+    },
+    {
+      "suite": "historical",
+      "seed": "ruins-7",
+      "testTeam": 1,
+      "mode": "malecns",
+      "tick": 41,
+      "scores": [
+        65,
+        29
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 1,
+      "attacks": 7,
+      "damageDone": 52,
+      "neuralEscapes": 7,
+      "episodes": 5,
+      "changedActions": 7,
+      "blockedReflexDecisions": 2,
+      "reflexDecisions": 7,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 70
+    },
+    {
+      "suite": "historical",
+      "seed": "ruins-7",
+      "testTeam": 1,
+      "mode": "disconnected",
+      "tick": 34,
+      "scores": [
+        51,
+        18
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 2,
+      "damageDone": 8,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 27
+    },
+    {
+      "suite": "historical",
+      "seed": "ruins-7",
+      "testTeam": 1,
+      "mode": "utility",
+      "tick": 34,
+      "scores": [
+        51,
+        18
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 2,
+      "damageDone": 8,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 25
+    },
+    {
+      "suite": "historical",
+      "seed": "control-5",
+      "testTeam": 0,
+      "mode": "malecns",
+      "tick": 53,
+      "scores": [
+        46,
+        65
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 1,
+      "attacks": 10,
+      "damageDone": 59,
+      "neuralEscapes": 6,
+      "episodes": 5,
+      "changedActions": 6,
+      "blockedReflexDecisions": 4,
+      "reflexDecisions": 6,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 80
+    },
+    {
+      "suite": "historical",
+      "seed": "control-5",
+      "testTeam": 0,
+      "mode": "disconnected",
+      "tick": 45,
+      "scores": [
+        61,
+        25
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 5,
+      "attacks": 29,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 35
+    },
+    {
+      "suite": "historical",
+      "seed": "control-5",
+      "testTeam": 0,
+      "mode": "utility",
+      "tick": 45,
+      "scores": [
+        61,
+        25
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 5,
+      "attacks": 29,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 31
+    },
+    {
+      "suite": "historical",
+      "seed": "control-5",
+      "testTeam": 1,
+      "mode": "malecns",
+      "tick": 43,
+      "scores": [
+        63,
+        26
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 0,
+      "damageDone": 0,
+      "neuralEscapes": 6,
+      "episodes": 5,
+      "changedActions": 6,
+      "blockedReflexDecisions": 4,
+      "reflexDecisions": 6,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 73
+    },
+    {
+      "suite": "historical",
+      "seed": "control-5",
+      "testTeam": 1,
+      "mode": "disconnected",
+      "tick": 45,
+      "scores": [
+        61,
+        25
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 3,
+      "damageDone": 24,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 36
+    },
+    {
+      "suite": "historical",
+      "seed": "control-5",
+      "testTeam": 1,
+      "mode": "utility",
+      "tick": 45,
+      "scores": [
+        61,
+        25
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 3,
+      "damageDone": 24,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 32
+    },
+    {
+      "suite": "historical",
+      "seed": "tabletop",
+      "testTeam": 0,
+      "mode": "malecns",
+      "tick": 50,
+      "scores": [
+        30,
+        66
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 2,
+      "attacks": 2,
+      "damageDone": 6,
+      "neuralEscapes": 4,
+      "episodes": 6,
+      "changedActions": 4,
+      "blockedReflexDecisions": 7,
+      "reflexDecisions": 4,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 1,
+      "milliseconds": 97
+    },
+    {
+      "suite": "historical",
+      "seed": "tabletop",
+      "testTeam": 0,
+      "mode": "disconnected",
+      "tick": 51,
+      "scores": [
+        30,
+        66
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 2,
+      "attacks": 2,
+      "damageDone": 6,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 44
+    },
+    {
+      "suite": "historical",
+      "seed": "tabletop",
+      "testTeam": 0,
+      "mode": "utility",
+      "tick": 51,
+      "scores": [
+        30,
+        66
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 2,
+      "attacks": 2,
+      "damageDone": 6,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 41
+    },
+    {
+      "suite": "historical",
+      "seed": "tabletop",
+      "testTeam": 1,
+      "mode": "malecns",
+      "tick": 43,
+      "scores": [
+        65,
+        20
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 1,
+      "attacks": 15,
+      "damageDone": 95,
+      "neuralEscapes": 5,
+      "episodes": 5,
+      "changedActions": 5,
+      "blockedReflexDecisions": 5,
+      "reflexDecisions": 5,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 78
+    },
+    {
+      "suite": "historical",
+      "seed": "tabletop",
+      "testTeam": 1,
+      "mode": "disconnected",
+      "tick": 51,
+      "scores": [
+        30,
+        66
+      ],
+      "winner": 1,
+      "win": true,
+      "survivors": 5,
+      "attacks": 17,
+      "damageDone": 95,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 45
+    },
+    {
+      "suite": "historical",
+      "seed": "tabletop",
+      "testTeam": 1,
+      "mode": "utility",
+      "tick": 51,
+      "scores": [
+        30,
+        66
+      ],
+      "winner": 1,
+      "win": true,
+      "survivors": 5,
+      "attacks": 17,
+      "damageDone": 95,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 40
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-11",
+      "testTeam": 0,
+      "mode": "malecns",
+      "tick": 40,
+      "scores": [
+        25,
+        56
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 0,
+      "attacks": 7,
+      "damageDone": 19,
+      "neuralEscapes": 6,
+      "episodes": 5,
+      "changedActions": 6,
+      "blockedReflexDecisions": 4,
+      "reflexDecisions": 6,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 68
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-11",
+      "testTeam": 0,
+      "mode": "disconnected",
+      "tick": 44,
+      "scores": [
+        34,
+        53
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 0,
+      "attacks": 10,
+      "damageDone": 49,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 33
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-11",
+      "testTeam": 0,
+      "mode": "utility",
+      "tick": 44,
+      "scores": [
+        34,
+        53
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 0,
+      "attacks": 10,
+      "damageDone": 49,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 30
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-11",
+      "testTeam": 1,
+      "mode": "malecns",
+      "tick": 50,
+      "scores": [
+        66,
+        19
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 1,
+      "attacks": 10,
+      "damageDone": 39,
+      "neuralEscapes": 5,
+      "episodes": 6,
+      "changedActions": 5,
+      "blockedReflexDecisions": 5,
+      "reflexDecisions": 5,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 76
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-11",
+      "testTeam": 1,
+      "mode": "disconnected",
+      "tick": 44,
+      "scores": [
+        34,
+        53
+      ],
+      "winner": 1,
+      "win": true,
+      "survivors": 4,
+      "attacks": 27,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 33
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-11",
+      "testTeam": 1,
+      "mode": "utility",
+      "tick": 44,
+      "scores": [
+        34,
+        53
+      ],
+      "winner": 1,
+      "win": true,
+      "survivors": 4,
+      "attacks": 27,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 30
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-29",
+      "testTeam": 0,
+      "mode": "malecns",
+      "tick": 44,
+      "scores": [
+        15,
+        59
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 0,
+      "attacks": 5,
+      "damageDone": 34,
+      "neuralEscapes": 9,
+      "episodes": 5,
+      "changedActions": 9,
+      "blockedReflexDecisions": 1,
+      "reflexDecisions": 9,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 66
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-29",
+      "testTeam": 0,
+      "mode": "disconnected",
+      "tick": 53,
+      "scores": [
+        65,
+        32
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 3,
+      "attacks": 23,
+      "damageDone": 120,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 36
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-29",
+      "testTeam": 0,
+      "mode": "utility",
+      "tick": 53,
+      "scores": [
+        65,
+        32
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 3,
+      "attacks": 23,
+      "damageDone": 120,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 32
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-29",
+      "testTeam": 1,
+      "mode": "malecns",
+      "tick": 55,
+      "scores": [
+        65,
+        12
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 1,
+      "attacks": 5,
+      "damageDone": 34,
+      "neuralEscapes": 7,
+      "episodes": 5,
+      "changedActions": 6,
+      "blockedReflexDecisions": 3,
+      "reflexDecisions": 7,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 85
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-29",
+      "testTeam": 1,
+      "mode": "disconnected",
+      "tick": 53,
+      "scores": [
+        65,
+        32
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 1,
+      "attacks": 11,
+      "damageDone": 61,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 35
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-29",
+      "testTeam": 1,
+      "mode": "utility",
+      "tick": 53,
+      "scores": [
+        65,
+        32
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 1,
+      "attacks": 11,
+      "damageDone": 61,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 32
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-43",
+      "testTeam": 0,
+      "mode": "malecns",
+      "tick": 48,
+      "scores": [
+        52,
+        25
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 5,
+      "attacks": 21,
+      "damageDone": 145,
+      "neuralEscapes": 11,
+      "episodes": 9,
+      "changedActions": 11,
+      "blockedReflexDecisions": 6,
+      "reflexDecisions": 11,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 105
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-43",
+      "testTeam": 0,
+      "mode": "disconnected",
+      "tick": 51,
+      "scores": [
+        66,
+        43
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 3,
+      "attacks": 18,
+      "damageDone": 118,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 36
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-43",
+      "testTeam": 0,
+      "mode": "utility",
+      "tick": 51,
+      "scores": [
+        66,
+        43
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 3,
+      "attacks": 18,
+      "damageDone": 118,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 32
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-43",
+      "testTeam": 1,
+      "mode": "malecns",
+      "tick": 51,
+      "scores": [
+        65,
+        41
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 1,
+      "attacks": 10,
+      "damageDone": 52,
+      "neuralEscapes": 9,
+      "episodes": 8,
+      "changedActions": 9,
+      "blockedReflexDecisions": 5,
+      "reflexDecisions": 9,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 88
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-43",
+      "testTeam": 1,
+      "mode": "disconnected",
+      "tick": 51,
+      "scores": [
+        66,
+        43
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 1,
+      "attacks": 10,
+      "damageDone": 52,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 34
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-43",
+      "testTeam": 1,
+      "mode": "utility",
+      "tick": 51,
+      "scores": [
+        66,
+        43
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 1,
+      "attacks": 10,
+      "damageDone": 52,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 32
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-61",
+      "testTeam": 0,
+      "mode": "malecns",
+      "tick": 36,
+      "scores": [
+        49,
+        24
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 5,
+      "attacks": 23,
+      "damageDone": 145,
+      "neuralEscapes": 12,
+      "episodes": 7,
+      "changedActions": 11,
+      "blockedReflexDecisions": 1,
+      "reflexDecisions": 12,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 80
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-61",
+      "testTeam": 0,
+      "mode": "disconnected",
+      "tick": 37,
+      "scores": [
+        53,
+        22
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 4,
+      "attacks": 23,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 31
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-61",
+      "testTeam": 0,
+      "mode": "utility",
+      "tick": 37,
+      "scores": [
+        53,
+        22
+      ],
+      "winner": 0,
+      "win": true,
+      "survivors": 4,
+      "attacks": 23,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 28
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-61",
+      "testTeam": 1,
+      "mode": "malecns",
+      "tick": 49,
+      "scores": [
+        65,
+        25
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 1,
+      "attacks": 10,
+      "damageDone": 52,
+      "neuralEscapes": 5,
+      "episodes": 5,
+      "changedActions": 4,
+      "blockedReflexDecisions": 5,
+      "reflexDecisions": 5,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 78
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-61",
+      "testTeam": 1,
+      "mode": "disconnected",
+      "tick": 37,
+      "scores": [
+        53,
+        22
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 9,
+      "damageDone": 37,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 31
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-61",
+      "testTeam": 1,
+      "mode": "utility",
+      "tick": 37,
+      "scores": [
+        53,
+        22
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 9,
+      "damageDone": 37,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 28
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-73",
+      "testTeam": 0,
+      "mode": "malecns",
+      "tick": 42,
+      "scores": [
+        30,
+        62
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 0,
+      "attacks": 7,
+      "damageDone": 33,
+      "neuralEscapes": 5,
+      "episodes": 6,
+      "changedActions": 5,
+      "blockedReflexDecisions": 7,
+      "reflexDecisions": 5,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 1,
+      "milliseconds": 66
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-73",
+      "testTeam": 0,
+      "mode": "disconnected",
+      "tick": 50,
+      "scores": [
+        36,
+        66
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 1,
+      "attacks": 11,
+      "damageDone": 59,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 33
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-73",
+      "testTeam": 0,
+      "mode": "utility",
+      "tick": 50,
+      "scores": [
+        36,
+        66
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 1,
+      "attacks": 11,
+      "damageDone": 59,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 31
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-73",
+      "testTeam": 1,
+      "mode": "malecns",
+      "tick": 46,
+      "scores": [
+        66,
+        21
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 0,
+      "attacks": 0,
+      "damageDone": 0,
+      "neuralEscapes": 6,
+      "episodes": 5,
+      "changedActions": 5,
+      "blockedReflexDecisions": 4,
+      "reflexDecisions": 6,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 70
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-73",
+      "testTeam": 1,
+      "mode": "disconnected",
+      "tick": 50,
+      "scores": [
+        36,
+        66
+      ],
+      "winner": 1,
+      "win": true,
+      "survivors": 3,
+      "attacks": 22,
+      "damageDone": 120,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 34
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-73",
+      "testTeam": 1,
+      "mode": "utility",
+      "tick": 50,
+      "scores": [
+        36,
+        66
+      ],
+      "winner": 1,
+      "win": true,
+      "survivors": 3,
+      "attacks": 22,
+      "damageDone": 120,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 30
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-97",
+      "testTeam": 0,
+      "mode": "malecns",
+      "tick": 48,
+      "scores": [
+        35,
+        66
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 1,
+      "attacks": 5,
+      "damageDone": 33,
+      "neuralEscapes": 9,
+      "episodes": 5,
+      "changedActions": 9,
+      "blockedReflexDecisions": 1,
+      "reflexDecisions": 9,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 80
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-97",
+      "testTeam": 0,
+      "mode": "disconnected",
+      "tick": 42,
+      "scores": [
+        27,
+        60
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 0,
+      "attacks": 5,
+      "damageDone": 33,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 32
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-97",
+      "testTeam": 0,
+      "mode": "utility",
+      "tick": 42,
+      "scores": [
+        27,
+        60
+      ],
+      "winner": 1,
+      "win": false,
+      "survivors": 0,
+      "attacks": 5,
+      "damageDone": 33,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 28
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-97",
+      "testTeam": 1,
+      "mode": "malecns",
+      "tick": 43,
+      "scores": [
+        65,
+        30
+      ],
+      "winner": 0,
+      "win": false,
+      "survivors": 1,
+      "attacks": 8,
+      "damageDone": 61,
+      "neuralEscapes": 4,
+      "episodes": 6,
+      "changedActions": 4,
+      "blockedReflexDecisions": 7,
+      "reflexDecisions": 4,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 2,
+      "milliseconds": 64
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-97",
+      "testTeam": 1,
+      "mode": "disconnected",
+      "tick": 42,
+      "scores": [
+        27,
+        60
+      ],
+      "winner": 1,
+      "win": true,
+      "survivors": 4,
+      "attacks": 22,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 32
+    },
+    {
+      "suite": "additional",
+      "seed": "probe-97",
+      "testTeam": 1,
+      "mode": "utility",
+      "tick": 42,
+      "scores": [
+        27,
+        60
+      ],
+      "winner": 1,
+      "win": true,
+      "survivors": 4,
+      "attacks": 22,
+      "damageDone": 145,
+      "neuralEscapes": 0,
+      "episodes": 0,
+      "changedActions": 0,
+      "blockedReflexDecisions": 0,
+      "reflexDecisions": 0,
+      "riskIncreaseSteps": 0,
+      "nonImprovingRoutes": 0,
+      "overBudgetRoutes": 0,
+      "longestReflexRun": 0,
+      "milliseconds": 29
+    }
+  ],
+  "totalMilliseconds": 5678
+}

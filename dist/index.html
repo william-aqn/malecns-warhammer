@@ -27,7 +27,7 @@
 </defs></svg>
 <header class="topbar">
   <a href="./" class="brand" aria-label="Malecns, главная"><span class="brandmark"><span></span><span></span><span></span></span><strong>malecns<span>.</span></strong><span class="brand-divider"></span><span class="brand-sub">WARHAMMER<br><b>BEHAVIOR LAB</b></span></a>
-  <div class="header-right"><span class="version"><i></i> PROTOTYPE 0.6</span><button class="text-btn" id="about-btn"><svg><use href="#i-device"/></svg>От экрана к столу</button></div>
+  <div class="header-right"><span class="version"><i></i> PROTOTYPE 0.7</span><button class="text-btn" id="about-btn"><svg><use href="#i-device"/></svg>От экрана к столу</button></div>
 </header>
 <main>
   <div class="page-heading"><div><div class="eyebrow">ЭКСПЕРИМЕНТАЛЬНЫЙ ПОЛИГОН / 001</div><h1>У каждой армии — свой характер<span>.</span></h1><p>Создавай поле боя. Меняй поведение. Наблюдай за решениями.</p></div><span class="heading-tag">TACTICAL SANDBOX <span>↗</span></span></div>
@@ -91,6 +91,7 @@
     <div id="aim-candidates"></div><p id="aim-caption"></p>
     <details class="aim-explainer"><summary>Как сигнал выбирает цель</summary><p>L/R — активность DNa01, делённая на симметричный эталон. Смещение: atan2(R − L, R + L), до ±45°. Сигнал атаки: (L + R) / 2. Адаптер сопоставляет направление с видимыми целями; расстояние определяет только доступность выстрела. Это наш игровой декодер, не биологическое назначение DNa01.</p><p>Жёлтый пунктир на поле — прицел при последнем расчёте решения. Рамка — его предпочтительная цель. При точном равенстве сигналов команд порядок: огонь, вперёд, влево, вправо, назад, ожидание.</p></details>
     <dl><div><dt>DNa02 · поворот L / R</dt><dd id="motor-steer"></dd></div><div><dt>DNp09 · движение L / R</dt><dd id="motor-walk"></dd></div><div><dt>MDN · назад L / R</dt><dd id="motor-reverse"></dd></div></dl>
+    <details class="aim-explainer"><summary>Как юнит видит проходы</summary><p>Пять лучей впереди проверяют до 4 клеток. Свободное пространство добавляет сигнал движения; заметная цель ослабляет этот фон. Стена сбоку или сзади больше не даёт сигнал приближающегося препятствия.</p><p>Сигнал «назад»: max(0, 1.1 × min(угроза L, угроза R, MDN) − 0.5 × сигнал «вперёд»). Это уменьшает цикл отхода и возврата. Выбор команды по-прежнему делает выход сети; готового маршрута здесь нет.</p></details>
     <p id="motor-adapter"></p><p>Зрение, фоновый стимул и двигательный декодер заданы программой. Это экспериментальный контроллер без обучения стратегии боя.</p>
   </div><p class="neuron-detail" id="neural-sampling"></p><canvas id="neural-canvas" width="580" height="220" role="img" aria-label="Активность 319 нейронов выбранного юнита. Яркость соответствует активности; выделены выходные нейроны."></canvas>
   <p id="neuron-detail" class="neuron-detail">Наведи на ячейку: тип, body ID и активность.</p>

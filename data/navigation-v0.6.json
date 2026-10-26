@@ -1,0 +1,106 @@
+{
+  "version": "0.6.0",
+  "sourceCommit": "0cf9855",
+  "seed": "40721",
+  "ticks": 40,
+  "controllers": [
+    "neural",
+    "neural"
+  ],
+  "scores": [
+    0,
+    45
+  ],
+  "units": [
+    {
+      "id": "B-05",
+      "moves": 8,
+      "turns": 32,
+      "attacks": 0,
+      "maxStationary": 29,
+      "smallAreaWindows": 20,
+      "cells": 9
+    },
+    {
+      "id": "A-04",
+      "moves": 3,
+      "turns": 36,
+      "attacks": 0,
+      "maxStationary": 35,
+      "smallAreaWindows": 26,
+      "cells": 4
+    },
+    {
+      "id": "A-05",
+      "moves": 3,
+      "turns": 36,
+      "attacks": 0,
+      "maxStationary": 36,
+      "smallAreaWindows": 27,
+      "cells": 4
+    },
+    {
+      "id": "A-02",
+      "moves": 1,
+      "turns": 38,
+      "attacks": 0,
+      "maxStationary": 38,
+      "smallAreaWindows": 29,
+      "cells": 2
+    },
+    {
+      "id": "B-01",
+      "moves": 30,
+      "turns": 9,
+      "attacks": 0,
+      "maxStationary": 5,
+      "smallAreaWindows": 0,
+      "cells": 31
+    },
+    {
+      "id": "B-04",
+      "moves": 1,
+      "turns": 39,
+      "attacks": 0,
+      "maxStationary": 38,
+      "smallAreaWindows": 29,
+      "cells": 2
+    },
+    {
+      "id": "B-03",
+      "moves": 27,
+      "turns": 12,
+      "attacks": 0,
+      "maxStationary": 6,
+      "smallAreaWindows": 0,
+      "cells": 23
+    },
+    {
+      "id": "A-03",
+      "moves": 3,
+      "turns": 36,
+      "attacks": 0,
+      "maxStationary": 36,
+      "smallAreaWindows": 27,
+      "cells": 4
+    },
+    {
+      "id": "A-01",
+      "moves": 1,
+      "turns": 38,
+      "attacks": 0,
+      "maxStationary": 38,
+      "smallAreaWindows": 29,
+      "cells": 2
+    },
+    {
+      "id": "B-02",
+      "moves": 28,
+      "turns": 11,
+      "attacks": 0,
+      "maxStationary": 4,
+      "smallAreaWindows": 0,
+      "cells": 29
+    }
+  ]
+}

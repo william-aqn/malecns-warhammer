@@ -2,7 +2,7 @@ import {isMotorMode,isMotorBrain,motorReadout} from './motor.mjs';
 import {REFLEX_BURST,createReflex,stepReflex,reflexAllows,validateReflex,copyReflex} from './reflex.mjs';
 import {CONTROLLERS,createBrain,stepBrain,neuralReadout,validateBrain,copyBrain} from './neural.mjs';
 // Pure deterministic simulation: no browser, clock or network dependencies.
-export const VERSION=6, W=32, H=22, MAX_TICKS=180, WIN_SCORE=65;
+export const VERSION=7, W=32, H=22, MAX_TICKS=180, WIN_SCORE=65;
 export const TERRAIN={FLOOR:0,WALL:1,COVER:2};
 export const FACTIONS={
   marines:{name:'Space Marines',short:'Astartes',description:'Согласованное продвижение и контроль позиций.',aggression:.62,caution:.67,objective:.85,hp:30,damage:6,range:6},
@@ -160,8 +160,9 @@ export function motorBearing(u,p){
   while(angle>Math.PI)angle-=Math.PI*2;while(angle< -Math.PI)angle+=Math.PI*2;
   return angle;
 }
+export const MOTOR_VISION='binocular-passages-v2';
 export function observeMotor(s,u){
-  const p=profile(u),fear=[0,0],targets=[.035,.035];
+  const p=profile(u),fear=[0,0],targets=[.035,.035],others=aliveUnits(s).filter(e=>e.id!==u.id);
   // Engineered binocular scene projection, not reconstructed fly retinal geometry.
   const project=(pair,pos,strength)=>{
     const angle=motorBearing(u,pos);if(Math.abs(angle)>Math.PI*.75)return;
@@ -169,16 +170,38 @@ export function observeMotor(s,u){
     pair[0]=Math.max(pair[0],clamp(strength*visibility*(1-lateral)));
     pair[1]=Math.max(pair[1],clamp(strength*visibility*(1+lateral)));
   };
-  for(const e of aliveUnits(s))if(e.id!==u.id&&hasLineOfSight(s,u,e)){
+  for(const e of others)if(hasLineOfSight(s,u,e)){
     const d=distance(u,e);if(d>12)continue;
     if(e.team!==u.team){
       project(targets,e,p.aggression/(1+d/7));
       project(fear,e,clamp((e.range+5-d)/(e.range+5))*(.65+.35*(1-u.hp/u.maxHp))*p.caution);
-    }else if(d===1)project(fear,e,.8);
+    }else if(d===1)project(fear,e,.8*Math.max(0,Math.cos(motorBearing(u,e)))**2);
   }
   for(const o of s.objectives)if(o.owner!==u.team&&distance(u,o)<=12&&hasLineOfSight(s,u,o))
     project(targets,o,p.objective/(1+distance(u,o)/7));
-  for(const [dx,dy] of DIRS){const pos={x:u.x+dx,y:u.y+dy};if(tileAt(s,pos.x,pos.y)===1)project(fear,pos,.9);}
+  // Static obstacles only repel in the forward hemisphere; side/rear walls
+  // are not an approaching threat. The squared cosine fades peripheral input.
+  for(const [dx,dy] of DIRS){
+    const pos={x:u.x+dx,y:u.y+dy},frontal=Math.max(0,Math.cos(motorBearing(u,pos)));
+    if(tileAt(s,pos.x,pos.y)===1)project(fear,pos,.9*frontal*frontal);
+  }
+  // Local free-space vision supplies exploratory input, not a route or objective.
+  const open=[0,0];
+  for(const offset of [-2,-1,0,1,2]){
+    const angle=offset*Math.PI/4,heading=(u.heading+offset+8)%8;
+    const [dx,dy]=[[0,-1],[1,-1],[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1]][heading];
+    let clear=0;
+    for(let d=1;d<=4;d++){
+      const pos={x:u.x+dx*d,y:u.y+dy*d};
+      if(!inside(pos.x,pos.y)||!hasLineOfSight(s,u,pos)||others.some(e=>e.x===pos.x&&e.y===pos.y))break;
+      clear++;
+    }
+    const strength=.08*clear/4,side=Math.sin(angle);
+    open[0]+=strength*(1-side);open[1]+=strength*(1+side);
+  }
+  // A salient visible object attenuates exploration without losing its bearing.
+  const exploration=1-Math.max(...targets);
+  for(let side=0;side<2;side++)targets[side]=clamp(targets[side]+exploration*open[side]);
   return [...fear,...targets];
 }
 // Decode a continuous aim direction from the network. Geometry only resolves
@@ -320,7 +343,7 @@ export function importScene(text){
   if(typeof text!=='string'||text.length>8_000_000)throw new Error('Слишком большой файл сцены.');
   let data;try{data=JSON.parse(text);}catch{throw new Error('Файл не содержит корректный JSON.');}
   const v=data?.state,invalid=()=>{throw new Error('Неподдерживаемая или повреждённая сцена.');};
-  if(data?.format!=='malecns-scene'||![1,2,3,4,5,VERSION].includes(data.version)||!v||!v.config)invalid();
+  if(data?.format!=='malecns-scene'||![1,2,3,4,5,6,VERSION].includes(data.version)||!v||!v.config)invalid();
   if(!Array.isArray(v.map)||v.map.length!==W*H||v.map.some(t=>![0,1,2].includes(t)))invalid();
   if(!Number.isInteger(v.tick)||v.tick<0||v.tick>MAX_TICKS||!Number.isInteger(v.rng)||v.rng<0||v.rng>4294967295)invalid();
   if(!Array.isArray(v.scores)||v.scores.length!==2||v.scores.some(n=>!Number.isInteger(n)||n<0||n>MAX_TICKS*3))invalid();

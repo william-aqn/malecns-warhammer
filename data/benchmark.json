@@ -1,5 +1,5 @@
 {
-  "version": "0.6.0",
+  "version": "0.7.0",
   "model": "6a1452434783f8e3e9ebdb82fc36e3c56071b85e1575c755af55a1f84b89a477",
   "reflex": {
     "contract": "bounded-escape-v1",
@@ -78,7 +78,7 @@
   ],
   "motor": {
     "model": "2e00fbe4528b5ba23cbbcdb40aa94ee26772d1bf7c6b8ce7cfe14888029f3d89",
-    "decoder": "visual-motor-v2",
+    "decoder": "visual-motor-v3",
     "counts": {
       "neurons": 11436,
       "edges": 1687031,
@@ -92,183 +92,113 @@
         "mode": "neural",
         "label": "MaleCNS · нейронное управление",
         "reactivity": 0.5,
-        "firstAction": "Нейронная команда · назад",
-        "firstType": "retreat",
+        "firstAction": "Нейронная команда · поворот вправо",
+        "firstType": "turn",
         "neuralEscapes": 0,
-        "motorCommands": 12,
+        "motorCommands": 6,
         "episodes": 0,
         "damageDone": 0,
-        "hp": 15,
-        "ticks": 12,
-        "maxDrive": 0.13837194629013538,
+        "hp": 0,
+        "ticks": 7,
+        "maxDrive": 0.2003130428493023,
         "timeline": [
           {
             "tick": 1,
-            "action": "retreat",
-            "label": "Нейронная команда · назад",
-            "command": "reverse",
-            "reflex": false,
-            "override": false,
-            "rawDrive": 0.11978080682456493,
-            "phase": "ready",
-            "heading": 2,
-            "x": 9,
-            "y": 10,
-            "hp": 20
-          },
-          {
-            "tick": 2,
-            "action": "retreat",
-            "label": "Нейронная команда · назад",
-            "command": "reverse",
-            "reflex": false,
-            "override": false,
-            "rawDrive": 0.13837194629013538,
-            "phase": "ready",
-            "heading": 2,
-            "x": 8,
-            "y": 10,
-            "hp": 15
-          },
-          {
-            "tick": 3,
-            "action": "retreat",
-            "label": "Нейронная команда · назад",
-            "command": "reverse",
-            "reflex": false,
-            "override": false,
-            "rawDrive": 0.12295274250209332,
-            "phase": "ready",
-            "heading": 2,
-            "x": 7,
-            "y": 10,
-            "hp": 15
-          },
-          {
-            "tick": 4,
-            "action": "retreat",
-            "label": "Нейронная команда · назад",
-            "command": "reverse",
-            "reflex": false,
-            "override": false,
-            "rawDrive": 0.10279429890215397,
-            "phase": "ready",
-            "heading": 2,
-            "x": 6,
-            "y": 10,
-            "hp": 15
-          },
-          {
-            "tick": 5,
-            "action": "retreat",
-            "label": "Нейронная команда · назад",
-            "command": "reverse",
-            "reflex": false,
-            "override": false,
-            "rawDrive": 0.10030175745487213,
-            "phase": "ready",
-            "heading": 2,
-            "x": 5,
-            "y": 10,
-            "hp": 15
-          },
-          {
-            "tick": 6,
-            "action": "retreat",
-            "label": "Нейронная команда · назад",
-            "command": "reverse",
-            "reflex": false,
-            "override": false,
-            "rawDrive": 0.10014268197119236,
-            "phase": "ready",
-            "heading": 2,
-            "x": 4,
-            "y": 10,
-            "hp": 15
-          },
-          {
-            "tick": 7,
-            "action": "retreat",
-            "label": "Нейронная команда · назад",
-            "command": "reverse",
-            "reflex": false,
-            "override": false,
-            "rawDrive": 0.10013033077120781,
-            "phase": "ready",
-            "heading": 2,
-            "x": 3,
-            "y": 10,
-            "hp": 15
-          },
-          {
-            "tick": 8,
-            "action": "retreat",
-            "label": "Нейронная команда · назад",
-            "command": "reverse",
-            "reflex": false,
-            "override": false,
-            "rawDrive": 0.11848608963191509,
-            "phase": "ready",
-            "heading": 2,
-            "x": 2,
-            "y": 10,
-            "hp": 15
-          },
-          {
-            "tick": 9,
-            "action": "retreat",
-            "label": "Нейронная команда · назад",
-            "command": "reverse",
-            "reflex": false,
-            "override": false,
-            "rawDrive": 0.10252157039940357,
-            "phase": "ready",
-            "heading": 2,
-            "x": 1,
-            "y": 10,
-            "hp": 15
-          },
-          {
-            "tick": 10,
-            "action": "move",
-            "label": "Нейронная команда · вперёд",
-            "command": "advance",
-            "reflex": false,
-            "override": false,
-            "rawDrive": 0.06474672257900238,
-            "phase": "ready",
-            "heading": 2,
-            "x": 2,
-            "y": 10,
-            "hp": 15
-          },
-          {
-            "tick": 11,
-            "action": "move",
-            "label": "Нейронная команда · вперёд",
-            "command": "advance",
-            "reflex": false,
-            "override": false,
-            "rawDrive": 0.04022345785051584,
-            "phase": "ready",
-            "heading": 2,
-            "x": 3,
-            "y": 10,
-            "hp": 15
-          },
-          {
-            "tick": 12,
             "action": "turn",
             "label": "Нейронная команда · поворот вправо",
             "command": "right",
             "reflex": false,
             "override": false,
-            "rawDrive": 0.06781446561217308,
+            "rawDrive": 0.12049602717161179,
             "phase": "ready",
             "heading": 3,
-            "x": 3,
+            "x": 10,
+            "y": 10,
+            "hp": 20
+          },
+          {
+            "tick": 2,
+            "action": "turn",
+            "label": "Нейронная команда · поворот вправо",
+            "command": "right",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.2003130428493023,
+            "phase": "ready",
+            "heading": 4,
+            "x": 10,
             "y": 10,
             "hp": 15
+          },
+          {
+            "tick": 3,
+            "action": "turn",
+            "label": "Нейронная команда · поворот вправо",
+            "command": "right",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.1935248039662838,
+            "phase": "ready",
+            "heading": 5,
+            "x": 10,
+            "y": 10,
+            "hp": 15
+          },
+          {
+            "tick": 4,
+            "action": "move",
+            "label": "Нейронная команда · вперёд",
+            "command": "advance",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.1195677537471056,
+            "phase": "ready",
+            "heading": 5,
+            "x": 9,
+            "y": 10,
+            "hp": 9
+          },
+          {
+            "tick": 5,
+            "action": "move",
+            "label": "Нейронная команда · вперёд",
+            "command": "advance",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.10714448988437653,
+            "phase": "ready",
+            "heading": 5,
+            "x": 8,
+            "y": 10,
+            "hp": 4
+          },
+          {
+            "tick": 6,
+            "action": "move",
+            "label": "Нейронная команда · вперёд",
+            "command": "advance",
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.09818056598305702,
+            "phase": "ready",
+            "heading": 5,
+            "x": 7,
+            "y": 10,
+            "hp": 4
+          },
+          {
+            "tick": 7,
+            "action": "dead",
+            "label": "Выведен из боя",
+            "command": null,
+            "reflex": false,
+            "override": false,
+            "rawDrive": 0.09818056598305702,
+            "phase": "ready",
+            "heading": 5,
+            "x": 7,
+            "y": 10,
+            "hp": 0
           }
         ]
       },
@@ -681,10 +611,10 @@
           "advance": 0.6180331426365481,
           "left": 0.98038507777324,
           "right": 0.023198424264015458,
-          "reverse": 0.0044214547409296865,
+          "reverse": 0,
           "wait": 0.06
         },
-        "milliseconds": 186
+        "milliseconds": 189
       },
       {
         "mode": "neural",
@@ -721,10 +651,10 @@
           "advance": 0.7883006501360149,
           "left": 0.03199674133144854,
           "right": 0.9854876336476176,
-          "reverse": 0.004499592255786266,
+          "reverse": 0,
           "wait": 0.06
         },
-        "milliseconds": 183
+        "milliseconds": 186
       },
       {
         "mode": "neural",
@@ -761,10 +691,10 @@
           "advance": 0.07225573239992811,
           "left": 0.08481795220257722,
           "right": 1.4605258778841443,
-          "reverse": 0.06012760418477653,
+          "reverse": 0.023999737984812475,
           "wait": 0.06
         },
-        "milliseconds": 183
+        "milliseconds": 184
       },
       {
         "mode": "neural",
@@ -801,10 +731,10 @@
           "advance": 0.07400684521525469,
           "left": 1.466828062797568,
           "right": 0.13672248921980407,
-          "reverse": 0.05032675461489517,
+          "reverse": 0.013323332007267825,
           "wait": 0.06
         },
-        "milliseconds": 182
+        "milliseconds": 183
       },
       {
         "mode": "neural",
@@ -1577,7 +1507,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 137
+      "milliseconds": 142
     },
     {
       "suite": "historical",
@@ -1603,7 +1533,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 47
+      "milliseconds": 49
     },
     {
       "suite": "historical",
@@ -1655,7 +1585,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 1,
-      "milliseconds": 91
+      "milliseconds": 92
     },
     {
       "suite": "historical",
@@ -1681,7 +1611,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 44
+      "milliseconds": 43
     },
     {
       "suite": "historical",
@@ -1707,7 +1637,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 40
+      "milliseconds": 39
     },
     {
       "suite": "historical",
@@ -1733,7 +1663,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 72
+      "milliseconds": 70
     },
     {
       "suite": "historical",
@@ -1785,7 +1715,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 28
+      "milliseconds": 29
     },
     {
       "suite": "historical",
@@ -1811,7 +1741,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 96
+      "milliseconds": 97
     },
     {
       "suite": "historical",
@@ -1863,7 +1793,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 29
+      "milliseconds": 28
     },
     {
       "suite": "historical",
@@ -1889,7 +1819,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 78
+      "milliseconds": 79
     },
     {
       "suite": "historical",
@@ -1915,7 +1845,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 35
+      "milliseconds": 37
     },
     {
       "suite": "historical",
@@ -1941,7 +1871,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 33
     },
     {
       "suite": "historical",
@@ -1967,7 +1897,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 64
+      "milliseconds": 65
     },
     {
       "suite": "historical",
@@ -2019,7 +1949,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 33
     },
     {
       "suite": "historical",
@@ -2045,7 +1975,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 97
+      "milliseconds": 107
     },
     {
       "suite": "historical",
@@ -2071,7 +2001,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 28
+      "milliseconds": 32
     },
     {
       "suite": "historical",
@@ -2097,7 +2027,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 25
+      "milliseconds": 26
     },
     {
       "suite": "historical",
@@ -2123,7 +2053,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 70
+      "milliseconds": 72
     },
     {
       "suite": "historical",
@@ -2175,7 +2105,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 25
+      "milliseconds": 26
     },
     {
       "suite": "historical",
@@ -2201,7 +2131,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 80
+      "milliseconds": 83
     },
     {
       "suite": "historical",
@@ -2227,7 +2157,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 35
+      "milliseconds": 36
     },
     {
       "suite": "historical",
@@ -2253,7 +2183,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 32
     },
     {
       "suite": "historical",
@@ -2279,7 +2209,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 73
+      "milliseconds": 76
     },
     {
       "suite": "historical",
@@ -2305,7 +2235,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 36
+      "milliseconds": 38
     },
     {
       "suite": "historical",
@@ -2331,7 +2261,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 33
     },
     {
       "suite": "historical",
@@ -2357,7 +2287,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 1,
-      "milliseconds": 97
+      "milliseconds": 99
     },
     {
       "suite": "historical",
@@ -2435,7 +2365,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 78
+      "milliseconds": 79
     },
     {
       "suite": "historical",
@@ -2591,7 +2521,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 76
+      "milliseconds": 77
     },
     {
       "suite": "additional",
@@ -2617,7 +2547,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 33
+      "milliseconds": 34
     },
     {
       "suite": "additional",
@@ -2669,7 +2599,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 66
+      "milliseconds": 67
     },
     {
       "suite": "additional",
@@ -2721,7 +2651,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 33
     },
     {
       "suite": "additional",
@@ -2773,7 +2703,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 35
+      "milliseconds": 36
     },
     {
       "suite": "additional",
@@ -2799,7 +2729,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 34
     },
     {
       "suite": "additional",
@@ -2825,7 +2755,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 105
+      "milliseconds": 111
     },
     {
       "suite": "additional",
@@ -2851,7 +2781,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 36
+      "milliseconds": 39
     },
     {
       "suite": "additional",
@@ -2877,7 +2807,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 34
     },
     {
       "suite": "additional",
@@ -2903,7 +2833,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 88
+      "milliseconds": 90
     },
     {
       "suite": "additional",
@@ -2929,7 +2859,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 34
+      "milliseconds": 36
     },
     {
       "suite": "additional",
@@ -2955,7 +2885,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 33
     },
     {
       "suite": "additional",
@@ -2981,7 +2911,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 80
+      "milliseconds": 82
     },
     {
       "suite": "additional",
@@ -3007,7 +2937,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 32
     },
     {
       "suite": "additional",
@@ -3059,7 +2989,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 78
+      "milliseconds": 79
     },
     {
       "suite": "additional",
@@ -3085,7 +3015,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 30
     },
     {
       "suite": "additional",
@@ -3163,7 +3093,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 33
+      "milliseconds": 32
     },
     {
       "suite": "additional",
@@ -3189,7 +3119,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 31
+      "milliseconds": 29
     },
     {
       "suite": "additional",
@@ -3215,7 +3145,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 70
+      "milliseconds": 71
     },
     {
       "suite": "additional",
@@ -3241,7 +3171,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 34
+      "milliseconds": 33
     },
     {
       "suite": "additional",
@@ -3267,7 +3197,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 30
+      "milliseconds": 29
     },
     {
       "suite": "additional",
@@ -3345,7 +3275,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 28
+      "milliseconds": 29
     },
     {
       "suite": "additional",
@@ -3371,7 +3301,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 2,
-      "milliseconds": 64
+      "milliseconds": 66
     },
     {
       "suite": "additional",
@@ -3397,7 +3327,7 @@
       "nonImprovingRoutes": 0,
       "overBudgetRoutes": 0,
       "longestReflexRun": 0,
-      "milliseconds": 32
+      "milliseconds": 33
     },
     {
       "suite": "additional",
@@ -3426,5 +3356,5 @@
       "milliseconds": 29
     }
   ],
-  "totalMilliseconds": 5678
+  "totalMilliseconds": 5495
 }

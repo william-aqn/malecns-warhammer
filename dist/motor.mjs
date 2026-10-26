@@ -1,7 +1,7 @@
 import {MOTOR_MODEL,MOTOR_PACKED,MOTOR_SHA256} from './data/malecns-motor.mjs';
 export {MOTOR_MODEL,MOTOR_SHA256};
 export const MOTOR_STEPS=8;
-export const MOTOR_DECODER='visual-motor-v2';
+export const MOTOR_DECODER='visual-motor-v3';
 export const isMotorMode=mode=>mode==='neural'||mode==='neural-disconnected';
 export const isMotorBrain=brain=>brain?.model===MOTOR_SHA256;
 const motorBytes=Uint8Array.from(atob(MOTOR_PACKED),c=>c.charCodeAt(0));
@@ -53,12 +53,16 @@ export function motorReadout(brain,reactivity=.5){
   const aimTotal=aim[0]+aim[1],aimAngle=aimTotal>1e-9?Math.atan2(aim[1]-aim[0],aimTotal):null;
   const fear=raw.escape.map((v,i)=>gain*v/(['DNp01','DNp02','DNp04','DNp11'].reduce((sum,type)=>sum+cal.threat[type+['L','R'][i]],0)/4));
   const walk=raw.walk.map((v,i)=>gain*v/cal.target['DNp09'+['L','R'][i]]),reverse=raw.reverse.map((v,i)=>gain*v/cal.threat['MDN'+['L','R'][i]]);
+  // Opponent locomotor readout: forward activity damps repeated backing-up.
+  // This is an engineered command mapping, not a change to the connectome.
+  const advance=Math.min((steer[0]+steer[1])/2,(walk[0]+walk[1])/2);
+  const retreat=Math.max(0,Math.min(...fear,(reverse[0]+reverse[1])/2)*1.1-.5*advance);
   return {decoder:MOTOR_DECODER,raw,aim,aimAngle,steer,fear,walk,reverse,gain,scores:{
     fire:aimTotal/2,
-    advance:Math.min((steer[0]+steer[1])/2,(walk[0]+walk[1])/2),
+    advance,
     left:Math.max(0,steer[0]-steer[1])*2+fear[1],
     right:Math.max(0,steer[1]-steer[0])*2+fear[0],
-    reverse:Math.min(...fear,(reverse[0]+reverse[1])/2)*1.1,
+    reverse:retreat,
     wait:.06
   }};
 }

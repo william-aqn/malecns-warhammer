@@ -68,7 +68,7 @@ test('aim inspection is read-only and neuron sensitivity zero disables attack',(
   assert.equal(motorReadout(u.brain).decoder,MOTOR_DECODER);
 });
 
-test('1v2 aim scenario keeps isolated target brains and resumes exactly from v6 snapshots',()=>{
+test('1v2 aim scenario keeps isolated target brains and resumes exactly from current snapshots',()=>{
   const a=createSimulation(aimConfig());
   assert.deepEqual(a.units.map(u=>u.id),['A-01','B-01','B-02']);
   assert.notEqual(a.units[1].brain.activity,a.units[2].brain.activity);
@@ -95,11 +95,11 @@ test('asymmetric team imports validate roster sizes, IDs and opposing-team kill 
   base.state.units[0].kills=2;assert.equal(importScene(JSON.stringify(base)).units[0].kills,2);
 });
 
-test('v5 neural scenes retain activity and heading with an explicit v6 decision-rule migration',()=>{
+test('v5 neural scenes retain activity and heading with an explicit current decision-rule migration',()=>{
   const a=createSimulation({...aimConfig(),scenario:'contact'});stepSimulation(a);
   const raw=JSON.parse(exportScene(a));raw.version=5;raw.state.version=5;
   const b=importScene(JSON.stringify(raw));
-  assert.equal(b.version,VERSION);assert.ok(b.importNote.includes('v5'));assert.ok(b.importNote.includes('v6'));
+  assert.equal(b.version,VERSION);assert.ok(b.importNote.includes('v5'));assert.ok(b.importNote.includes('v'+VERSION));
   assert.deepEqual(b.units.map(u=>[u.x,u.y,u.hp,u.heading,u.brain]),a.units.map(u=>[u.x,u.y,u.hp,u.heading,u.brain]));
   stepSimulation(a);stepSimulation(b);assert.deepEqual(a.units,b.units);assert.equal(a.rng,b.rng);
 });

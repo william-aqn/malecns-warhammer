@@ -99,7 +99,10 @@ test('scene inputs rotate with facing and walls hide objects',()=>{
   const left=observeMotor(s,u);assert.ok(left[2]>left[3]);
   u.heading=6;const right=observeMotor(s,u);assert.ok(right[3]>right[2]);
   u.heading=2;s.map[(u.y-2)*W+u.x]=1;
-  assert.deepEqual(observeMotor(s,u),[0,0,.035,.035]);
+  const hidden=observeMotor(s,u);e.hp=0;
+  assert.deepEqual(observeMotor(s,u),hidden,'a hidden enemy must not change perception');
+  assert.deepEqual(hidden.slice(0,2),[0,0]);
+  assert.ok(hidden[3]>hidden[2],'the unobstructed right side remains perceptible');
   assert.ok(Math.abs(motorBearing(u,{x:u.x+1,y:u.y}))<1e-9);
   u.heading=0;assert.ok(Math.abs(motorBearing(u,{x:u.x,y:u.y-1}))<1e-9);
 });
@@ -129,7 +132,7 @@ test('unit neural memory is independent and inspection consumes neither steps no
   assert.deepEqual(s.units.map(u=>JSON.stringify(u.brain)),before);assert.equal(s.rng,rng);
 });
 
-test('v6 saves preserve motor activity, headings and exact subsequent actions',()=>{
+test('current saves preserve motor activity, headings and exact subsequent actions',()=>{
   for(const mode of ['neural','neural-disconnected']){
     const a=contact(mode);stepSimulation(a);stepSimulation(a);const b=importScene(exportScene(a));
     assert.equal(b.version,VERSION);assert.deepEqual(b.units.map(u=>[u.heading,u.brain]),a.units.map(u=>[u.heading,u.brain]));

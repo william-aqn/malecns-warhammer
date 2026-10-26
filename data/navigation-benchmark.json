@@ -1,0 +1,416 @@
+{
+  "version": "0.7.0",
+  "model": "2e00fbe4528b5ba23cbbcdb40aa94ee26772d1bf7c6b8ce7cfe14888029f3d89",
+  "decoder": "visual-motor-v3",
+  "vision": "binocular-passages-v2",
+  "scope": "Three fixed 40-tick neural-vs-neural diagnostics with default factions and terrain. Baseline: v0.6 at reported seed 40721. No optimization or training. These maps were inspected during development; this is a regression sample, not a held-out evaluation or evidence of tactical strength.",
+  "metrics": "Distinct visited cells include the spawn and executed destinations. maxStationary counts consecutive turn/wait activations; moves and attacks reset it. smallAreaWindows counts 12 consecutive non-firing activations confined to at most two cells. Dead units receive no later activations. Holding a point is not distinguished from other waiting.",
+  "baseline": {
+    "version": "0.6.0",
+    "sourceCommit": "0cf9855",
+    "seed": "40721",
+    "ticks": 40,
+    "controllers": [
+      "neural",
+      "neural"
+    ],
+    "scores": [
+      0,
+      45
+    ],
+    "units": [
+      {
+        "id": "B-05",
+        "moves": 8,
+        "turns": 32,
+        "attacks": 0,
+        "maxStationary": 29,
+        "smallAreaWindows": 20,
+        "cells": 9
+      },
+      {
+        "id": "A-04",
+        "moves": 3,
+        "turns": 36,
+        "attacks": 0,
+        "maxStationary": 35,
+        "smallAreaWindows": 26,
+        "cells": 4
+      },
+      {
+        "id": "A-05",
+        "moves": 3,
+        "turns": 36,
+        "attacks": 0,
+        "maxStationary": 36,
+        "smallAreaWindows": 27,
+        "cells": 4
+      },
+      {
+        "id": "A-02",
+        "moves": 1,
+        "turns": 38,
+        "attacks": 0,
+        "maxStationary": 38,
+        "smallAreaWindows": 29,
+        "cells": 2
+      },
+      {
+        "id": "B-01",
+        "moves": 30,
+        "turns": 9,
+        "attacks": 0,
+        "maxStationary": 5,
+        "smallAreaWindows": 0,
+        "cells": 31
+      },
+      {
+        "id": "B-04",
+        "moves": 1,
+        "turns": 39,
+        "attacks": 0,
+        "maxStationary": 38,
+        "smallAreaWindows": 29,
+        "cells": 2
+      },
+      {
+        "id": "B-03",
+        "moves": 27,
+        "turns": 12,
+        "attacks": 0,
+        "maxStationary": 6,
+        "smallAreaWindows": 0,
+        "cells": 23
+      },
+      {
+        "id": "A-03",
+        "moves": 3,
+        "turns": 36,
+        "attacks": 0,
+        "maxStationary": 36,
+        "smallAreaWindows": 27,
+        "cells": 4
+      },
+      {
+        "id": "A-01",
+        "moves": 1,
+        "turns": 38,
+        "attacks": 0,
+        "maxStationary": 38,
+        "smallAreaWindows": 29,
+        "cells": 2
+      },
+      {
+        "id": "B-02",
+        "moves": 28,
+        "turns": 11,
+        "attacks": 0,
+        "maxStationary": 4,
+        "smallAreaWindows": 0,
+        "cells": 29
+      }
+    ]
+  },
+  "runs": [
+    {
+      "seed": "40721",
+      "ticks": 40,
+      "scores": [
+        0,
+        5
+      ],
+      "units": [
+        {
+          "id": "B-05",
+          "moves": 35,
+          "turns": 5,
+          "attacks": 0,
+          "maxStationary": 3,
+          "smallAreaWindows": 0,
+          "cells": 27
+        },
+        {
+          "id": "A-04",
+          "moves": 32,
+          "turns": 8,
+          "attacks": 0,
+          "maxStationary": 3,
+          "smallAreaWindows": 0,
+          "cells": 32
+        },
+        {
+          "id": "A-05",
+          "moves": 22,
+          "turns": 12,
+          "attacks": 6,
+          "maxStationary": 3,
+          "smallAreaWindows": 0,
+          "cells": 20
+        },
+        {
+          "id": "A-02",
+          "moves": 32,
+          "turns": 8,
+          "attacks": 0,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 32
+        },
+        {
+          "id": "B-01",
+          "moves": 32,
+          "turns": 7,
+          "attacks": 1,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 33
+        },
+        {
+          "id": "B-04",
+          "moves": 30,
+          "turns": 4,
+          "attacks": 4,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 31
+        },
+        {
+          "id": "B-03",
+          "moves": 34,
+          "turns": 6,
+          "attacks": 0,
+          "maxStationary": 3,
+          "smallAreaWindows": 0,
+          "cells": 35
+        },
+        {
+          "id": "A-03",
+          "moves": 15,
+          "turns": 15,
+          "attacks": 5,
+          "maxStationary": 6,
+          "smallAreaWindows": 0,
+          "cells": 13
+        },
+        {
+          "id": "A-01",
+          "moves": 28,
+          "turns": 10,
+          "attacks": 2,
+          "maxStationary": 3,
+          "smallAreaWindows": 0,
+          "cells": 23
+        },
+        {
+          "id": "B-02",
+          "moves": 30,
+          "turns": 4,
+          "attacks": 6,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 31
+        }
+      ]
+    },
+    {
+      "seed": "navigation-17",
+      "ticks": 40,
+      "scores": [
+        2,
+        7
+      ],
+      "units": [
+        {
+          "id": "B-03",
+          "moves": 25,
+          "turns": 5,
+          "attacks": 10,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 26
+        },
+        {
+          "id": "B-02",
+          "moves": 16,
+          "turns": 3,
+          "attacks": 0,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 17
+        },
+        {
+          "id": "B-04",
+          "moves": 31,
+          "turns": 4,
+          "attacks": 5,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 32
+        },
+        {
+          "id": "A-04",
+          "moves": 13,
+          "turns": 0,
+          "attacks": 1,
+          "maxStationary": 0,
+          "smallAreaWindows": 0,
+          "cells": 14
+        },
+        {
+          "id": "B-01",
+          "moves": 32,
+          "turns": 8,
+          "attacks": 0,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 33
+        },
+        {
+          "id": "A-03",
+          "moves": 34,
+          "turns": 6,
+          "attacks": 0,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 35
+        },
+        {
+          "id": "A-05",
+          "moves": 13,
+          "turns": 1,
+          "attacks": 8,
+          "maxStationary": 1,
+          "smallAreaWindows": 0,
+          "cells": 14
+        },
+        {
+          "id": "A-01",
+          "moves": 26,
+          "turns": 6,
+          "attacks": 8,
+          "maxStationary": 3,
+          "smallAreaWindows": 0,
+          "cells": 21
+        },
+        {
+          "id": "B-05",
+          "moves": 30,
+          "turns": 5,
+          "attacks": 4,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 31
+        },
+        {
+          "id": "A-02",
+          "moves": 24,
+          "turns": 8,
+          "attacks": 5,
+          "maxStationary": 3,
+          "smallAreaWindows": 0,
+          "cells": 25
+        }
+      ]
+    },
+    {
+      "seed": "navigation-83",
+      "ticks": 40,
+      "scores": [
+        8,
+        3
+      ],
+      "units": [
+        {
+          "id": "A-05",
+          "moves": 18,
+          "turns": 2,
+          "attacks": 7,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 19
+        },
+        {
+          "id": "A-02",
+          "moves": 24,
+          "turns": 9,
+          "attacks": 2,
+          "maxStationary": 3,
+          "smallAreaWindows": 0,
+          "cells": 25
+        },
+        {
+          "id": "B-02",
+          "moves": 31,
+          "turns": 9,
+          "attacks": 0,
+          "maxStationary": 4,
+          "smallAreaWindows": 0,
+          "cells": 28
+        },
+        {
+          "id": "B-05",
+          "moves": 27,
+          "turns": 8,
+          "attacks": 5,
+          "maxStationary": 3,
+          "smallAreaWindows": 0,
+          "cells": 14
+        },
+        {
+          "id": "B-01",
+          "moves": 12,
+          "turns": 3,
+          "attacks": 1,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 13
+        },
+        {
+          "id": "A-01",
+          "moves": 34,
+          "turns": 6,
+          "attacks": 0,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 35
+        },
+        {
+          "id": "A-03",
+          "moves": 32,
+          "turns": 4,
+          "attacks": 4,
+          "maxStationary": 3,
+          "smallAreaWindows": 0,
+          "cells": 24
+        },
+        {
+          "id": "B-03",
+          "moves": 27,
+          "turns": 6,
+          "attacks": 7,
+          "maxStationary": 3,
+          "smallAreaWindows": 0,
+          "cells": 26
+        },
+        {
+          "id": "B-04",
+          "moves": 32,
+          "turns": 8,
+          "attacks": 0,
+          "maxStationary": 2,
+          "smallAreaWindows": 0,
+          "cells": 33
+        },
+        {
+          "id": "A-04",
+          "moves": 36,
+          "turns": 3,
+          "attacks": 1,
+          "maxStationary": 3,
+          "smallAreaWindows": 0,
+          "cells": 20
+        }
+      ]
+    }
+  ]
+}

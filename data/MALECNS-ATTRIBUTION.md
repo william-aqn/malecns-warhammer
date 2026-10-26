@@ -158,3 +158,20 @@ weapons, target identity or attack decisions. A causal probe holds the board and
 initial activity fixed and changes only LC10 input balance, showing a different
 attacked target; edge removal and zero stimulus are controls. No brain training,
 new anatomy or inferred transmitter signs were introduced.
+
+## Navigation adapter in 0.7
+
+The anatomy, unsigned contacts, rate dynamics, calibration and model SHA-256
+remain unchanged. binocular-passages-v2 adds five local clearance rays (four
+grid steps) to engineered LC10 inputs; visible object salience attenuates this
+exploration stimulus. Static obstacle/adjacent ally threat is multiplied by
+max(0, cos(relative bearing)) squared. Rear/peripheral walls no longer generate
+the same approaching-threat signal as a frontal collision.
+
+visual-motor-v3 retains all prior scores except reverse:
+max(0, 1.1 * min(normalized escape L, escape R, mean MDN) - 0.5 * advance).
+This opponent readout reduces repeated backing up and returning. It is an
+engineering choice, not a biological claim about locomotor inhibition.
+No path planner, learned weights, visit memory or trained tactical policy was
+added. All enabled commands still compete through neural output scores;
+disconnecting edges at zero initial activity produces no movement.
