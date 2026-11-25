@@ -1,7 +1,5 @@
 # MaleCNS Warhammer — Behavioral Sandbox
 
-[Русская версия](README.md)
-
 MaleCNS v1.0 maps connections between neurons in the central nervous system of a male fruit fly (*Drosophila melanogaster*). This project uses that wiring in two browser simulations. The **sensory lab** in version **0.10** connects the full annotated graph to a simulated body and environment, with learning disabled. The **tactical sandbox** uses smaller circuits to control pieces on a game board and includes an optional readout that learns from play. It uses original game rules inspired by Warhammer 40,000 and Kill Team.
 
 ## Version 0.10 — Full annotated graph and sensory environment
